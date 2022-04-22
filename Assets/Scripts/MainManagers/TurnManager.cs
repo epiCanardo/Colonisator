@@ -68,16 +68,16 @@ namespace Colfront.GamePlay
                     if (faction.playerTypeEnum == PlayerType.HUMAN)
                     {
                         // TODO : le mouvement du joueur est igoré à des fins de tests
-                        continue;
+                        //continue;
 
-                        //GameManager.Instance.ToggleCamMovement(true);
-                        //MainState = TurnState.Human;
-                        //// positionnement de la caméra derrière le navire en cours
-                        //GameManager.Instance.CurrentShipToPlay = ServiceGame.GetHumanShip("Joueur Humain 1");
-                        //GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
-                        //CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : { faction.name } - Navire : { GameManager.Instance.CurrentShipToPlay.name }";
+                        GameManager.Instance.ToggleCamMovement(true);
+                        MainState = TurnState.Human;
+                        // positionnement de la caméra derrière le navire en cours
+                        GameManager.Instance.CurrentShipToPlay = ServiceGame.GetHumanShip("Joueur Humain 1");
+                        GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
+                        CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : { faction.name } - Navire : { GameManager.Instance.CurrentShipToPlay.name }";
 
-                        //yield return new WaitUntil(() => MainState == TurnState.AI);
+                        yield return new WaitUntil(() => MainState == TurnState.AI);
                     }
                     else
                     {

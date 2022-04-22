@@ -32,6 +32,9 @@ namespace Colfront.GamePlay
         public GameObject piofoShipPrefab;
         public GameObject[] cplShipPrefabs;
         public GameObject missytownShipPrefab;
+        public GameObject ghostShipPrefab;
+        public GameObject[] cmrShipPrefabs;
+        public GameObject[] competitorShipPrefabs;
 
         [Header("Panneau info sélection")]
         public TextMeshProUGUI PanelActionSelectionShipName;
@@ -68,8 +71,8 @@ namespace Colfront.GamePlay
 
         public Ship CurrentShipToPlay { get; set; }
 
-        // récupère l'objet instancité correspondant au navire en cours
-        public GameObject GetActualPlayinghipObject => instanciedShipObjects.First(x => x.GetComponent<ShipManager>().ship.Equals(CurrentShipToPlay));    
+        // récupère l'objet instancié correspondant au navire en cours
+        public GameObject GetActualPlayinghipObject => instanciedShipObjects.First(x => x.GetComponent<ShipManager>().ship.Equals(CurrentShipToPlay));
 
         public GameObject GetPlayingHumanShipObject => instanciedShipObjects.First(x => x.GetComponent<ShipManager>().ship.Equals(ServiceGame.GetHumanShip("Joueur Humain 1")));
 
@@ -98,7 +101,7 @@ namespace Colfront.GamePlay
         private void Awake()
         {
             if (Instance == null) { Instance = this; }
-        }        
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -161,10 +164,10 @@ namespace Colfront.GamePlay
             if (Input.GetKeyDown(KeyCode.C))
             {
                 if (squaresShowed)
-                    squaresShowed = false;                
-                else             
+                    squaresShowed = false;
+                else
                     squaresShowed = true;
-                
+
                 ToggleSquares(squaresShowed);
             }
 
@@ -172,7 +175,7 @@ namespace Colfront.GamePlay
             if (Input.GetKeyDown(KeyCode.S))
                 FocusCamOnShip(GetPlayingHumanShipObject);
         }
-        
+
         public void CreateSquares()
         {
             StartCoroutine("CreateSquaresTask");
@@ -218,7 +221,7 @@ namespace Colfront.GamePlay
                         }
                     }
                     else
-                    {                        
+                    {
                         objectCreated = Instantiate(squarePrefab, physicalSquare, squarePrefab.transform.rotation, squaresParent.transform);
                         objectCreated.name = $"Square{basicSquare.x}_{basicSquare.y}";
                         //objectCreated.GetComponent<SquareManagement>().coordinates = new Square(x + 1, z + 1);
@@ -285,8 +288,8 @@ namespace Colfront.GamePlay
                 // ajout du faction mananger à la liste
                 FactionsManager.Instance.Factions.Add(fM);
 
-                ShipsInstanciation(faction, new GameObject[1] { mainShipPrefab });                
-            }            
+                ShipsInstanciation(faction, new GameObject[1] { mainShipPrefab });
+            }
         }
 
         public void NpcsSpawn()
@@ -310,6 +313,21 @@ namespace Colfront.GamePlay
             Faction cpl = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.PIRATE);
             SetFactionToManager(cpl, new List<Color32> { Color.black, Color.red, Color.white });
             ShipsInstanciation(cpl, cplShipPrefabs);
+
+            // CMR
+            Faction cmr = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.REBEL_SAILORS);
+            SetFactionToManager(cmr, new List<Color32> { Color.blue, Color.black, Color.yellow });
+            ShipsInstanciation(cmr, cmrShipPrefabs);
+
+            // Competitor
+            Faction competitor = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.COMPETITOR);
+            SetFactionToManager(competitor, new List<Color32> { Color.white, Color.green, Color.gray });
+            ShipsInstanciation(competitor, competitorShipPrefabs);
+
+            // Ghost
+            Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.GHOST);
+            SetFactionToManager(ghost, new List<Color32> { Color.gray, Color.red, Color.white });
+            ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
         }
 
         private void SetFactionToManager(Faction faction, List<Color32> colors)
@@ -326,12 +344,12 @@ namespace Colfront.GamePlay
         private void ShipsInstanciation(Faction faction, GameObject[] shipPrefabs)
         {
             var ships = ServiceGame.GetShipsFromFaction(faction);
-            var i = 0;                     
+            //var i = 0;                     
 
             foreach (var ship in ships)
             {
-                ShipInstanciation(shipPrefabs[i], ship);
-                i++;
+                ShipInstanciation(shipPrefabs[0], ship);
+                //i++;
             }
         }
 
@@ -341,6 +359,10 @@ namespace Colfront.GamePlay
             SquareManagement square;
             ShipManager sM;
             GameObject currentShipObject;
+
+            // TODO : retirer le fix des coordonnées nulles
+            if (ship.coordinates == null)
+                ship.coordinates = new Square(20, 20);
 
             square = GetPhysicalSquareFromSquare(ship.coordinates);
             //square = squares.First(x => x.coordinates.x == ship.coordinates.x && x.coordinates.y == ship.coordinates.y);
@@ -352,10 +374,15 @@ namespace Colfront.GamePlay
             sM.ship = ship;
             // positionnement des coordonn�es du navire
             sM.ship.coordinates = square.coordinates;
-            // apparition de l'équipage
-            sM.AssignCrew();
-            // apparition des drapeaux
-            sM.AssignFlag();
+
+            // TODO : fix sur le navire fantôme à mettre en place
+            if (ServiceGame.GetFactionFromId(ship.owner).playerTypeEnum != PlayerType.GHOST)
+            {
+                // apparition de l'équipage
+                sM.AssignCrew();
+                // apparition des drapeaux
+                sM.AssignFlag();
+            }
 
             instanciedShipObjects.Add(currentShipObject);
         }
@@ -379,7 +406,7 @@ namespace Colfront.GamePlay
         {
             shipScreen.gameObject.SetActive(active);
             if (active)
-            {                
+            {
                 var shipM = shipScreen.GetComponent<ShipScreenManager>();
                 shipM.ship = ship;
                 shipM.Show();
@@ -397,14 +424,14 @@ namespace Colfront.GamePlay
             }
 
             //harborToolTip.transform.position = Input.mousePosition;
-            harborToolTip.gameObject.SetActive(active);            
+            harborToolTip.gameObject.SetActive(active);
         }
 
         #region Mode Navigation
 
         public void ToggleNavigationMode(bool active)
         {
-            navigationMode = active;      
+            navigationMode = active;
         }
 
         public bool IsNavigationModeActive()

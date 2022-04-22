@@ -6805,6 +6805,11 @@ MonoBehaviour:
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   missytownShipPrefab: {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
+  ghostShipPrefab: {fileID: 453516830579255561, guid: f0b3b570a6abceb479a96e1213b09766, type: 3}
+  cmrShipPrefabs:
+  - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
+  competitorShipPrefabs:
+  - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   PanelActionSelectionShipName: {fileID: 738362931}
   PanelActionSelectionFactionName: {fileID: 872458138}
   PanelActionSelectionCaptainName: {fileID: 2004797503}
