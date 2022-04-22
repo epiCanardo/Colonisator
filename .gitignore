@@ -27,6 +27,9 @@
 # Visual Studio cache directory
 .vs/
 
+# Plastic cache directory
+.plastic/
+
 # Gradle cache directory
 .gradle/
 
@@ -73,3 +76,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 *.zip
+
