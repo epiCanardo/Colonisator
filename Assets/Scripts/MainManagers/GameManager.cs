@@ -65,6 +65,7 @@ namespace Colfront.GamePlay
 
         // mode navigation
         private bool navigationMode;
+        private int currentQualityLevel = 0;
 
         public Vector3 camOffSet { get; set; }
         public Vector3 camEulerAngles { get; set; }
@@ -174,6 +175,16 @@ namespace Colfront.GamePlay
             // positionnement sur le navire du joueur humain
             if (Input.GetKeyDown(KeyCode.S))
                 FocusCamOnShip(GetPlayingHumanShipObject);
+
+            // modification de la qualité
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                currentQualityLevel += 1;
+                if (currentQualityLevel == 3)
+                    currentQualityLevel = 0;
+
+                QualitySettings.SetQualityLevel(currentQualityLevel);
+            }
         }
 
         public void CreateSquares()
@@ -243,7 +254,7 @@ namespace Colfront.GamePlay
 
         private void CreateIsland(GameObject harborPrefab, Vector3 square, Square basicSquare, string name)
         {
-            harborPrefab.name = $"{name}_{basicSquare.x}_{basicSquare.y}";
+            //harborPrefab.name = $"{name}_{basicSquare.x}_{basicSquare.y}";
             var objectCreated = Instantiate(harborPrefab, square, harborPrefab.transform.rotation, squaresParent.transform);
             var squareManager = objectCreated.GetComponent<HarborSquareManagement>();
             squareManager.coordinates = basicSquare;

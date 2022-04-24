@@ -103,7 +103,7 @@ namespace Colfront.GamePlay
         private void OnMouseDown()
         {
             SelectShip();
-            GameManager.Instance.ToggleShipScreen(true, ship);
+            //GameManager.Instance.ToggleShipScreen(true, ship);
         }
 
         public void SelectShip()
