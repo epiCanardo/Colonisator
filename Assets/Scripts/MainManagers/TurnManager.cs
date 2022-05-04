@@ -56,19 +56,15 @@ namespace Colfront.GamePlay
                 //yield return new WaitUntil(() => MainState == TurnState.AI);
 
                 // pour chaque tour de faction, on déroule les actions
-                foreach (var factionTrun in ServiceGame.GetCurrentTurn.factionsAndShips)
+                foreach (var factionTurn in ServiceGame.GetCurrentTurn.factionsAndShips)
                 {
-                    Faction faction = ServiceGame.GetFactionFromId(factionTrun.Key);
-
-                    // TODO : activer le navire fantômes
-                    if (faction.playerTypeEnum == PlayerType.GHOST)
-                        continue;
+                    Faction faction = ServiceGame.GetFactionFromId(factionTurn.Key);
 
                     // si c'est au joueur humain de jouer, on laisse la main. La fonction reprendra lorsque MainState sera AI
                     if (faction.playerTypeEnum == PlayerType.HUMAN)
                     {
                         // TODO : le mouvement du joueur est igoré à des fins de tests
-                        //continue;
+                        continue;
 
                         GameManager.Instance.ToggleCamMovement(true);
                         MainState = TurnState.Human;
@@ -81,25 +77,41 @@ namespace Colfront.GamePlay
                     }
                     else
                     {
+                        // TODO : activer le navire fantômes
+                        if (faction.playerTypeEnum == PlayerType.GHOST)
+                        {
+                            continue;
+
+                            //foreach (var turnAction in factionTurn.Value)
+                            //{
+                            //    if (turnAction.puncture != null)
+                            //    {
+                            //        ServiceGame.Puncture(new PunctureDTO
+                            //        {
+                            //            npcIds = turnAction.puncture.npcs,
+                            //            sourceShipId = ServiceGame.GetNpc(turnAction.puncture.npcs[0]).currentShip,
+                            //            targetShipId = turnAction.id
+                            //        });
+                            //    }
+                            //}
+                        }
+
                         // on laisse 1 seconde entre les navires
-                        yield return new WaitForSeconds(0.1f);
+                        yield return new WaitForSeconds(1f);
 
                         // on est sur les navires IA, la camra libre est désactivée
                         MainState = TurnState.AI;
                         GameManager.Instance.ToggleCamMovement(false);
 
                         // application des actions prévues pour chaque navire de la faction
-                        foreach (var action in factionTrun.Value)
+                        foreach (var action in factionTurn.Value)
                         {
                             // positionnement de la caméra derrière le navire en cours
                             GameManager.Instance.CurrentShipToPlay = ServiceGame.GetShip(action.id);
                             GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
                             CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : { faction.name } - Navire : { GameManager.Instance.CurrentShipToPlay.name }";
-
+                            
                             yield return new WaitForSeconds(0.1f);
-
-                            if (faction.playerTypeEnum == PlayerType.PENITENTIARY)
-                                Debug.Log("Navire Piofo");
 
                             // si c'est un navire IA, il effectue les actions prévues
                             var movement = ServiceGame.PrepareShipMovement(action);
@@ -149,6 +161,8 @@ namespace Colfront.GamePlay
                 //MainState = TurnState.ActionsFinished;
                 GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetPlayingHumanShipObject);
                 GameManager.Instance.ToggleCamMovement(true);
+
+                var dto = ServiceGame.GetReport();
 
                 ServiceGame.EndTurn();
 
