@@ -80,7 +80,7 @@ namespace Colfront.GamePlay
         public void DoColonize()
         {
             // sélection des matelots qui vont dégager du navire
-            var victims = ServiceGame.GetNpcs(humanShip).Where(x => x.rankEnum == Rank.SAILOR)
+            var victims = ServiceGame.GetNpcs(humanShip).Where(x => x.rankEnum == "SAILOR")
                 .OrderByDescending(x => x.characteristics.BATISSEUR).Take(sailorsValue).ToList();
 
             ColonisationDTO dto = new ColonisationDTO

@@ -189,10 +189,11 @@ namespace Colfront.GamePlay
 
         public void CreateSquares()
         {
-            StartCoroutine("CreateSquaresTask");
+            //StartCoroutine("CreateSquaresTask");
+            CreateSquaresTask();
         }
 
-        IEnumerator CreateSquaresTask()
+        void CreateSquaresTask()
         {
             // création des cases
             List<Square> harbours = ServiceGame.Islands.Select(x => x.harbourCoordinates).ToList();
@@ -246,7 +247,7 @@ namespace Colfront.GamePlay
                     //if (z < 80)
                     //    objectCreated.SetActive(false);
                 }
-                yield return null;
+                //yield return null;
             }
 
             squaresShowed = true;
@@ -287,7 +288,7 @@ namespace Colfront.GamePlay
             //playerShip.GetComponent<ShipManager>().ship.coordinates = square.coordinates;
 
             // récupération des joueurs humains
-            foreach (var faction in ServiceGame.Factions.Where(x => x.playerTypeEnum == PlayerType.HUMAN))
+            foreach (var faction in ServiceGame.Factions.Where(x => x.playerTypeEnum == "HUMAN"))
             {
                 var fM = new FactionManager
                 {
@@ -306,37 +307,37 @@ namespace Colfront.GamePlay
         public void NpcsSpawn()
         {
             // CUII
-            Faction cuii = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.NEUTRAL);
+            Faction cuii = ServiceGame.Factions.First(x => x.playerTypeEnum == "NEUTRAL");
             SetFactionToManager(cuii, new List<Color32> { Color.yellow, Color.black, Color.white });
             ShipsInstanciation(cuii, cuiiShipPrefabs);
 
             // Piofo
-            Faction piofo = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.PENITENTIARY);
+            Faction piofo = ServiceGame.Factions.First(x => x.playerTypeEnum == "PENITENTIARY");
             SetFactionToManager(piofo, new List<Color32> { Color.red, Color.white, Color.black });
             ShipsInstanciation(piofo, new GameObject[1] { piofoShipPrefab });
 
             // Missytown
-            Faction missytown = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.PRISON);
+            Faction missytown = ServiceGame.Factions.First(x => x.playerTypeEnum == "PRISON");
             SetFactionToManager(missytown, new List<Color32> { Color.green, Color.black, Color.gray });
             ShipsInstanciation(missytown, new GameObject[1] { missytownShipPrefab });
 
             // CPL
-            Faction cpl = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.PIRATE);
+            Faction cpl = ServiceGame.Factions.First(x => x.playerTypeEnum == "PIRATE");
             SetFactionToManager(cpl, new List<Color32> { Color.black, Color.red, Color.white });
             ShipsInstanciation(cpl, cplShipPrefabs);
 
             // CMR
-            Faction cmr = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.REBEL_SAILORS);
+            Faction cmr = ServiceGame.Factions.First(x => x.playerTypeEnum == "REBEL_SAILORS");
             SetFactionToManager(cmr, new List<Color32> { Color.blue, Color.black, Color.yellow });
             ShipsInstanciation(cmr, cmrShipPrefabs);
 
             // Competitor
-            Faction competitor = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.COMPETITOR);
+            Faction competitor = ServiceGame.Factions.First(x => x.playerTypeEnum == "COMPETITOR");
             SetFactionToManager(competitor, new List<Color32> { Color.white, Color.green, Color.gray });
             ShipsInstanciation(competitor, competitorShipPrefabs);
 
             // Ghost
-            Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == PlayerType.GHOST);
+            Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == "GHOST");
             SetFactionToManager(ghost, new List<Color32> { Color.gray, Color.red, Color.white });
             ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
         }
@@ -387,7 +388,7 @@ namespace Colfront.GamePlay
             sM.ship.coordinates = square.coordinates;
 
             // TODO : fix sur le navire fantôme à mettre en place
-            if (ServiceGame.GetFactionFromId(ship.owner).playerTypeEnum != PlayerType.GHOST)
+            if (ServiceGame.GetFactionFromId(ship.owner).playerTypeEnum != "GHOST")
             {
                 // apparition de l'équipage
                 sM.AssignCrew();

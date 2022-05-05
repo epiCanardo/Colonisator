@@ -61,7 +61,7 @@ namespace Colfront.GamePlay
                     Faction faction = ServiceGame.GetFactionFromId(factionTurn.Key);
 
                     // si c'est au joueur humain de jouer, on laisse la main. La fonction reprendra lorsque MainState sera AI
-                    if (faction.playerTypeEnum == PlayerType.HUMAN)
+                    if (faction.playerTypeEnum == "HUMAN")
                     {
                         // TODO : le mouvement du joueur est igoré à des fins de tests
                         continue;
@@ -78,7 +78,7 @@ namespace Colfront.GamePlay
                     else
                     {
                         // TODO : activer le navire fantômes
-                        if (faction.playerTypeEnum == PlayerType.GHOST)
+                        if (faction.playerTypeEnum == "GHOST")
                         {
                             continue;
 
@@ -162,6 +162,7 @@ namespace Colfront.GamePlay
                 GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetPlayingHumanShipObject);
                 GameManager.Instance.ToggleCamMovement(true);
 
+                // on générère un rapport de fin de tour
                 var dto = ServiceGame.GetReport();
 
                 ServiceGame.EndTurn();
