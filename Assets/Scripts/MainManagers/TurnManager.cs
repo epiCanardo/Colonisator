@@ -110,36 +110,46 @@ namespace Colfront.GamePlay
                             GameManager.Instance.CurrentShipToPlay = ServiceGame.GetShip(action.id);
                             GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
                             CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : { faction.name } - Navire : { GameManager.Instance.CurrentShipToPlay.name }";
-                            
+
                             yield return new WaitForSeconds(0.1f);
 
                             // si c'est un navire IA, il effectue les actions prévues
-                            var movement = ServiceGame.PrepareShipMovement(action);
 
-                            foreach (Square square in movement)
+                            // gestion du déplacement
+                            if (action.move != null)
                             {
-                                // case physique d'arrivée et mouvement
-                                var physicalSquare = GameManager.Instance.GetPhysicalSquareFromSquare(square);
-                                // orientation par rapport à la cible
-                                yield return GameManager.Instance.GetActualPlayinghipObject.transform.DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
-                                // déplacement
-                                GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(physicalSquare.transform.position + (Vector3.down * 10), 1);
-                                // déplacement de la caméra à la même vitesse
-                                yield return Camera.main.transform.DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1).WaitForCompletion();
+                                var movement = ServiceGame.PrepareShipMovement(action);
+                                foreach (Square square in movement)
+                                {
+                                    // case physique d'arrivée et mouvement
+                                    var physicalSquare = GameManager.Instance.GetPhysicalSquareFromSquare(square);
+                                    // orientation par rapport à la cible
+                                    yield return GameManager.Instance.GetActualPlayinghipObject.transform.DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
+                                    // déplacement
+                                    GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(physicalSquare.transform.position + (Vector3.down * 10), 1);
+                                    // déplacement de la caméra à la même vitesse
+                                    yield return Camera.main.transform.DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1).WaitForCompletion();
 
-                                // application des effets sur le gréément
-                                GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
+                                    // application des effets sur le gréément
+                                    GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
+                                }
+                                // s'il y a eu mouvement, on l'enregistre le mouvement
+                                if (movement.Any())
+                                {
+                                    ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay, movement.Last());
+                                    ServiceGame.RegisterMovement(new MoveDTO
+                                    {
+                                        move = (action.move != null) ? new Move { cost = action.move.cost, moveDetails = action.move.moveDetails } : null,
+                                        ship = GameManager.Instance.CurrentShipToPlay
+                                    });
+                                }
                             }
 
-                            // mouvement terminé, on enregistre le mouvement
-                            if (movement.Any())
-                                ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay, movement.Last());
-
-                            ServiceGame.RegisterMovement(new MoveDTO
+                            // gestion de la colonisation
+                            if (action.realisation == "COLONISATION")
                             {
-                                move = (action.move != null) ? new Move { cost = action.move.cost, moveDetails = action.move.moveDetails } : null,
-                                ship = GameManager.Instance.CurrentShipToPlay
-                            });
+                                var test = action;
+                            }
                         }
                     }
                 }
@@ -149,14 +159,19 @@ namespace Colfront.GamePlay
                 var targetColor = new Color(color.r, color.g, color.b, 0);
                 yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
 
+                // TODO : désactiver la find de tour auto
+                MainState = TurnState.ActionsFinished;                
+
                 // on se place en attente de fin de tour
-                MainState = TurnState.WaitForEndTurn;
-                //BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
-                yield return new WaitUntil(() => MainState == TurnState.ActionsFinished);
+                //MainState = TurnState.WaitForEndTurn;
+                ////BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
+                //yield return new WaitUntil(() => MainState == TurnState.ActionsFinished);
 
                 CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Fin du tour";
                 targetColor = new Color(color.r, color.g, color.b, 0.8f);
                 BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
+
+                yield return new WaitForSeconds(2f);
 
                 //MainState = TurnState.ActionsFinished;
                 GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetPlayingHumanShipObject);

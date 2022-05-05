@@ -99,10 +99,10 @@ namespace Colfront.GamePlay
             technicalreport.Add($"Temps de création des autres factions : {timer2.Elapsed.TotalSeconds}");
             //yield return null;
 
-            //Stopwatch timer3 = Stopwatch.StartNew();
-            //GameManager.Instance.StartGame();
-            //timer3.Stop();
-            //technicalreport.Add($"Temps de démarrage du premier tour : {timer3.Elapsed.TotalSeconds}");
+            Stopwatch timer3 = Stopwatch.StartNew();
+            GameManager.Instance.StartGame();
+            timer3.Stop();
+            technicalreport.Add($"Temps de démarrage du premier tour : {timer3.Elapsed.TotalSeconds}");
 
             //Debug.Log($"Le monde a été peuplé avec succès !");
             //Debug.Log($"Nombre d'îles : {ServiceGame.Islands.Count()}");
