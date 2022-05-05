@@ -11,7 +11,6 @@ namespace Colfront.GamePlay
     public class PopulateWorld : MonoBehaviour
     {
         private Button button;
-        private DevOptionsManager dom;
         private bool waitForPopulate;
 
         private List<string> technicalreport = new List<string>();
@@ -19,8 +18,6 @@ namespace Colfront.GamePlay
         // Start is called before the first frame update
         void Start()
         {
-            dom = FindObjectOfType<DevOptionsManager>(true);
-
             button = GetComponent<Button>();
             button.onClick.AddListener(DoPopulateWorld);
         }
@@ -64,17 +61,10 @@ namespace Colfront.GamePlay
 
         public void GenerateMap()
         {
-            //if (gm == null) gm = FindObjectOfType<GameManager>(true);
-            if (dom == null) dom = FindObjectOfType<DevOptionsManager>();
-
-            //ServiceGame.GenerateGame("GameData/v1testdata_100npc.txt");
             Stopwatch timer = Stopwatch.StartNew();
             ServiceGame.GenerateGame(100);
             timer.Stop();
             technicalreport.Add($"Temps de génération de la partie : {timer.Elapsed.TotalSeconds}");
-            //gm.game = new ServiceGame();
-            //gm.game.GenerateGame(50);
-            //gm.game.GenerateGame("GameData/v1testdata_100npc.txt");
 
             // création des cases
             Stopwatch timer2 = Stopwatch.StartNew();
@@ -99,10 +89,10 @@ namespace Colfront.GamePlay
             technicalreport.Add($"Temps de création des autres factions : {timer2.Elapsed.TotalSeconds}");
             //yield return null;
 
-            //Stopwatch timer3 = Stopwatch.StartNew();
-            //GameManager.Instance.StartGame();
-            //timer3.Stop();
-            //technicalreport.Add($"Temps de démarrage du premier tour : {timer3.Elapsed.TotalSeconds}");
+            Stopwatch timer3 = Stopwatch.StartNew();
+            GameManager.Instance.StartGame();
+            timer3.Stop();
+            technicalreport.Add($"Temps de démarrage du premier tour : {timer3.Elapsed.TotalSeconds}");
 
             //Debug.Log($"Le monde a été peuplé avec succès !");
             //Debug.Log($"Nombre d'îles : {ServiceGame.Islands.Count()}");
@@ -116,8 +106,8 @@ namespace Colfront.GamePlay
             //    Debug.Log($"Nombre de vaisseau de la faction {faction.name} : {ServiceGame.GetShipsFromFaction(faction).Count()}");
             //}
 
-            dom.currentState = DevOptionsManager.GameState.GameStarted;
-            dom.RefreshGameState();
+            DevOptionsManager.Instance.currentState = DevOptionsManager.GameState.GameStarted;
+            DevOptionsManager.Instance.RefreshGameState();
         }
     }
 }

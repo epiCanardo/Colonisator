@@ -49,12 +49,6 @@ namespace Colfront.GamePlay
                 GameManager.Instance.ToggleSquares(false);
                 CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Début du tour";
 
-                // on commence par le joueur humain
-                // la fonction reprendra son exécution lorsque le statut de tour sera placé à AI
-                //GameManager.Instance.CurrentShipToPlay = ServiceGame.GetHumanShip("Joueur Humain 1");
-                //MainState = TurnState.Human;
-                //yield return new WaitUntil(() => MainState == TurnState.AI);
-
                 // pour chaque tour de faction, on déroule les actions
                 foreach (var factionTurn in ServiceGame.GetCurrentTurn.factionsAndShips)
                 {
@@ -63,9 +57,6 @@ namespace Colfront.GamePlay
                     // si c'est au joueur humain de jouer, on laisse la main. La fonction reprendra lorsque MainState sera AI
                     if (faction.playerTypeEnum == "HUMAN")
                     {
-                        // TODO : le mouvement du joueur est igoré à des fins de tests
-                        continue;
-
                         GameManager.Instance.ToggleCamMovement(true);
                         MainState = TurnState.Human;
                         // positionnement de la caméra derrière le navire en cours
@@ -74,6 +65,7 @@ namespace Colfront.GamePlay
                         CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : { faction.name } - Navire : { GameManager.Instance.CurrentShipToPlay.name }";
 
                         yield return new WaitUntil(() => MainState == TurnState.AI);
+                        // au retour dans la méthode, on passe à la faction suivante
                     }
                     else
                     {
@@ -114,32 +106,42 @@ namespace Colfront.GamePlay
                             yield return new WaitForSeconds(0.1f);
 
                             // si c'est un navire IA, il effectue les actions prévues
-                            var movement = ServiceGame.PrepareShipMovement(action);
 
-                            foreach (Square square in movement)
+                            // gestion du déplacement
+                            if (action.move != null)
                             {
-                                // case physique d'arrivée et mouvement
-                                var physicalSquare = GameManager.Instance.GetPhysicalSquareFromSquare(square);
-                                // orientation par rapport à la cible
-                                yield return GameManager.Instance.GetActualPlayinghipObject.transform.DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
-                                // déplacement
-                                GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(physicalSquare.transform.position + (Vector3.down * 10), 1);
-                                // déplacement de la caméra à la même vitesse
-                                yield return Camera.main.transform.DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1).WaitForCompletion();
+                                var movement = ServiceGame.PrepareShipMovement(action);
+                                foreach (Square square in movement)
+                                {
+                                    // case physique d'arrivée et mouvement
+                                    var physicalSquare = GameManager.Instance.GetPhysicalSquareFromSquare(square);
+                                    // orientation par rapport à la cible
+                                    yield return GameManager.Instance.GetActualPlayinghipObject.transform.DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
+                                    // déplacement
+                                    GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(physicalSquare.transform.position + (Vector3.down * 10), 1);
+                                    // déplacement de la caméra à la même vitesse
+                                    yield return Camera.main.transform.DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1).WaitForCompletion();
 
-                                // application des effets sur le gréément
-                                GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
+                                    // application des effets sur le gréément
+                                    GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
+                                }
+                                // s'il y a eu mouvement, on l'enregistre le mouvement
+                                if (movement.Any())
+                                {
+                                    ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay, movement.Last());
+                                    ServiceGame.RegisterMovement(new MoveDTO
+                                    {
+                                        move = (action.move != null) ? new Move { cost = action.move.cost, moveDetails = action.move.moveDetails } : null,
+                                        ship = GameManager.Instance.CurrentShipToPlay
+                                    });
+                                }
                             }
 
-                            // mouvement terminé, on enregistre le mouvement
-                            if (movement.Any())
-                                ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay, movement.Last());
-
-                            ServiceGame.RegisterMovement(new MoveDTO
+                            // gestion de la colonisation
+                            if (action.realisation == "COLONISATION")
                             {
-                                move = (action.move != null) ? new Move { cost = action.move.cost, moveDetails = action.move.moveDetails } : null,
-                                ship = GameManager.Instance.CurrentShipToPlay
-                            });
+                                var test = action;
+                            }
                         }
                     }
                 }
