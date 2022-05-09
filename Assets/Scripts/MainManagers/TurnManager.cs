@@ -20,6 +20,8 @@ namespace Colfront.GamePlay
 
         public static TurnManager Instance { get; private set; }
 
+        private bool nonHumanAutoTestActive = false;
+
         private void Awake()
         {
             if (Instance == null) { Instance = this; }
@@ -57,37 +59,23 @@ namespace Colfront.GamePlay
                     // si c'est au joueur humain de jouer, on laisse la main. La fonction reprendra lorsque MainState sera AI
                     if (faction.playerTypeEnum == "HUMAN")
                     {
+                        // TODO : le mouvement du joueur est igoré à des fins de tests
+                        if (nonHumanAutoTestActive)
+                            continue;
+
                         GameManager.Instance.ToggleCamMovement(true);
                         MainState = TurnState.Human;
                         // positionnement de la caméra derrière le navire en cours
                         GameManager.Instance.CurrentShipToPlay = ServiceGame.GetHumanShip("Joueur Humain 1");
                         GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
-                        CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : { faction.name } - Navire : { GameManager.Instance.CurrentShipToPlay.name }";
+                        CurrentTurnText.text =
+                            $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {GameManager.Instance.CurrentShipToPlay.name}";
 
                         yield return new WaitUntil(() => MainState == TurnState.AI);
                         // au retour dans la méthode, on passe à la faction suivante
                     }
                     else
                     {
-                        // TODO : activer le navire fantômes
-                        if (faction.playerTypeEnum == "GHOST")
-                        {
-                            continue;
-
-                            //foreach (var turnAction in factionTurn.Value)
-                            //{
-                            //    if (turnAction.puncture != null)
-                            //    {
-                            //        ServiceGame.Puncture(new PunctureDTO
-                            //        {
-                            //            npcIds = turnAction.puncture.npcs,
-                            //            sourceShipId = ServiceGame.GetNpc(turnAction.puncture.npcs[0]).currentShip,
-                            //            targetShipId = turnAction.id
-                            //        });
-                            //    }
-                            //}
-                        }
-
                         // on laisse 1 seconde entre les navires
                         yield return new WaitForSeconds(1f);
 
@@ -101,8 +89,9 @@ namespace Colfront.GamePlay
                             // positionnement de la caméra derrière le navire en cours
                             GameManager.Instance.CurrentShipToPlay = ServiceGame.GetShip(action.id);
                             GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
-                            CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : { faction.name } - Navire : { GameManager.Instance.CurrentShipToPlay.name }";
-                            
+                            CurrentTurnText.text =
+                                $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {GameManager.Instance.CurrentShipToPlay.name}";
+
                             yield return new WaitForSeconds(0.1f);
 
                             // si c'est un navire IA, il effectue les actions prévues
@@ -115,32 +104,76 @@ namespace Colfront.GamePlay
                                 {
                                     // case physique d'arrivée et mouvement
                                     var physicalSquare = GameManager.Instance.GetPhysicalSquareFromSquare(square);
+									
                                     // orientation par rapport à la cible
                                     yield return GameManager.Instance.GetActualPlayinghipObject.transform.DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
+									
                                     // déplacement
                                     GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(physicalSquare.transform.position + (Vector3.down * 10), 1);
+									
                                     // déplacement de la caméra à la même vitesse
                                     yield return Camera.main.transform.DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1).WaitForCompletion();
+                                    yield return GameManager.Instance.GetActualPlayinghipObject.transform
+                                        .DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
+										
+                                    // déplacement
+                                    GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(
+                                        physicalSquare.transform.position + (Vector3.down * 10), 1);
+										
+                                    // déplacement de la caméra à la même vitesse
+                                    yield return Camera.main.transform
+                                        .DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1)
+                                        .WaitForCompletion();
 
                                     // application des effets sur le gréément
                                     GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
                                 }
+
                                 // s'il y a eu mouvement, on l'enregistre le mouvement
                                 if (movement.Any())
                                 {
-                                    ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay, movement.Last());
+                                    ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay,
+                                        movement.Last());
                                     ServiceGame.RegisterMovement(new MoveDTO
                                     {
-                                        move = (action.move != null) ? new Move { cost = action.move.cost, moveDetails = action.move.moveDetails } : null,
+                                        move = (action.move != null)
+                                            ? new Move {cost = action.move.cost, moveDetails = action.move.moveDetails}
+                                            : null,
                                         ship = GameManager.Instance.CurrentShipToPlay
                                     });
                                 }
                             }
 
-                            // gestion de la colonisation
-                            if (action.realisation == "COLONISATION")
+                            // gestion de la colonisation=======
+                            if (action.realisation == "COLONIZE")
                             {
-                                var test = action;
+                                // TODO : colonisation type avec 15 vivres, 15 matelots et 15 d'ordre en plus
+                                ServiceGame.ColonizeIsland(
+                                    new ColonisationDTO
+                                    {
+                                        ship = GameManager.Instance.CurrentShipToPlay,
+                                        island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
+                                            .coordinates),
+                                        food = 15,
+                                        // on prend 15 matelots au hasard
+                                        npcs = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay).Take(15)
+                                            .ToList(),
+                                        order = 15
+                                    });
+                            }
+
+                            // TODO : activer le navire fantômes
+                            if (action.solution == "PUNCTURE_CREW" && action.realisation == "GET_SAILORS")
+                            {
+                                //continue;
+
+                                if (action.puncture != null)
+                                    ServiceGame.Puncture(new PunctureDTO
+                                    {
+                                        npcIds = action.puncture.npcs,
+                                        sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip,
+                                        targetShipId = action.id
+                                    });
                             }
                         }
                     }
@@ -151,26 +184,32 @@ namespace Colfront.GamePlay
                 var targetColor = new Color(color.r, color.g, color.b, 0);
                 yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
 
-                // on se place en attente de fin de tour
-                MainState = TurnState.WaitForEndTurn;
-                //BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
-                yield return new WaitUntil(() => MainState == TurnState.ActionsFinished);
+                // gestion de la fin du tour
+                if (nonHumanAutoTestActive)
+                    MainState = TurnState.ActionsFinished;
+                else
+                {
+                    // on se place en attente de fin de tour
+                    MainState = TurnState.WaitForEndTurn;
+                    BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
+                    yield return new WaitUntil(() => MainState == TurnState.ActionsFinished);
+                }
 
                 CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Fin du tour";
                 targetColor = new Color(color.r, color.g, color.b, 0.8f);
                 BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
 
-                //MainState = TurnState.ActionsFinished;
+                CurrentTurnText.text = $"Nouveau tour dans 1 seconde...";
+                yield return new WaitForSeconds(1f);
+
                 GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetPlayingHumanShipObject);
                 GameManager.Instance.ToggleCamMovement(true);
 
-                // on générère un rapport de fin de tour
+                // on génère un rapport de fin de tour
                 var dto = ServiceGame.GetReport();
 
+                // fin du tour : envoi du rapport au back
                 ServiceGame.EndTurn();
-
-                //CurrentTurnText.text = $"Nouveau tour dans 1 seconde...";
-                //yield return new WaitForSeconds(1);
             }
         }
     }
