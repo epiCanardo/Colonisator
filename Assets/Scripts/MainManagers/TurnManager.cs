@@ -124,7 +124,7 @@ namespace Colfront.GamePlay
                                     GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
                                 }
 
-                                // s'il y a eu mouvement, on l'enregistre le mouvement
+                                // s'il y a eu mouvement, on enregistre le mouvement
                                 if (movement.Any())
                                 {
                                     ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay,
@@ -149,7 +149,7 @@ namespace Colfront.GamePlay
                                         ship = GameManager.Instance.CurrentShipToPlay,
                                         island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
                                             .coordinates),
-                                        food = 15,
+                                        food = -15,
                                         // on prend 15 matelots au hasard
                                         npcs = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay).Take(15)
                                             .ToList(),
@@ -169,6 +169,11 @@ namespace Colfront.GamePlay
                                         sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip,
                                         targetShipId = action.id
                                     });
+                            }
+
+                            if (faction.playerTypeEnum == "REBEL_SAILORS")
+                            {
+                                var test = action.id;
                             }
                         }
                     }

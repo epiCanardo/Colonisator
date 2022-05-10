@@ -142,8 +142,8 @@ namespace Colfront.GamePlay
             PanelActionSelectionShipName.text = ship.name;
             PanelActionSelectionFactionName.text = ServiceGame.GetFaction(ship).name;
             PanelActionSelectionCaptainName.text = ServiceGame.ShipCaptain(ship).fullName;
-            PanelActionSelectionCrewCount.text = ServiceGame.ShipSailors(ship).Count().ToString();
-            PanelActionSelectionOfficerCount.text = ServiceGame.ShipOfficiers(ship).Count().ToString();
+            //PanelActionSelectionCrewCount.text = ServiceGame.ShipSailors(ship).Count().ToString();
+            //PanelActionSelectionOfficerCount.text = ServiceGame.ShipOfficiers(ship).Count().ToString();
         }
 
         // Update is called once per frame
