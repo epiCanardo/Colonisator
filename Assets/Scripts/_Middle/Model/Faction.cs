@@ -14,10 +14,11 @@ namespace ColanderSource
         public IEnumerable<string> neutral { get; set; }
         public IEnumerable<string> enemies { get; set; }
 
-        public override bool Equals(object obj)
+        public bool Equals(Faction faction)
         {
-            return (obj as Faction).id.Equals(id);
+            return this.id.Equals(faction.id);
         }
+
     }
 
     public enum PlayerType

@@ -22,6 +22,8 @@ namespace Colfront.GamePlay
     {
         public Faction Faction { get; set; }
 
+        public bool IsPlaying { get; set; }
+
         public Texture2D Flag { get; set; }
 
         public List<Color32> Colors { get; set; }

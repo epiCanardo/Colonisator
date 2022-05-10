@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ColanderSource
 {
@@ -12,5 +14,18 @@ namespace ColanderSource
         public IEnumerable<Faction> factions { get; set; }
         public IEnumerable<Npc> nonPlayerCharacters { get; set; }
         public IEnumerable<Ship> ships { get; set; }
+
+        public string ToJson()
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(this, Formatting.Indented);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }

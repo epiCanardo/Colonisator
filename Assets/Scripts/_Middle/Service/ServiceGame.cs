@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor.SceneTemplate;
 
 namespace ColanderSource
 {
@@ -242,7 +243,7 @@ namespace ColanderSource
         /// <param name="ship">le navire</param>
         /// <returns></returns>
         public static Npc ShipCaptain(Ship ship)
-            => GetNpcs(ship).First(x => x.rankEnum.Equals("CAPTAIN") && x.currentShip.Equals(ship.id));
+            => GetNpcs(ship).First(x => x.rankEnum.Equals("CAPTAIN") && x.currentShip != null && x.currentShip.Equals(ship.id));
 
         /// <summary>
         /// la liste des officiers du navire
@@ -250,7 +251,7 @@ namespace ColanderSource
         /// <param name="ship">le navire</param>
         /// <returns></returns>
         public static IEnumerable<Npc> ShipOfficiers(Ship ship)
-            => GetNpcs(ship).Where(x => x.rankEnum.Equals("OFFICER") && x.currentShip.Equals(ship.id));
+            => GetNpcs(ship).Where(x => x.rankEnum.Equals("OFFICER") && x.currentShip != null && x.currentShip.Equals(ship.id));
 
         /// <summary>
         /// la liste des matelots du navire
@@ -258,7 +259,7 @@ namespace ColanderSource
         /// <param name="ship">le navire</param>
         /// <returns></returns>
         public static IEnumerable<Npc> ShipSailors(Ship ship)
-            => GetNpcs(ship).Where(x => x.rankEnum.Equals("SAILOR") && x.currentShip.Equals(ship.id));
+            => GetNpcs(ship).Where(x => x.rankEnum.Equals("SAILOR") && x.currentShip != null && x.currentShip.Equals(ship.id));
 
         /// <summary>
         /// donne le prochain mouvement de navire basé sur 2 D6
@@ -459,6 +460,12 @@ namespace ColanderSource
 
             // initialisation du rapport du tour à transmettre en fin de tour
             report = new ReportDTO<EventDTO>();
+
+            using (StreamWriter sW = new StreamWriter($"Reports/game_turn_{GetCurrentTurn.number}.json"))
+            {
+                sW.Write(game.ToJson());
+                sW.Close();
+            }
         }
 
         /// <summary>
@@ -469,7 +476,7 @@ namespace ColanderSource
             var client = new RestClient($"http://localhost:8080/games/{game.id}/report");
             var request = new RestRequest(Method.POST);
             request.AddJsonBody(report.ToJson());
-            client.Post<Game>(request);
+            client.Post<ReportDTO<EventDTO>>(request);
         }
     }
 }

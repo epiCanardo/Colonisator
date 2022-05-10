@@ -142,8 +142,8 @@ namespace Colfront.GamePlay
             PanelActionSelectionShipName.text = ship.name;
             PanelActionSelectionFactionName.text = ServiceGame.GetFaction(ship).name;
             PanelActionSelectionCaptainName.text = ServiceGame.ShipCaptain(ship).fullName;
-            //PanelActionSelectionCrewCount.text = ServiceGame.ShipSailors(ship).Count().ToString();
-            //PanelActionSelectionOfficerCount.text = ServiceGame.ShipOfficiers(ship).Count().ToString();
+            PanelActionSelectionCrewCount.text = ServiceGame.ShipSailors(ship).Count().ToString();
+            PanelActionSelectionOfficerCount.text = ServiceGame.ShipOfficiers(ship).Count().ToString();
         }
 
         // Update is called once per frame
@@ -293,7 +293,8 @@ namespace Colfront.GamePlay
                 var fM = new FactionManager
                 {
                     Faction = faction,
-                    Colors = new List<Color32> { Color.blue, Color.white, Color.red }
+                    Colors = new List<Color32> { Color.blue, Color.white, Color.red },
+                    IsPlaying = false
                 };
                 fM.SetFactionFlag(fM.Colors);
 
@@ -328,7 +329,7 @@ namespace Colfront.GamePlay
 
             // CMR
             Faction cmr = ServiceGame.Factions.First(x => x.playerTypeEnum == "REBEL_SAILORS");
-            SetFactionToManager(cmr, new List<Color32> { Color.blue, Color.black, Color.yellow });
+            SetFactionToManager(cmr, new List<Color32> { Color.blue, Color.black, Color.yellow }, false);
             ShipsInstanciation(cmr, cmrShipPrefabs);
 
             // Competitor
@@ -342,12 +343,13 @@ namespace Colfront.GamePlay
             ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
         }
 
-        private void SetFactionToManager(Faction faction, List<Color32> colors)
+        private void SetFactionToManager(Faction faction, List<Color32> colors, bool isPlaying = true)
         {
             var fM = new FactionManager
             {
                 Faction = faction,
-                Colors = colors
+                Colors = colors,
+                IsPlaying = isPlaying
             };
             fM.SetFactionFlag(fM.Colors);
             FactionsManager.Instance.Factions.Add(fM);

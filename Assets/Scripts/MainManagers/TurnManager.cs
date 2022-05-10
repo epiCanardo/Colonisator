@@ -22,6 +22,7 @@ namespace Colfront.GamePlay
 
         private bool nonHumanAutoTestActive = true;
 
+
         private void Awake()
         {
             if (Instance == null) { Instance = this; }
@@ -51,23 +52,21 @@ namespace Colfront.GamePlay
                 GameManager.Instance.ToggleSquares(false);
                 CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Début du tour";
 
-                // on commence par le joueur humain
-                // la fonction reprendra son exécution lorsque le statut de tour sera placé à AI
-                //GameManager.Instance.CurrentShipToPlay = ServiceGame.GetHumanShip("Joueur Humain 1");
-                //MainState = TurnState.Human;
-                //yield return new WaitUntil(() => MainState == TurnState.AI);
-
                 // pour chaque tour de faction, on déroule les actions
                 foreach (var factionTurn in ServiceGame.GetCurrentTurn.factionsAndShips)
                 {
                     Faction faction = ServiceGame.GetFactionFromId(factionTurn.Key);
 
+                    // si la faction ne joue pas, ça dégage
+                    var play = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction)).IsPlaying;
+                    if (!play)
+                        continue;
+
                     // si c'est au joueur humain de jouer, on laisse la main. La fonction reprendra lorsque MainState sera AI
                     if (faction.playerTypeEnum == "HUMAN")
                     {
-                        // TODO : le mouvement du joueur est igoré à des fins de tests
-                        if (nonHumanAutoTestActive)
-                            continue;
+                        //if (nonHumanAutoTestActive)
+                          //  continue;
 
                         GameManager.Instance.ToggleCamMovement(true);
                         MainState = TurnState.Human;
@@ -91,6 +90,11 @@ namespace Colfront.GamePlay
                         // application des actions prévues pour chaque navire de la faction
                         foreach (var action in factionTurn.Value)
                         {
+                            if (faction.playerTypeEnum == "GHOST")
+                            {
+                                var truc = action.puncture;
+                            }
+
                             // positionnement de la caméra derrière le navire en cours
                             GameManager.Instance.CurrentShipToPlay = ServiceGame.GetShip(action.id);
                             GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
@@ -161,6 +165,7 @@ namespace Colfront.GamePlay
                             if (action.solution == "PUNCTURE_CREW" && action.realisation == "GET_SAILORS")
                             {
                                 //continue;
+                                var sailors = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay);
 
                                 if (action.puncture != null)
                                     ServiceGame.Puncture(new PunctureDTO
