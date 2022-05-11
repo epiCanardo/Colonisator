@@ -90,13 +90,13 @@ namespace Colfront.GamePlay
                         // application des actions prévues pour chaque navire de la faction
                         foreach (var action in factionTurn.Value)
                         {
-                            if (faction.playerTypeEnum == "GHOST")
-                            {
-                                var truc = action.puncture;
-                            }
-
                             // positionnement de la caméra derrière le navire en cours
                             GameManager.Instance.CurrentShipToPlay = ServiceGame.GetShip(action.id);
+
+                            // mise à jour du navire
+                            GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().ship =
+                                GameManager.Instance.CurrentShipToPlay;
+
                             GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
                             CurrentTurnText.text =
                                 $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {GameManager.Instance.CurrentShipToPlay.name}";
@@ -123,10 +123,10 @@ namespace Colfront.GamePlay
                                     yield return Camera.main.transform
                                         .DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1)
                                         .WaitForCompletion();
-
-                                    // application des effets sur le gréément
-                                    GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
                                 }
+
+                                // application des effets sur le gréément
+                                GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
 
                                 // s'il y a eu mouvement, on enregistre le mouvement
                                 if (movement.Any())
@@ -140,40 +140,59 @@ namespace Colfront.GamePlay
                                             : null,
                                         ship = GameManager.Instance.CurrentShipToPlay
                                     });
+
+                                    if (action.move.cost > 0)
+                                        HistoricsManager.Instance.NewMessage($"[Tour {ServiceGame.GetCurrentTurn.number }] - [Faction : {faction.name}] - Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
+                                                                             $"a perdu {action.move.cost} de gréément suite à son mouvement ! " +
+                                                                             $"Reste : {GameManager.Instance.CurrentShipToPlay.shipBoard.rigging}");
                                 }
                             }
 
                             // gestion de la colonisation
                             if (action.realisation == "COLONIZE")
                             {
+                                Island island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
+                                    .coordinates);
+                                ColonisationDTO dtoColonisation = new ColonisationDTO
+                                {
+                                    ship = GameManager.Instance.CurrentShipToPlay,
+                                    island = island,
+                                    food = -15,
+                                    // on prend 15 matelots au hasard
+                                    npcs = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay).Take(15)
+                                        .ToList(),
+                                    order = 15
+                                };
+
                                 // TODO : colonisation type avec 15 vivres, 15 matelots et 15 d'ordre en plus
-                                ServiceGame.ColonizeIsland(
-                                    new ColonisationDTO
-                                    {
-                                        ship = GameManager.Instance.CurrentShipToPlay,
-                                        island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
-                                            .coordinates),
-                                        food = -15,
-                                        // on prend 15 matelots au hasard
-                                        npcs = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay).Take(15)
-                                            .ToList(),
-                                        order = 15
-                                    });
+                                ServiceGame.ColonizeIsland(dtoColonisation);
+
+                                HistoricsManager.Instance.NewMessage($"[Tour {ServiceGame.GetCurrentTurn.number }] - [Faction : {faction.name}] - " +
+                                                                     $"Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
+                                                                     $"a installé une nouvelle colonie sur {island.name} ! " +
+                                                                     $"{dtoColonisation.npcs} matelots ont été débarqués." +
+                                                                     $"Reste : {GameManager.Instance.CurrentShipToPlay.crew}");
                             }
 
-                            // TODO : activer le navire fantômes
                             if (action.solution == "PUNCTURE_CREW" && action.realisation == "GET_SAILORS")
                             {
-                                //continue;
                                 var sailors = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay);
 
                                 if (action.puncture != null)
-                                    ServiceGame.Puncture(new PunctureDTO
+                                {
+                                    PunctureDTO punctureDto = new PunctureDTO
                                     {
                                         npcIds = action.puncture.npcs,
                                         sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip,
                                         targetShipId = action.id
-                                    });
+                                    };
+                                    ServiceGame.Puncture(punctureDto);
+
+                                    HistoricsManager.Instance.NewMessage(
+                                        $"[Tour {ServiceGame.GetCurrentTurn.number}] - [Faction : {faction.name}] - " +
+                                        $"Le navire fantôme s'est renforcé avec {punctureDto.npcIds.Count} prélevés !' " +
+                                        $"Il paraît qu'ils n'ont pas souffert, mais les cris entendus à bord indiquent le contraire :|");
+                                }
                             }
 
                             if (faction.playerTypeEnum == "REBEL_SAILORS")
@@ -214,8 +233,15 @@ namespace Colfront.GamePlay
                 var dto = ServiceGame.GetReport();
 
                 // fin du tour : envoi du rapport au back
-                ServiceGame.EndTurn();
+                yield return StartCoroutine("EndTurn");
             }
+        }
+
+        IEnumerator EndTurn()
+        {
+            ServiceGame.EndTurn();
+            yield return null;
+
         }
     }
 
