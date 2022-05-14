@@ -16,7 +16,7 @@ namespace ColanderSource
         public int money { get; set; }
         public int size { get; set; }
         public int weight { get; set; }
-        public string sex { get; set; }
+        public string sexEnum { get; set; }
         public string fullName => $"{name} {surname}";
         public Dictionary<string, int> loyalties { get; set; }
         public string description { get; set; }

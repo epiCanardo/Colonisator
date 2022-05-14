@@ -18,8 +18,7 @@ namespace ColanderSource
             dodris = rnd.Next(0, 10000);
             food = rnd.Next(0, 100);
             order = 100;
-            defenceLevel = 1;
-            oilBarrels = rnd.Next(0, 100);
+            defenceLevel = 1;            
         }
     }
 }

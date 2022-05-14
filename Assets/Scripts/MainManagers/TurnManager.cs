@@ -170,8 +170,8 @@ namespace Colfront.GamePlay
                                 HistoricsManager.Instance.NewMessage($"[Tour {ServiceGame.GetCurrentTurn.number }] - [Faction : {faction.name}] - " +
                                                                      $"Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
                                                                      $"a installé une nouvelle colonie sur {island.name} ! " +
-                                                                     $"{dtoColonisation.npcs} matelots ont été débarqués." +
-                                                                     $"Reste : {GameManager.Instance.CurrentShipToPlay.crew}");
+                                                                     $"{dtoColonisation.npcs.Count} matelots ont été débarqués." +
+                                                                     $"Reste : {GameManager.Instance.CurrentShipToPlay.crew.Count}");
                             }
 
                             if (action.solution == "PUNCTURE_CREW" && action.realisation == "GET_SAILORS")

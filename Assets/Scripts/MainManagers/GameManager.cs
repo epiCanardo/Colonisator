@@ -329,7 +329,7 @@ namespace Colfront.GamePlay
 
             // CMR
             Faction cmr = ServiceGame.Factions.First(x => x.playerTypeEnum == "REBEL_SAILORS");
-            SetFactionToManager(cmr, new List<Color32> { Color.blue, Color.black, Color.yellow }, false);
+            SetFactionToManager(cmr, new List<Color32> { Color.blue, Color.black, Color.yellow });
             ShipsInstanciation(cmr, cmrShipPrefabs);
 
             // Competitor

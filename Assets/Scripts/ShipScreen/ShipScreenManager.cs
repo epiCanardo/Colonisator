@@ -101,8 +101,7 @@ namespace Colfront.GamePlay
                     FeedValue(Food, ship.shipBoard.food, 0, 100);
                     FeedValue(Order, ship.shipBoard.order, 0, 100);
                     FeedValue(Rigging, ship.shipBoard.rigging, 0, 100);
-                    FeedValue(Hull, ship.shipBoard.hull, 0, 100);
-                    //FeedValue(OilBarrels, ship.shipBoard.oilBarrels, 0, 100);
+                    FeedValue(Hull, ship.shipBoard.hull, 0, 100);                    
 
                     break;
                 case ScreenState.SailorsPage:

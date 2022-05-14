@@ -8,6 +8,5 @@
         public int dodris { get; set; }
         public int food { get; set; }
         public int order { get; set; }
-        public int oilBarrels { get; set; }       
     }
 }
