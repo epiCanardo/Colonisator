@@ -178,12 +178,12 @@ namespace Colfront.GamePlay
                             {
                                 var sailors = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay);
 
-                                if (action.puncture != null)
+                                if (action.puncture != null && action.puncture.npcs.Any())
                                 {
                                     PunctureDTO punctureDto = new PunctureDTO
                                     {
                                         npcIds = action.puncture.npcs,
-                                        sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip,
+                                        sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip, // todo prendre en compte 0 npc
                                         targetShipId = action.id
                                     };
                                     ServiceGame.Puncture(punctureDto);
