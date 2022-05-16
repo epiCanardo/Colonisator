@@ -305,12 +305,7 @@ namespace ColanderSource
                 island = dto.island,
                 landingNpcs = dto.npcs.Select(x => x.id).ToList(),
                 owner = dto.island.owner,
-                ship = dto.ship,
-                shipBoardDelta = new ShipBoard
-                {
-                    food = dto.food,
-                    order = dto.order
-                }
+                ship = dto.ship
             };
             report.events.Add(coloEvent);
         }

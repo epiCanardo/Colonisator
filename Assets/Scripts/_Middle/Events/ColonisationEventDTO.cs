@@ -14,8 +14,6 @@ namespace ColanderSource
         [JsonProperty(Order = 0)]
         public List<string> onBoardNpcs { get; set; }
         [JsonProperty(Order = 0)]
-        public ShipBoard shipBoardDelta { get; set;}
-        [JsonProperty(Order = 0)]
         public Island island { get; set; }
 
         public ColonisationEventDTO()
