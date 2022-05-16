@@ -143,7 +143,7 @@ namespace Colfront.GamePlay
 
                                     if (action.move.cost > 0)
                                         HistoricsManager.Instance.NewMessage($"[Tour {ServiceGame.GetCurrentTurn.number }] - [Faction : {faction.name}] - Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
-                                                                             $"a perdu {action.move.cost} de gréément suite à son mouvement ! " +
+                                                                             $"a bougé de {action.move.moveDetails.Sum(x=>x.Value)} cases et a perdu {action.move.cost} de gréément suite à son mouvement ! " +
                                                                              $"Reste : {GameManager.Instance.CurrentShipToPlay.shipBoard.rigging}");
                                 }
                             }
@@ -183,7 +183,8 @@ namespace Colfront.GamePlay
                                     PunctureDTO punctureDto = new PunctureDTO
                                     {
                                         npcIds = action.puncture.npcs,
-                                        sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip, // todo prendre en compte 0 npc
+                                        // on prends le navire du premier npc car ils sont tous du même navire
+                                        sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip,
                                         targetShipId = action.id
                                     };
                                     ServiceGame.Puncture(punctureDto);
