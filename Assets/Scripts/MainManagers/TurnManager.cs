@@ -6,6 +6,7 @@ using UnityEngine;
 using DG.Tweening;
 using System.Linq;
 using UnityEngine.UI;
+using System.Text;
 
 namespace Colfront.GamePlay
 {
@@ -89,21 +90,48 @@ namespace Colfront.GamePlay
 
                         // application des actions prévues pour chaque navire de la faction
                         foreach (var action in factionTurn.Value)
-                        {
-                            // positionnement de la caméra derrière le navire en cours
+                        {                            
                             GameManager.Instance.CurrentShipToPlay = ServiceGame.GetShip(action.id);
+                            ShipManager shipManager = GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>();
 
                             // mise à jour du navire
-                            GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().ship =
-                                GameManager.Instance.CurrentShipToPlay;
-
+                            shipManager.ship = GameManager.Instance.CurrentShipToPlay;
+                            // positionnement de la caméra derrière le navire en cours
                             GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
+
+                            // mise à jour du texte du tour en cours
                             CurrentTurnText.text =
                                 $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {GameManager.Instance.CurrentShipToPlay.name}";
 
                             yield return new WaitForSeconds(0.1f);
 
                             // si c'est un navire IA, il effectue les actions prévues
+
+                            // affichage de l'action prévue
+                            StringBuilder sb = new StringBuilder();
+
+                            if (action.objectiveRuleResult?.objectiveEnum == "COLONIZE_ISLAND")
+                            {
+                                sb.AppendLine("Je souhaite coloniser une île.");
+                                if (action.solutionRuleResult?.solutionEnum == "GO_TO_ISLAND")
+                                    sb.AppendLine($"Cible : {ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId).name}");
+                            }
+
+                            if (action.objectiveRuleResult?.objectiveEnum == "PUNCTURE_CREW")
+                            {
+                                sb.AppendLine("Je vais faucher de nouveaux matelots !!");
+                                if (action.realisationRuleResult?.realisationEnum == "GET_SAILORS")
+                                    sb.AppendLine($"{action.realisationRuleResult.npcs.Count}, ça fera l'affaire MOUHAHA");
+                            }
+
+                            if (action.objectiveRuleResult?.objectiveEnum == "GET_RIGGING")
+                            {
+                                sb.AppendLine("Je manque de gréément !");
+                                if (action.solutionRuleResult?.solutionEnum == "GO_TO_ISLAND")
+                                    sb.AppendLine($"Je vais aller en acheter sur : {ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId).name}");
+                            }
+
+                            shipManager.PrintActionText(sb.ToString());
 
                             // gestion du déplacement
                             Move actualMovement = action.realisationRuleResult?.move;
