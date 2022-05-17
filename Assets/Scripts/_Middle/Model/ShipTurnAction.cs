@@ -4,60 +4,28 @@ namespace ColanderSource
 {
     /// <summary>
     /// correspond aux actions à effectuer pour un navire en début de tour
-    /// l'id correspond à l'id du navire
+    /// id correspond à l'id du navire
     /// </summary>
     public class ShipTurnAction : ColanderSourceModel
     {
+        /// <summary>
+        /// l'indicateur de vent pour ce tour
+        /// </summary>
         public Wind wind { get; set; }
-        public Move move { get; set; }
 
         /// <summary>
-        /// dédié pour le navire fantôme, null pour les autres
+        /// la description de l'objectif de tour du navire
         /// </summary>
-        public Puncture puncture { get; set; }
+        public ObjectiveRuleResult objectiveRuleResult { get; set; }
 
         /// <summary>
-        /// l'objectif à réaliser
+        /// la description de la solution à appliquer pour atteindre l'objectif
         /// </summary>
-        public string objective { get; set; }
+        public SolutionRuleResult solutionRuleResult { get; set; }
 
         /// <summary>
-        /// la solution choisie pour réaliser cet objectif
+        /// la description de la réalisation de la solution à appliquer pour atteindre l'objectif
         /// </summary>
-        public string solution { get; set; }
-
-        /// <summary>
-        /// l'action concrète pour réaliaser l'objectif
-        /// </summary>
-        public string realisation { get; set; }
-    }
-
-    public enum Objective
-    {
-        // Objectifs liés à l'aspiration
-        COLONIZE_ISLAND,
-        // Vampiriser un navire (uniquement pour le navire fantôme)
-        PUNCTURE_CREW,
-        // Refourguer des matelots
-        REFOURGUER_CREW,
-        // Objectifs liés au besoin
-        GET_RIGGING
-    }
-
-    public enum Solution
-    {
-        GO_TO_ISLAND,
-        BUY,
-        PUNCTURE_CREW,
-        REFOURGUER_CREW,
-        COLONIZE
-    }
-
-    public enum Realisation
-    {
-        MOVE,
-        GET_SAILORS,
-        REFOURGUER_MATELOTS,
-        COLONIZE
+        public RealisationRuleResult realisationRuleResult { get; set; }
     }
 }

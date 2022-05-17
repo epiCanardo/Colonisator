@@ -319,14 +319,14 @@ namespace ColanderSource
             List<Square> result = new List<Square>();
 
             // si pas de mouvement, on retourne la liste vide
-            if (shipAction.move == null)
+            if (shipAction.realisationRuleResult.move == null)
                 return result;
 
             Ship ship = GetShip(shipAction.id);
             Square currentSquare = ship.coordinates;
 
             // on incrémente le mouvement avec la case de destination sur chaque direction
-            foreach (KeyValuePair<string, int> move in shipAction.move.moveDetails)
+            foreach (KeyValuePair<string, int> move in shipAction.realisationRuleResult.move.moveDetails)
             {
                 currentSquare = SingleDirectionShipMoving(currentSquare, move);
                 result.Add(currentSquare);

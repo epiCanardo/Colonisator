@@ -106,7 +106,8 @@ namespace Colfront.GamePlay
                             // si c'est un navire IA, il effectue les actions prévues
 
                             // gestion du déplacement
-                            if (action.move != null)
+                            Move actualMovement = action.realisationRuleResult?.move;
+                            if (actualMovement != null)
                             {
                                 var movement = ServiceGame.PrepareShipMovement(action);
                                 foreach (Square square in movement)
@@ -126,7 +127,7 @@ namespace Colfront.GamePlay
                                 }
 
                                 // application des effets sur le gréément
-                                GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
+                                GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= actualMovement.cost;
 
                                 // s'il y a eu mouvement, on enregistre le mouvement
                                 if (movement.Any())
@@ -135,21 +136,21 @@ namespace Colfront.GamePlay
                                         movement.Last());
                                     ServiceGame.RegisterMovement(new MoveDTO
                                     {
-                                        move = (action.move != null)
-                                            ? new Move {cost = action.move.cost, moveDetails = action.move.moveDetails}
+                                        move = (action.realisationRuleResult.move != null)
+                                            ? new Move {cost = actualMovement.cost, moveDetails = actualMovement.moveDetails}
                                             : null,
                                         ship = GameManager.Instance.CurrentShipToPlay
                                     });
 
-                                    if (action.move.cost > 0)
+                                    if (actualMovement.cost > 0)
                                         HistoricsManager.Instance.NewMessage($"[Tour {ServiceGame.GetCurrentTurn.number }] - [Faction : {faction.name}] - Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
-                                                                             $"a bougé de {action.move.moveDetails.Sum(x=>x.Value)} cases et a perdu {action.move.cost} de gréément suite à son mouvement ! " +
+                                                                             $"a bougé de {actualMovement.moveDetails.Sum(x=>x.Value)} cases et a perdu {actualMovement.cost} de gréément suite à son mouvement ! " +
                                                                              $"Reste : {GameManager.Instance.CurrentShipToPlay.shipBoard.rigging}");
                                 }
                             }
 
                             // gestion de la colonisation
-                            if (action.realisation == "COLONIZE")
+                            if (action.realisationRuleResult?.realisationEnum == "COLONIZE")
                             {
                                 Island island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
                                     .coordinates);
@@ -174,17 +175,19 @@ namespace Colfront.GamePlay
                                                                      $"Reste : {GameManager.Instance.CurrentShipToPlay.crew.Count}");
                             }
 
-                            if (action.solution == "PUNCTURE_CREW" && action.realisation == "GET_SAILORS")
+                            // gestion de la ponction
+                            if (action.solutionRuleResult?.solutionEnum == "PUNCTURE_CREW" && action.realisationRuleResult?.realisationEnum == "GET_SAILORS")
                             {
                                 var sailors = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay);
 
-                                if (action.puncture != null && action.puncture.npcs.Any())
+                                List<string> npcsToPunct = action.realisationRuleResult.npcs;
+                                if (npcsToPunct != null && npcsToPunct.Any())
                                 {
                                     PunctureDTO punctureDto = new PunctureDTO
                                     {
-                                        npcIds = action.puncture.npcs,
+                                        npcIds = npcsToPunct.ToList(),
                                         // on prends le navire du premier npc car ils sont tous du même navire
-                                        sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip,
+                                        sourceShipId = ServiceGame.GetNpc(npcsToPunct[0]).currentShip,
                                         targetShipId = action.id
                                     };
                                     ServiceGame.Puncture(punctureDto);
