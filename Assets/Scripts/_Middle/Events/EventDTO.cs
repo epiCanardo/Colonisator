@@ -15,12 +15,12 @@ namespace ColanderSource
         }
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum EventType
-    {
-        COLONISATION,
-        MOVE,
-        PUNCTURE,
-        NPC
-    }
+    //[JsonConverter(typeof(StringEnumConverter))]
+    //public enum EventType
+    //{
+    //    COLONISATION,
+    //    MOVE,
+    //    PUNCTURE,
+    //    NPC
+    //}
 }

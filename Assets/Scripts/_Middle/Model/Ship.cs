@@ -19,10 +19,7 @@ namespace ColanderSource
 
         public Ship()
         {
-            shipTypeEnum = "SLOOP";
-            name = "Le Pourceau Enragé";
             shipBoard = new ShipBoard();
-
         }
 
         public bool Equals(Ship other)

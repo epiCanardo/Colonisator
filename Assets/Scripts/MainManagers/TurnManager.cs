@@ -124,11 +124,55 @@ namespace Colfront.GamePlay
                                     sb.AppendLine($"{action.realisationRuleResult.npcs.Count}, ça fera l'affaire MOUHAHA");
                             }
 
+                            if (action.objectiveRuleResult?.objectiveEnum == "REFOURGUER_CREW")
+                            {
+                                sb.AppendLine("Je vais me débarasser de certains matelots !!");
+                                if (action.solutionRuleResult?.solutionEnum == "GO_TO_ISLAND")
+                                    sb.AppendLine($"Cap sur : {ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId).name}");
+                                else if (action.solutionRuleResult?.solutionEnum == "REFOURGUER_CREW")
+                                {
+                                    List<Npc> landingNpcs = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay).
+                                            OrderBy(x => x.loyalties[GameManager.Instance.CurrentShipToPlay.owner]).
+                                            Take(10).ToList();
+                                    TradeDTO trade = new TradeDTO
+                                    {
+                                        ship = GameManager.Instance.CurrentShipToPlay,
+                                        island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                        // TODO : on prend les 10 matelots les moins loyaux avec la faction du navire
+                                        landingNpcs = landingNpcs,                                       
+                                    };
+                                    ServiceGame.Trade(trade);
+                                    sb.AppendLine($"{landingNpcs.Count} ont été débarqués.");
+                                }                            
+                            }
+
                             if (action.objectiveRuleResult?.objectiveEnum == "GET_RIGGING")
                             {
                                 sb.AppendLine("Je manque de gréément !");
                                 if (action.solutionRuleResult?.solutionEnum == "GO_TO_ISLAND")
                                     sb.AppendLine($"Je vais aller en acheter sur : {ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId).name}");
+                                else if (action.solutionRuleResult?.solutionEnum == "BUY")
+                                {
+                                    // TODO : achat de rigging :
+                                    //  -> 1000 dodris forfaitaires quel que soit la quantité
+                                    //  -> quantité : pour atteindre les 100
+                                    TradeDTO trade = new TradeDTO
+                                    {
+                                        ship = GameManager.Instance.CurrentShipToPlay,
+                                        island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                        buys = new List<TradeLine>
+                                        {
+                                            { new TradeLine { ressource = "rigging", quantity = 100 - GameManager.Instance.CurrentShipToPlay.shipBoard.rigging, cost = 1000 } }
+                                        },
+                                        deltaStuff = new ShipBoard
+                                        {
+                                            rigging = 100 - GameManager.Instance.CurrentShipToPlay.shipBoard.rigging,
+                                            dodris = -1000
+                                        }
+                                    };
+                                    ServiceGame.Trade(trade);
+                                    sb.AppendLine($"Je viens d'acheter {trade.deltaStuff.rigging} de gréément, contre {-trade.deltaStuff.dodris} dodris.");
+                                }
                             }
 
                             shipManager.PrintActionText(sb.ToString());
@@ -225,11 +269,6 @@ namespace Colfront.GamePlay
                                         $"Le navire fantôme s'est renforcé avec {punctureDto.npcIds.Count} prélevés !' " +
                                         $"Il paraît qu'ils n'ont pas souffert, mais les cris entendus à bord indiquent le contraire :|");
                                 }
-                            }
-
-                            if (faction.playerTypeEnum == "REBEL_SAILORS")
-                            {
-                                var test = action.id;
                             }
                         }
                     }

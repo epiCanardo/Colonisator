@@ -424,6 +424,100 @@ namespace ColanderSource
         }
 
         /// <summary>
+        /// commerce entre un navire et une île
+        /// </summary>
+        /// <param name="trade"></param>
+        /// <param name="ship"></param>
+        /// <param name="island"></param>
+        /// <param name="landingNpcs"></param>
+        /// <param name="boardingNpcs"></param>
+        public static void Trade(TradeDTO tradeDTO)
+        {
+            // gestion de l'équipage à débarquer
+            if (tradeDTO.landingNpcs != null)
+                foreach (Npc npc in tradeDTO.landingNpcs)
+                {
+                    tradeDTO.ship.crew.Remove(npc.id);
+                    tradeDTO.island.npcs.Add(npc.id);
+                    npc.currentShip = null;
+                    npc.currentIsland = tradeDTO.island.id;
+                    npc.faction = GetFactionFromId(tradeDTO.island.owner).id;
+                }
+
+            // gestion de l'équipage à embarquer
+            if (tradeDTO.boardingNpcs != null)
+                foreach (Npc npc in tradeDTO.boardingNpcs)
+                {
+                    tradeDTO.ship.crew.Add(npc.id);
+                    tradeDTO.island.npcs.Remove(npc.id);
+                    npc.currentShip = tradeDTO.ship.id;
+                    npc.currentIsland = null;
+                    npc.faction = GetFactionFromId(tradeDTO.ship.owner).id;
+                }
+
+            // gestion des échanges de ressources
+            if (tradeDTO.deltaStuff != null)
+                tradeDTO.ship.shipBoard.UpdateBoardWithDelta(tradeDTO.deltaStuff);
+
+            // construction de l'event de type trade
+            TradeEventDTO tradeEvent = new TradeEventDTO
+            {
+                shipDelta = new Ship
+                {
+                    id = tradeDTO.ship.id,
+                    shipBoard = tradeDTO.ship.shipBoard
+                },
+                islandId = tradeDTO.island.id,
+                boardingNpcs = tradeDTO.boardingNpcs?.Select(x=>x.id).ToList(),
+                landingNpcs = tradeDTO.landingNpcs?.Select(x => x.id).ToList(),
+                buys = tradeDTO.buys,
+                sells = tradeDTO.sells
+            };
+
+            report.events.Add(tradeEvent);
+
+            //// si des npcs ont été débarqués
+            //if (tradeDTO.landingNpcs != null)
+            //    LandNpcs(tradeDTO.island, tradeDTO.landingNpcs);
+
+            //// si des npcs ont été embarqués
+            //if (tradeDTO.boardingNpcs != null)
+            //    BoardNpcs(tradeDTO.ship, tradeDTO.boardingNpcs);
+        }
+
+        public static void LandNpcs(Island targetIsland, List<Npc> npcs)
+        {
+            foreach (var npc in npcs)
+            {
+                npc.currentIsland = targetIsland.id;
+                npc.currentShip = null;
+                npc.faction = targetIsland.owner;
+
+                // report de la modification du npc
+                report.events.Add(new NpcEventDTO
+                {
+                    npc = npc
+                });
+            }
+        }
+
+        public static void BoardNpcs(Ship targetShip, List<Npc> npcs)
+        {
+            foreach (var npc in npcs)
+            {
+                npc.currentIsland = null;
+                npc.currentShip = targetShip.id;
+                npc.faction = targetShip.owner;
+
+                // report de la modification du npc
+                report.events.Add(new NpcEventDTO
+                {
+                    npc = npc
+                });
+            }
+        }
+
+        /// <summary>
         ///  récupère l'intégralité du tour courant
         /// </summary>
         public static CurrentTurn GetCurrentTurn => game.currentTurn;
