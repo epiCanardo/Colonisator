@@ -23,7 +23,7 @@ namespace ColanderSource
         /// <summary>
         /// la quantité concernée
         /// </summary>
-        public int quantiy { get; set; }
+        public int quantity { get; set; }
 
         /// <summary>
         /// la mouvement concerné

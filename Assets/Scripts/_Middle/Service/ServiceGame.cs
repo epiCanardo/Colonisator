@@ -70,6 +70,15 @@ namespace ColanderSource
         /// <returns></returns>
         public static IEnumerable<Faction> Factions => game.factions;
 
+        /// <summary>
+        /// donne le boss d'une faction
+        /// </summary>
+        /// <param name="factionId">l'id de la faction</param>
+        /// <returns></returns>
+        public static Npc FactionBoss(string factionId)
+        {
+            return Npcs.FirstOrDefault(x => x.rankEnum.Equals("BOSS") && x.faction.Equals(factionId));
+        }
 
         /// <summary>
         /// retourne une Faction selon son nom
@@ -242,7 +251,7 @@ namespace ColanderSource
         /// <param name="ship">le navire</param>
         /// <returns></returns>
         public static Npc ShipCaptain(Ship ship)
-            => GetNpcs(ship).First(x => x.rankEnum.Equals("CAPTAIN") && x.currentShip != null && x.currentShip.Equals(ship.id));
+            => GetNpcs(ship).First(x => (x.rankEnum.Equals("CAPTAIN") || x.rankEnum.Equals("BOSS")) && x.currentShip != null && x.currentShip.Equals(ship.id));
 
         /// <summary>
         /// la liste des officiers du navire
