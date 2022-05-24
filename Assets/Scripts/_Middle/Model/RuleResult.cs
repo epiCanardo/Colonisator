@@ -62,7 +62,7 @@ namespace ColanderSource
         public string objectiveEnum { get; set; }
     }
 
-    public enum Objective
+    public enum ObjectivesEnum
     {
         // Objectifs liés à l'aspiration
         COLONIZE_ISLAND,
@@ -70,11 +70,11 @@ namespace ColanderSource
         PUNCTURE_CREW,
         // Refourguer des matelots
         REFOURGUER_CREW,
-        // Objectifs liés au besoin
+        // Objectifs liés au besoin de gréément
         GET_RIGGING
     }
 
-    public enum Solution
+    public enum SolutionsEnum
     {
         GO_TO_ISLAND,
         BUY,
@@ -83,7 +83,7 @@ namespace ColanderSource
         COLONIZE
     }
 
-    public enum Realisation
+    public enum RealisationsEnum
     {
         MOVE,
         GET_SAILORS,

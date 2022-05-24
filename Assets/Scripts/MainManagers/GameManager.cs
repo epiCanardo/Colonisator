@@ -107,12 +107,18 @@ namespace Colfront.GamePlay
         // Start is called before the first frame update
         void Start()
         {
-            //foreach (var audio in GetComponents<AudioSource>())
-            //{
-            //    audio.Play();
-            //}
+            // définition des vecteurs de position et d'angle pour la camera principale
             camOffSet = new Vector3(0, 400, -260);
             camEulerAngles = new Vector3(60, 0, 0);
+
+            // la map doit être carrée (le plateau de jeu est un carré)
+            // le carré est de 0.8 * le bord le plus petit de côté
+            float shorterBounds = 0.8f * Mathf.Min(Screen.width, Screen.height);
+            float xAnchor = 0.5f * (Screen.width - shorterBounds);
+            float yAnchor = 0.5f * (Screen.height - shorterBounds);
+            //FullMap.anchorMin = FullMap.anchorMax = new Vector2(xAnchor, yAnchor);
+
+            FullMap.sizeDelta = new Vector2(2000, 2000);
         }
 
         // On lance la game !
@@ -275,19 +281,7 @@ namespace Colfront.GamePlay
 
         public void PlayerSpawn()
         {
-            //// postionnement du navire principal du joueur au port de Sundercity
-            //var sundercity = game.GetIsland("Sundercity");
-            //var square = squares.First(x => x.coordinates.x == sundercity.harbourCoordinates.x && x.coordinates.y == sundercity.harbourCoordinates.y);
-            //var startSquare = square.gameObject;
-            //playerShip = Instantiate(mainShipPrefab, startSquare.transform.position + new Vector3(0, -10f, 0), startSquare.transform.rotation);
-
-            //// cr�ation du navire. TODO : vient du back !
-            //playerShip.GetComponent<ShipManager>().ship = new Ship();
-
-            //// positionnement des coordonn�es du navire
-            //playerShip.GetComponent<ShipManager>().ship.coordinates = square.coordinates;
-
-            // récupération des joueurs humains
+            // récupération du joueur humain
             foreach (var faction in ServiceGame.Factions.Where(x => x.playerTypeEnum == "HUMAN"))
             {
                 var fM = new FactionManager

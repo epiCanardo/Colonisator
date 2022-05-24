@@ -15887,10 +15887,10 @@ RectTransform:
   m_Father: {fileID: 1204128665}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 25, y: -25}
-  m_SizeDelta: {x: -250, y: -250}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 3517.1, y: 2937}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &619234099
 MonoBehaviour:
@@ -19572,8 +19572,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1790478427}
   m_HandleRect: {fileID: 1790478426}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -28546,7 +28546,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291134868}
   m_HandleRect: {fileID: 1291134867}
   m_Direction: 2
-  m_Value: 1.0000001
+  m_Value: 1.0000002
   m_Size: 0.4907494
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -43493,7 +43493,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
