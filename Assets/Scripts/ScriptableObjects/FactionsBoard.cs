@@ -6,31 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Colfront.GamePlay
 {
     public class FactionsBoard : MonoBehaviour
     {
-        public GameObject grid;
-        public Transform cell;
+        public GameObject parent;
+        public Transform factionContentLine;
 
         public void ShowBoard()
-        {
-            string factionName = string.Empty;
-            
-            foreach (Faction faction in ServiceGame.Factions)
+        {           
+            foreach (Faction faction in ServiceGame.Factions.OrderBy(x=>x.name))
             {
+                var factionLine = Instantiate(factionContentLine, parent.transform);
 
-                var factionNameObject = Instantiate(cell, grid.transform);
-                factionNameObject.Find("Text").GetComponent<TextMeshProUGUI>().text = faction.longName;
+                factionLine.Find("FactionCell").Find("Text").GetComponent<TextMeshProUGUI>().text = faction.longName;
+                factionLine.Find("FactionCell").Find("Flag").GetComponent<RawImage>().texture = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction)).Flag;
 
-                var bossNameObject = Instantiate(cell, grid.transform);
                 Npc factionBoss = ServiceGame.FactionBoss(faction.id);
-                bossNameObject.Find("Text").GetComponent<TextMeshProUGUI>().text = factionBoss?.fullName;
+                factionLine.Find("BossNameCell").Find("Text").GetComponent<TextMeshProUGUI>().text = factionBoss?.fullName;
 
                 int dodris = factionBoss.money;
-                var dodrisObject = Instantiate(cell, grid.transform);
-                dodrisObject.Find("Text").GetComponent<TextMeshProUGUI>().text = Convert.ToString(dodris);
+                factionLine.Find("BossDodrisCell").Find("Text").GetComponent<TextMeshProUGUI>().text = Convert.ToString(dodris);
             }
         }
     }
