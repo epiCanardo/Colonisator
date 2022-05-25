@@ -28,7 +28,7 @@ namespace Colfront.GamePlay
         {
             showed = true;
             panel = Instantiate(panelPrefab, canvas);
-            panel.GetComponent<FactionsBoard>().ShowBoard();
+            panel.GetComponent<FactionsBoard>().ShowBoard(x=>x.longName);
         }
 
         private void Update()

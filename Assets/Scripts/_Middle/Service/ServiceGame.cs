@@ -81,6 +81,16 @@ namespace ColanderSource
         }
 
         /// <summary>
+        /// donne la population de la faction
+        /// </summary>
+        /// <param name="factionId"></param>
+        /// <returns></returns>
+        public static int FactionPopulation(string factionId)
+        {
+            return Npcs.Count(x => x.faction!= null && x.faction.Equals(factionId));
+        }
+
+        /// <summary>
         /// retourne une Faction selon son nom
         /// </summary>
         /// <param name="playerType"></param>

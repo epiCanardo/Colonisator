@@ -44,10 +44,12 @@ namespace Colfront.GamePlay
 
         public IEnumerator StartTurn()
         {
-            while (ServiceGame.GetCurrentTurn.number < 1000)
+            for (int i = 0; i < 1000; i++)
             {
+                //while (ServiceGame.GetCurrentTurn.number < 1000)
+            //{
                 // démarrage du tour
-                ServiceGame.StartNewTurn();
+                yield return StartCoroutine("NewTurn");
 
                 MainState = TurnState.ActionsStarted;
                 GameManager.Instance.ToggleSquares(false);
@@ -317,24 +319,37 @@ namespace Colfront.GamePlay
                 BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
 
                 CurrentTurnText.text = $"Nouveau tour dans 1 seconde...";
-                yield return new WaitForSeconds(1f);
+                //yield return new WaitForSeconds(1f);
 
                 GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetPlayingHumanShipObject);
                 GameManager.Instance.ToggleCamMovement(true);
 
                 // on génère un rapport de fin de tour
-                var dto = ServiceGame.GetReport();
+                yield return StartCoroutine("GenerateReport");
 
                 // fin du tour : envoi du rapport au back
                 yield return StartCoroutine("EndTurn");
+
+                //StartTurn();
             }
+        }
+
+        IEnumerator NewTurn()
+        {
+            ServiceGame.StartNewTurn();
+            yield return null;
+        }
+
+        IEnumerable GenerateReport()
+        {
+            ServiceGame.GetReport();
+            yield return null;
         }
 
         IEnumerator EndTurn()
         {
             ServiceGame.EndTurn();
             yield return null;
-
         }
     }
 
