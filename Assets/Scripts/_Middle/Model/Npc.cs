@@ -13,10 +13,69 @@ namespace ColanderSource
         public string rankEnum { get; set; }
         public int age { get; set; }
         public int healthState { get; set; }
+
+        public string EtatSante
+        {
+            get
+            {
+                if (healthState > 75)
+                    return "Excellent";
+                else if (healthState > 50)
+                    return "Correct";
+                else if (healthState > 25)
+                    return "Mauvais";
+                else if (healthState > 0)
+                    return "Exécrable";
+                return "Mort";
+            }
+        }
+
         public int money { get; set; }
         public int size { get; set; }
         public int weight { get; set; }
         public string sexEnum { get; set; }
+
+        public string Rang
+        {
+            get
+            {
+                switch (rankEnum)
+                {
+                    case "NONE":
+                        return "Aucun";
+                        break;
+                    case "PENDING":
+                        return "En attente de libération";
+                        break;
+                    case "SAILOR":
+                        return "Marin";
+                        break;
+                    case "OFFICER":
+                        return "Officier de marine";
+                        break;
+                    case "GOVERNOR":
+                        return "Gouverneur d'île";
+                        break;
+                    case "CAPTAIN":
+                        return "Capitaine de navire";
+                        break;
+                    case "BOSS":
+                        return "Boss de faction";
+                        break;
+                    default:
+                        return "Pas de nom";
+                        break;
+                }
+            }
+        }
+
+        public string Sexe
+        {
+            get
+            {
+                return sexEnum.Equals("M") ? "Homme" : "Femme";
+            }
+        }
         public string fullName => $"{name} {surname}";
         public Dictionary<string, int> loyalties { get; set; }
         public string description { get; set; }

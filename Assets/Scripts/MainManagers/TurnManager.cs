@@ -21,7 +21,7 @@ namespace Colfront.GamePlay
 
         public static TurnManager Instance { get; private set; }
 
-        private bool nonHumanAutoTestActive = true;
+        private bool nonHumanAutoTestActive = false;
 
 
         private void Awake()
@@ -104,7 +104,7 @@ namespace Colfront.GamePlay
 
                             // mise à jour du texte du tour en cours
                             CurrentTurnText.text =
-                                $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {shipManager.ship}";
+                                $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {shipManager.ship.name}";
 
                             yield return new WaitForSeconds(0.1f);
 

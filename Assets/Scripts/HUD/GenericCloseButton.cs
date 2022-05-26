@@ -31,7 +31,9 @@ namespace Colfront.GamePlay
         public void OnPointerClick(PointerEventData eventData)
         {
             text.color = color;
-            objectToClose.SetActive(false);
+            //objectToClose.SetActive(false);
+            Destroy(objectToClose);
+            GameManager.Instance.CurrentOpenedBoard -= 1;
         }
     }
 }

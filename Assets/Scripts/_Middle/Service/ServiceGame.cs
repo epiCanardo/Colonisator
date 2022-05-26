@@ -91,6 +91,26 @@ namespace ColanderSource
         }
 
         /// <summary>
+        /// donne les navires possédés par la faction
+        /// </summary>
+        /// <param name="factionId"></param>
+        /// <returns></returns>
+        public static IEnumerable<Ship> FactionOwnedShips(string factionId)
+        {
+            return Ships.Where(x => x.owner != null && x.owner.Equals(factionId));
+        }
+
+        /// <summary>
+        /// donne les îles possédées par la faction
+        /// </summary>
+        /// <param name="factionId"></param>
+        /// <returns></returns>
+        public static IEnumerable<Island> FactionOwnedIslands(string factionId)
+        {
+            return Islands.Where(x => x.owner != null && x.owner.Equals(factionId));
+        }
+
+        /// <summary>
         /// retourne une Faction selon son nom
         /// </summary>
         /// <param name="playerType"></param>

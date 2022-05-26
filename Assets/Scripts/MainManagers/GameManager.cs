@@ -11,6 +11,8 @@ namespace Colfront.GamePlay
 {
     public class GameManager : MonoBehaviour
     {
+        public Canvas canvas;
+        
         [Header("Gestion des cases")]
         public GameObject squarePrefab;
         public GameObject harborSquarePrefab;
@@ -48,6 +50,8 @@ namespace Colfront.GamePlay
         [Header("Map")]
         public RectTransform FullMap;
 
+        public GameObject PortraitFlagTextile;
+
         // l'instance du navire du joueur
         private List<GameObject> instanciedShipObjects = new List<GameObject>();
         //private GameObject playerShip;
@@ -71,6 +75,8 @@ namespace Colfront.GamePlay
         public Vector3 camEulerAngles { get; set; }
 
         public Ship CurrentShipToPlay { get; set; }
+
+        public int CurrentOpenedBoard { get; set; }
 
         // récupère l'objet instancié correspondant au navire en cours
         public GameObject GetActualPlayinghipObject => instanciedShipObjects.First(x => x.GetComponent<ShipManager>().ship.Equals(CurrentShipToPlay));
