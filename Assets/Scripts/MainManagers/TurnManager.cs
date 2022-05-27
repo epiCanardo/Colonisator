@@ -16,7 +16,7 @@ namespace Colfront.GamePlay
         public TextMeshProUGUI CurrentTurnText;
 
         [Header("Bouton de fin de tour")]
-        public GameObject BackgroundColor;
+       // public GameObject BackgroundColor;
         public GameObject Button;
 
         public static TurnManager Instance { get; private set; }
@@ -299,9 +299,11 @@ namespace Colfront.GamePlay
                 }
 
                 // à la fin du tour, on revient par défaut sur le navire du joueur
-                var color = BackgroundColor.GetComponent<Image>().color;
-                var targetColor = new Color(color.r, color.g, color.b, 0);
-                yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
+                // var color = BackgroundColor.GetComponent<Image>().color;
+                // var targetColor = new Color(color.r, color.g, color.b, 0);
+                // yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
+
+                Button.GetComponent<Image>().color = new Color(0, 0, 0, 1);
 
                 // gestion de la fin du tour
                 if (nonHumanAutoTestActive)
@@ -310,13 +312,14 @@ namespace Colfront.GamePlay
                 {
                     // on se place en attente de fin de tour
                     MainState = TurnState.WaitForEndTurn;
-                    BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
+                   // BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
                     yield return new WaitUntil(() => MainState == TurnState.ActionsFinished);
                 }
 
+                Button.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                 CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Fin du tour";
-                targetColor = new Color(color.r, color.g, color.b, 0.8f);
-                BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
+              //  targetColor = new Color(color.r, color.g, color.b, 0.8f);
+              //  BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
 
                 CurrentTurnText.text = $"Nouveau tour dans 1 seconde...";
                 //yield return new WaitForSeconds(1f);
