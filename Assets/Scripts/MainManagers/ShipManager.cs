@@ -124,6 +124,7 @@ namespace Colfront.GamePlay
         public void PrintActionText(string text)
         { 
             ActionText.text = text;
+            ActionText.transform.SetAsLastSibling();
         }
     }
 }

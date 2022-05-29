@@ -10,6 +10,11 @@ namespace Colfront.GamePlay
     {
         public Transform target;
         protected Transform targetInstance;
+        private Color sourceColor;
+        void Start()
+        {
+            sourceColor = GetComponent<TextMeshProUGUI>().color;
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -18,7 +23,7 @@ namespace Colfront.GamePlay
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            GetComponent<TextMeshProUGUI>().color = Color.black;
+            GetComponent<TextMeshProUGUI>().color = sourceColor;
         }
 
         /// <summary>

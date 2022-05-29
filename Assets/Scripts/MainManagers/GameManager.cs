@@ -166,8 +166,8 @@ namespace Colfront.GamePlay
                 ToggleMap(!FullMap.gameObject.activeSelf);
 
             // en cas de ragequit !
-            if (Input.GetKeyDown(KeyCode.Escape))
-                Application.Quit();
+            //if (Input.GetKeyDown(KeyCode.Escape))
+               // Application.Quit();
 
             // pas de contrôle en cas de tour IA
             if (TurnManager.Instance.MainState == TurnState.AI)
