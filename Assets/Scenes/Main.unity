@@ -7039,6 +7039,7 @@ MonoBehaviour:
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
+  sundercityShipPrefab: {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   piofoShipPrefab: {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   cplShipPrefabs:
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}

@@ -328,7 +328,9 @@ namespace Colfront.GamePlay
                 GameManager.Instance.ToggleCamMovement(true);
 
                 // on génère un rapport de fin de tour
-                yield return StartCoroutine("GenerateReport");
+                //GenerateReport();
+                ServiceGame.GetReport();
+                //yield return StartCoroutine("GenerateReport");
 
                 // fin du tour : envoi du rapport au back
                 yield return StartCoroutine("EndTurn");

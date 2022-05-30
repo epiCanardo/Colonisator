@@ -10,11 +10,6 @@ namespace ColanderSource
     public class ShipBoard : Board
     {
         /// <summary>
-        /// le gréément (mâts, voiles, cordages..)
-        /// </summary>
-        public int rigging { get; set; }
-
-        /// <summary>
         /// la coque
         /// </summary>
         public int hull { get; set; }

@@ -31,6 +31,7 @@ namespace Colfront.GamePlay
         [Header("Gestion des navires")]
         public GameObject mainShipPrefab;
         public GameObject[] cuiiShipPrefabs;
+        public GameObject sundercityShipPrefab;
         public GameObject piofoShipPrefab;
         public GameObject[] cplShipPrefabs;
         public GameObject missytownShipPrefab;
@@ -309,22 +310,27 @@ namespace Colfront.GamePlay
         {
             // CUII
             Faction cuii = ServiceGame.Factions.First(x => x.playerTypeEnum == "NEUTRAL");
-            SetFactionToManager(cuii, new List<Color32> { Color.yellow, Color.black, Color.white }, false);
+            SetFactionToManager(cuii, new List<Color32> { Color.yellow, Color.black, Color.white });
             ShipsInstanciation(cuii, cuiiShipPrefabs);
+
+            // Sundercity
+            Faction sundercity = ServiceGame.Factions.First(x => x.playerTypeEnum == "TOWN");
+            SetFactionToManager(sundercity, new List<Color32> { Color.cyan, Color.black, Color.white });
+            ShipsInstanciation(sundercity, new GameObject[1] { sundercityShipPrefab });
 
             // Piofo
             Faction piofo = ServiceGame.Factions.First(x => x.playerTypeEnum == "PENITENTIARY");
-            SetFactionToManager(piofo, new List<Color32> { Color.red, Color.white, Color.black }, false);
+            SetFactionToManager(piofo, new List<Color32> { Color.red, Color.white, Color.black });
             ShipsInstanciation(piofo, new GameObject[1] { piofoShipPrefab });
 
             // Missytown
             Faction missytown = ServiceGame.Factions.First(x => x.playerTypeEnum == "PRISON");
-            SetFactionToManager(missytown, new List<Color32> { Color.green, Color.black, Color.gray }, false);
+            SetFactionToManager(missytown, new List<Color32> { Color.green, Color.black, Color.gray });
             ShipsInstanciation(missytown, new GameObject[1] { missytownShipPrefab });
 
             // CPL
             Faction cpl = ServiceGame.Factions.First(x => x.playerTypeEnum == "PIRATE");
-            SetFactionToManager(cpl, new List<Color32> { Color.black, Color.red, Color.white }, false);
+            SetFactionToManager(cpl, new List<Color32> { Color.black, Color.red, Color.white });
             ShipsInstanciation(cpl, cplShipPrefabs);
 
             // CMR
@@ -339,7 +345,7 @@ namespace Colfront.GamePlay
 
             // Ghost
             Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == "GHOST");
-            SetFactionToManager(ghost, new List<Color32> { Color.gray, Color.red, Color.white }, false);
+            SetFactionToManager(ghost, new List<Color32> { Color.gray, Color.red, Color.white });
             ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
         }
 

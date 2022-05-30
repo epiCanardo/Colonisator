@@ -17,6 +17,7 @@ namespace ColanderSource
         {
             dodris = rnd.Next(0, 10000);
             food = rnd.Next(0, 100);
+            rigging = rnd.Next(0, 100);
             order = 100;
             defenceLevel = 1;            
         }

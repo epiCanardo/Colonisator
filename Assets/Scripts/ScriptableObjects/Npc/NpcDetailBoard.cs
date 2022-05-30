@@ -23,7 +23,7 @@ namespace Colfront.GamePlay
 
         void Start()
         {
-            title.text = $"Détail de {npc.fullName}";
+            title.text = $"Détail de {npc.fullName}, {npc.description}";
 
             MeshRenderer rend = GameManager.Instance.PortraitFlagTextile.GetComponent<MeshRenderer>();
             rend.material.SetTexture("flagTexture", FactionsManager.Instance.Factions.First(x => x.Faction.id.Equals(npc.faction)).Flag);

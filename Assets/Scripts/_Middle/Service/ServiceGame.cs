@@ -446,6 +446,9 @@ namespace ColanderSource
                 // il est mort !
                 npc.healthState = 0;
 
+                // changement de faction
+                npc.faction = targetShip.owner;
+
                 // report de la modification du npc
                 report.events.Add(new NpcEventDTO
                 {
