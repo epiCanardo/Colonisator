@@ -63,7 +63,7 @@ namespace ColanderSource
                         return "Boss de faction";
                         break;
                     default:
-                        return "Pas de nom";
+                        return "Pas de rang";
                         break;
                 }
             }
@@ -80,9 +80,57 @@ namespace ColanderSource
         public Dictionary<string, int> loyalties { get; set; }
         public string description { get; set; }
         public string aspirationEnum { get; set; }
+
+        public string Aspiration
+        {
+            get
+            {
+                switch (aspirationEnum)
+                {
+                    case "NONE":
+                        return "Aucune";
+                        break;
+                    case "MONEY":
+                        return "Être riche !";
+                        break;
+                    case "COLONIZATION":
+                        return "Coloniser toutes les îles !";
+                        break;
+                    case "FACTION":
+                        return "Être le boss de ma faction !";
+                        break;
+                    case "ECOLO":
+                        return "Être écolo";
+                        break;
+                    case "ALTERMONDIALIST":
+                        return "Combattre le système !";
+                        break;
+                    case "PEACE":
+                        return "Oeuvrer pour la paix !";
+                        break;
+                    default:
+                        return "BALEK";
+                        break;
+                }
+            }
+        }
+
         public Characteristics characteristics { get; set; }
         public string currentIsland { get; set; }
         public string currentShip { get; set; }
+
+        public string Localisation
+        {
+            get
+            {
+                if (currentIsland != null)
+                    return ServiceGame.GetIslandFromId(currentIsland).name;
+                if (currentShip != null)
+                    return ServiceGame.GetShip(currentShip).name;
+                return "Porté disparu";
+            }
+        }
+
 
         public override string ToString()
         {
