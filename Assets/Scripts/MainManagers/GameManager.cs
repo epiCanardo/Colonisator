@@ -289,21 +289,23 @@ namespace Colfront.GamePlay
         public void PlayerSpawn()
         {
             // récupération du joueur humain
-            foreach (var faction in ServiceGame.Factions.Where(x => x.playerTypeEnum == "HUMAN"))
-            {
-                var fM = new FactionManager
-                {
-                    Faction = faction,
-                    Colors = new List<Color32> { Color.blue, Color.white, Color.red },
-                    IsPlaying = false
-                };
-                fM.SetFactionFlag(fM.Colors);
+            //foreach (var faction in ServiceGame.Factions.Where(x => x.playerTypeEnum == "HUMAN"))
+            //{
+            //    var fM = new FactionManager
+            //    {
+            //        Faction = faction,
+            //        Colors = new List<Color32> { Color.blue, Color.white, Color.red },
+            //        IsPlaying = false
+            //    };
+            //    fM.SetFactionFlag(fM.Colors);
 
-                // ajout du faction mananger à la liste
-                FactionsManager.Instance.Factions.Add(fM);
+            //    // ajout du faction mananger à la liste
+            //    FactionsManager.Instance.Factions.Add(fM);
 
-                ShipsInstanciation(faction, new GameObject[1] { mainShipPrefab });
-            }
+                Faction human = ServiceGame.Factions.First(x => x.playerTypeEnum == "HUMAN");
+                SetFactionToManager(human, new List<Color32> { Color.blue, Color.white, Color.red });
+                ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
+           // }
         }
 
         public void NpcsSpawn()

@@ -15,9 +15,9 @@ namespace Colfront.GamePlay
         [Header("Affichage du tour de jeu")]
         public TextMeshProUGUI CurrentTurnText;
 
-        [Header("Bouton de fin de tour")]
-       // public GameObject BackgroundColor;
-        public GameObject Button;
+        [Header("Boutons de la barre d'action")]
+        public GameObject EndTurnButton;
+        public GameObject MoveShipButton;
 
         public static TurnManager Instance { get; private set; }
 
@@ -33,13 +33,13 @@ namespace Colfront.GamePlay
 
         public void BounceButton()
         {
-            Button.GetComponent<RawImage>().transform.DOScale(0.5f, 1).SetLoops(-1, LoopType.Yoyo);
+            EndTurnButton.GetComponent<RawImage>().transform.DOScale(0.5f, 1).SetLoops(-1, LoopType.Yoyo);
         }
 
         public void StopBouncing()
         {
-            Button.GetComponent<RawImage>().transform.DOKill();
-            Button.GetComponent<RawImage>().transform.localScale = Vector3.one;
+            EndTurnButton.GetComponent<RawImage>().transform.DOKill();
+            EndTurnButton.GetComponent<RawImage>().transform.localScale = Vector3.one;
         }
 
         public IEnumerator StartTurn()
@@ -79,7 +79,11 @@ namespace Colfront.GamePlay
                         CurrentTurnText.text =
                             $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {GameManager.Instance.CurrentShipToPlay.name}";
 
+                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+
                         yield return new WaitUntil(() => MainState == TurnState.AI);
+
+                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                     }
                     else
                     {
@@ -303,7 +307,7 @@ namespace Colfront.GamePlay
                 // var targetColor = new Color(color.r, color.g, color.b, 0);
                 // yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
 
-                Button.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+                EndTurnButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
 
                 // gestion de la fin du tour
                 if (nonHumanAutoTestActive)
@@ -316,7 +320,7 @@ namespace Colfront.GamePlay
                     yield return new WaitUntil(() => MainState == TurnState.ActionsFinished);
                 }
 
-                Button.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
+                EndTurnButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                 CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Fin du tour";
               //  targetColor = new Color(color.r, color.g, color.b, 0.8f);
               //  BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
@@ -342,12 +346,6 @@ namespace Colfront.GamePlay
         IEnumerator NewTurn()
         {
             ServiceGame.StartNewTurn();
-            yield return null;
-        }
-
-        IEnumerable GenerateReport()
-        {
-            ServiceGame.GetReport();
             yield return null;
         }
 

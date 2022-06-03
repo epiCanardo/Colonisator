@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ColanderSource
 {
@@ -14,6 +15,7 @@ namespace ColanderSource
         public int age { get; set; }
         public int healthState { get; set; }
 
+        [JsonIgnore]
         public string EtatSante
         {
             get
@@ -35,6 +37,7 @@ namespace ColanderSource
         public int weight { get; set; }
         public string sexEnum { get; set; }
 
+        [JsonIgnore]
         public string Rang
         {
             get
@@ -69,6 +72,7 @@ namespace ColanderSource
             }
         }
 
+        [JsonIgnore]
         public string Sexe
         {
             get
@@ -78,7 +82,32 @@ namespace ColanderSource
         }
         public string fullName => $"{name} {surname}";
         public Dictionary<string, int> loyalties { get; set; }
+
+        [JsonIgnore]
+        public string FactionLotalty
+        {
+            get
+            {
+                if (loyalties.ContainsKey(faction))
+                {
+                    int loyalty = loyalties[faction];
+
+                    if (loyalties[faction] > 75)
+                        return $"Excellente ({loyalty})";
+                    if (loyalties[faction] > 50)
+                        return $"Correcte ({loyalty})";
+                    if (loyalties[faction] > 25)
+                        return $"Mauvaise ({loyalty})";
+
+                    return $"Execrable ({loyalty})";
+                }
+                return "Pas de faction !";
+
+            }
+        }
         public string description { get; set; }
+
+        [JsonIgnore]
         public string aspirationEnum { get; set; }
 
         public string Aspiration
@@ -119,14 +148,15 @@ namespace ColanderSource
         public string currentIsland { get; set; }
         public string currentShip { get; set; }
 
+        [JsonIgnore]
         public string Localisation
         {
             get
             {
                 if (currentIsland != null)
-                    return ServiceGame.GetIslandFromId(currentIsland).name;
+                    return $"Sur l'île : {ServiceGame.GetIslandFromId(currentIsland).name}";
                 if (currentShip != null)
-                    return ServiceGame.GetShip(currentShip).name;
+                    return $"Sur le navire : {ServiceGame.GetShip(currentShip).name}";
                 return "Porté disparu";
             }
         }

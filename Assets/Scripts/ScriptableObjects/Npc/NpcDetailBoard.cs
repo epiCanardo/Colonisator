@@ -26,6 +26,7 @@ namespace Colfront.GamePlay
         public TextMeshProUGUI factionText;
         public TextMeshProUGUI localisationText;
         public TextMeshProUGUI aspirationText;
+        public TextMeshProUGUI factionLoyaltyText;
 
         void Start()
         {
@@ -51,6 +52,7 @@ namespace Colfront.GamePlay
             factionText.text = faction.longName;
             localisationText.text = npc.Localisation;
             aspirationText.text = npc.Aspiration;
+            factionLoyaltyText.text = npc.FactionLotalty;
         }
     }
 }
