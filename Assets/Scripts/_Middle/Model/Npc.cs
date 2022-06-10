@@ -21,13 +21,13 @@ namespace ColanderSource
             get
             {
                 if (healthState > 75)
-                    return "Excellent";
+                    return $"Excellent ({healthState})";
                 else if (healthState > 50)
-                    return "Correct";
+                    return $"Correct ({healthState})";
                 else if (healthState > 25)
-                    return "Mauvais";
+                    return $"Mauvais ({healthState})";
                 else if (healthState > 0)
-                    return "Exécrable";
+                    return $"Exécrable ({healthState})";
                 return "Mort";
             }
         }
@@ -101,7 +101,7 @@ namespace ColanderSource
 
                     return $"Execrable ({loyalty})";
                 }
-                return "Pas de faction !";
+                return "N'a pas de loyauté envers cette faction.";
 
             }
         }

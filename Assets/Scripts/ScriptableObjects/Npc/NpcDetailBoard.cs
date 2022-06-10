@@ -28,6 +28,15 @@ namespace Colfront.GamePlay
         public TextMeshProUGUI aspirationText;
         public TextMeshProUGUI factionLoyaltyText;
 
+        // caractéristiques
+        public TextMeshProUGUI consitutionText;
+        public TextMeshProUGUI mentalText;
+
+        public TextMeshProUGUI ambitionText;
+        public TextMeshProUGUI venalityText;
+        public TextMeshProUGUI temerityText;
+        public TextMeshProUGUI leadershipText;
+
         void Start()
         {
             Faction faction = ServiceGame.GetFactionFromId(npc.faction);
@@ -41,18 +50,27 @@ namespace Colfront.GamePlay
 
             factionText.GetComponent<FactionLink>().faction = faction;
 
+            // infos de base
             fullNameText.text = npc.fullName;
-            ageText.text = npc.age.ToString();
+            ageText.text = $"{npc.age} ans";
             sexText.text = npc.Sexe;
             rankText.text = npc.Rang;
             healthText.text = npc.EtatSante;
-            heightText.text = npc.size.ToString();
-            weightText.text = npc.weight.ToString();
+            heightText.text = $"{npc.size} cm";
+            weightText.text = $"{npc.weight} kg";
             fortuneText.text = npc.money.ToString();
             factionText.text = faction.longName;
             localisationText.text = npc.Localisation;
             aspirationText.text = npc.Aspiration;
             factionLoyaltyText.text = npc.FactionLotalty;
+
+            // caracs
+            consitutionText.text = npc.characteristics.CONSTITUTION.ToString();
+            mentalText.text = npc.characteristics.MENTAL.ToString();
+            ambitionText.text = npc.characteristics.AMBITION.ToString();
+            venalityText.text = npc.characteristics.VENALITE.ToString();
+            temerityText.text = npc.characteristics.TEMERITE.ToString();
+            leadershipText.text = npc.characteristics.LEADERSHIP.ToString();
         }
     }
 }
