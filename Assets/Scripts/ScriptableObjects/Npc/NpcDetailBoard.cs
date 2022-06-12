@@ -37,6 +37,18 @@ namespace Colfront.GamePlay
         public TextMeshProUGUI temerityText;
         public TextMeshProUGUI leadershipText;
 
+        public TextMeshProUGUI artileryText;
+        public TextMeshProUGUI combatText;
+        public TextMeshProUGUI navigationText;
+        public TextMeshProUGUI negociationText;
+        public TextMeshProUGUI builderText;
+        public TextMeshProUGUI medecineText;
+        public TextMeshProUGUI cookingText;
+        public TextMeshProUGUI craftmanshipText;
+        public TextMeshProUGUI intendanceText;
+
+        public TextMeshProUGUI alcoolismeText;
+
         void Start()
         {
             Faction faction = ServiceGame.GetFactionFromId(npc.faction);
@@ -71,6 +83,18 @@ namespace Colfront.GamePlay
             venalityText.text = npc.characteristics.VENALITE.ToString();
             temerityText.text = npc.characteristics.TEMERITE.ToString();
             leadershipText.text = npc.characteristics.LEADERSHIP.ToString();
+
+            artileryText.text = npc.characteristics.ARTILLERIE.ToString();
+            combatText.text = npc.characteristics.COMBAT.ToString();
+            navigationText.text = npc.characteristics.NAVIGATION.ToString();
+            negociationText.text = npc.characteristics.NEGOCIATION.ToString();
+            builderText.text = npc.characteristics.BATISSEUR.ToString();
+            medecineText.text = npc.characteristics.MEDECINE.ToString();
+            cookingText.text = npc.characteristics.CUISINE.ToString();
+            craftmanshipText.text = npc.characteristics.ARTISANAT.ToString();
+            intendanceText.text = npc.characteristics.INTENDANCE.ToString();
+
+            alcoolismeText.text = npc.characteristics.ALCOOLISME.ToString();
         }
     }
 }

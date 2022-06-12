@@ -1,0 +1,37 @@
+{
+  "id": "1",
+  "conditions": [
+    "CURRENT_PLAYER_HAS_ISLAND"
+  ],
+  "title": "Téléportation inopinée de matelots",
+  "description": "Des matelots et de la nourriture sont magiquement téléportés !",
+  "priority": 1,
+  "choices": [
+    {
+      "label": "Accepter et perdre les matelots",
+      "shipCarac": {
+        "ship": "CURRENT_SHIP"
+      },
+      "shipBoardDelta": {
+        "food": -7
+      },
+      "shipCrewDelta": -3,
+      "islandCarac": {
+        "owner": "CURRENT_PLAYER"
+      },
+      "islandBoardDelta": {
+        "food": 7
+      },
+      "islandCrewDelta": 3
+    },
+    {
+      "label": "Refuser et provoquer la colère des mages",
+      "shipCarac": {
+        "ship": "CURRENT_SHIP"
+      },
+      "shipBoardDelta": {
+        "order": -8
+      }
+    }
+  ]
+}

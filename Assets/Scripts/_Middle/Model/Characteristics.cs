@@ -23,8 +23,8 @@
         public int BATISSEUR { get; set; }
         public int MEDECINE { get; set; }
         public int CUISINE { get; set; }
-        //public int ARTISANAT { get; set; }
-        //public int INTENDANCE { get; set; }
+        public int ARTISANAT { get; set; }
+        public int INTENDANCE { get; set; }
 
         // tares
         public int ALCOOLISME { get; set; }

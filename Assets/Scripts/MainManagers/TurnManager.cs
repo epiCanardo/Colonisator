@@ -132,8 +132,14 @@ namespace Colfront.GamePlay
                                 case "GET_RIGGING":
                                     sb.AppendLine("Je souhaite acheter du gréément");
                                     break;
+                                case "GET_FOOD":
+                                    sb.AppendLine("Je dois me réapprovionner en vivres");
+                                    break;
+                                case "GET_CREW":
+                                    sb.AppendLine("Je manque de matelots");
+                                    break;
                                 default:
-                                    sb.AppendLine("Je n'ai plus aucun objectif !");
+                                    sb.AppendLine("Je ne sais plus quoi faire !");
                                     break;
                             }
 
@@ -151,6 +157,11 @@ namespace Colfront.GamePlay
                                     };
                                     ServiceGame.Trade(trade);
                                     sb.AppendLine($"{landingNpcs.Count} ont été débarqués.");
+                                    HistoricsManager.Instance.NewMessage(
+                                        $"[Tour {ServiceGame.GetCurrentTurn.number}] - [Faction : {faction.name}] - " +
+                                        $"Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
+                                        $"a refourgué  {trade.landingNpcs} ! " +
+                                        $"Reste : {GameManager.Instance.CurrentShipToPlay.crew.Count}");
                                     break;
                                 case "GO_TO_ISLAND":
                                     if (action.solutionRuleResult?.solutionEnum == "GO_TO_ISLAND")
@@ -158,32 +169,84 @@ namespace Colfront.GamePlay
                                             $"Je me dirige vers : {ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId).name}");
                                     break;
                                 case "BUY":
-                                    //  -> 1000 dodris forfaitaires quel que soit la quantité
-                                    //  -> quantité : pour atteindre les 100
-                                    TradeDTO buyTrade = new TradeDTO
+                                    TradeDTO buyTrade = new TradeDTO();
+
+                                    switch (action.solutionRuleResult?.ressource)
                                     {
-                                        ship = GameManager.Instance.CurrentShipToPlay,
-                                        island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
-                                        buys = new List<TradeLine>
-                                        {
+                                        case "RIGGING":
+                                            //  -> 1000 dodris forfaitaires quel que soit la quantité
+                                            //  -> quantité : pour atteindre les 100
+                                            buyTrade = new TradeDTO
                                             {
-                                                new TradeLine
+                                                ship = GameManager.Instance.CurrentShipToPlay,
+                                                island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                                buys = new List<TradeLine>
                                                 {
-                                                    ressource = "rigging",
-                                                    quantity = 100 - shipManager.ship.shipBoard.rigging, cost = 1000
+                                                    {
+                                                        new TradeLine
+                                                        {
+                                                            ressource = "rigging",
+                                                            quantity = 100 - shipManager.ship.shipBoard.rigging, cost = 1000
+                                                        }
+                                                    }
+                                                },
+                                                deltaStuff = new ShipBoard
+                                                {
+                                                    rigging = 100 - shipManager.ship.shipBoard.rigging,
+                                                    dodris = -1000
                                                 }
-                                            }
-                                        },
-                                        deltaStuff = new ShipBoard
-                                        {
-                                            rigging = 100 - shipManager.ship.shipBoard.rigging,
-                                            dodris = -1000
-                                        }
-                                    };
+                                            };
+                                            sb.AppendLine(
+                                                $"Je viens d'acheter {buyTrade.deltaStuff.rigging} de gréément, contre " +
+                                                $"{-buyTrade.deltaStuff.dodris} dodris.");
+                                            break;
+                                        case "FOOD":
+                                            //  -> 1000 dodris forfaitaires quel que soit la quantité
+                                            //  -> quantité : pour atteindre les 100
+                                            buyTrade = new TradeDTO
+                                            {
+                                                ship = GameManager.Instance.CurrentShipToPlay,
+                                                island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                                buys = new List<TradeLine>
+                                                {
+                                                    {
+                                                        new TradeLine
+                                                        {
+                                                            ressource = "food",
+                                                            quantity = 100 - shipManager.ship.shipBoard.food, cost = 1000
+                                                        }
+                                                    }
+                                                },
+                                                deltaStuff = new ShipBoard
+                                                {
+                                                    food = 100 - shipManager.ship.shipBoard.food,
+                                                    dodris = -1000
+                                                }
+                                            };
+                                            sb.AppendLine(
+                                                $"Je viens d'acheter {buyTrade.deltaStuff.food} tonneaux de vivres, contre " +
+                                                $"{-buyTrade.deltaStuff.dodris} dodris.");
+                                            break;
+                                        case "CREW":
+                                            Island islandCrew = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
+                                                .coordinates);
+                                            //  -> 1000 dodris forfaitaires quel que soit la quantité
+                                            //  -> quantité : pour atteindre les 100
+                                            buyTrade = new TradeDTO
+                                            {
+                                                ship = GameManager.Instance.CurrentShipToPlay,
+                                                island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                                boardingNpcs = ServiceGame.GetNpcs(islandCrew.npcs).Where(x=>x.Rang == "SAILOR")
+                                                    .Take(Mathf.Min(action.solutionRuleResult.quantity, islandCrew.npcs.Count)).ToList()
+                                            };
+                                            sb.AppendLine(
+                                                $"Je viens de recruter {buyTrade.boardingNpcs.Count} matelots, contre " +
+                                                $"{-buyTrade.deltaStuff.dodris} dodris.");
+                                            break;
+                                    }
+
                                     ServiceGame.Trade(buyTrade);
-                                    sb.AppendLine(
-                                        $"Je viens d'acheter {buyTrade.deltaStuff.rigging} de gréément, contre " +
-                                        $"{-buyTrade.deltaStuff.dodris} dodris.");
+                                    
                                     break;
                                 case "COLONIZE":
                                     Island island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
@@ -296,6 +359,10 @@ namespace Colfront.GamePlay
                                 default:
                                     break;
                             }
+
+                            // consommation de nourriture à bord pour tous les navires sauf le ghost
+                            if (faction.playerTypeEnum != "GHOST")
+                                ServiceGame.ConsumeFood(GameManager.Instance.CurrentShipToPlay);
 
                             shipManager.PrintActionText(sb.ToString());
                         }

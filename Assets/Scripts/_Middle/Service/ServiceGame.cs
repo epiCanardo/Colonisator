@@ -527,6 +527,32 @@ namespace ColanderSource
             //    BoardNpcs(tradeDTO.ship, tradeDTO.boardingNpcs);
         }
 
+        /// <summary>
+        /// A chaque tour, un navire consomme de la nourriture en fonction de l'équipage
+        /// </summary>
+        /// <param name="ship"></param>
+        public static void ConsumeFood(Ship ship)
+        {
+            TradeEventDTO tradeEvent = new TradeEventDTO
+            {
+                shipDelta = new Ship
+                {
+                    id = ship.id,
+                    shipBoard = new ShipBoard
+                    {
+                        food = ship.crew.Count > 100 ? ship.shipBoard.food - 8
+                            : ship.crew.Count > 50 ? ship.shipBoard.food - 4 : ship.shipBoard.food - 2,
+                        dodris = ship.shipBoard.dodris,
+                        hull = ship.shipBoard.hull,
+                        rigging = ship.shipBoard.rigging,
+                        order = ship.shipBoard.order
+                    }
+                }
+            };
+
+            report.events.Add(tradeEvent);
+        }
+
         public static void LandNpcs(Island targetIsland, List<Npc> npcs)
         {
             foreach (var npc in npcs)
@@ -604,6 +630,14 @@ namespace ColanderSource
         public static void EndTurn()
         {
             var client = new RestClient($"http://localhost:8080/games/{game.id}/report");
+            var request = new RestRequest(Method.POST);
+            request.AddJsonBody(report.ToJson());
+            client.Post<ReportDTO<EventDTO>>(request);
+        }
+
+        public static void SendCards()
+        {
+            var client = new RestClient($"http://localhost:8080/games/{game.id}/cards");
             var request = new RestRequest(Method.POST);
             request.AddJsonBody(report.ToJson());
             client.Post<ReportDTO<EventDTO>>(request);

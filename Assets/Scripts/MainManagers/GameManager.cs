@@ -45,6 +45,7 @@ namespace Colfront.GamePlay
         public TextMeshProUGUI PanelActionSelectionCaptainName;
         public TextMeshProUGUI PanelActionSelectionCrewCount;
         public TextMeshProUGUI PanelActionSelectionOfficerCount;
+        public TextMeshProUGUI PanelActionSelectionFoodCount;
 
         public GameObject PanelActionSelectionFactionFlag;
 
@@ -157,6 +158,7 @@ namespace Colfront.GamePlay
             PanelActionSelectionCaptainName.text = ServiceGame.ShipCaptain(ship).fullName;
             PanelActionSelectionCrewCount.text = ServiceGame.ShipSailors(ship).Count().ToString();
             PanelActionSelectionOfficerCount.text = ServiceGame.ShipOfficiers(ship).Count().ToString();
+            PanelActionSelectionFoodCount.text = CurrentShipToPlay.shipBoard.food.ToString();
         }
 
         // Update is called once per frame
