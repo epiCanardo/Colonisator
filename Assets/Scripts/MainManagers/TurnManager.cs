@@ -6,6 +6,7 @@ using UnityEngine;
 using DG.Tweening;
 using System.Linq;
 using UnityEngine.UI;
+using System.Text;
 
 namespace Colfront.GamePlay
 {
@@ -14,13 +15,14 @@ namespace Colfront.GamePlay
         [Header("Affichage du tour de jeu")]
         public TextMeshProUGUI CurrentTurnText;
 
-        [Header("Bouton de fin de tour")]
-        public GameObject BackgroundColor;
-        public GameObject Button;
+        [Header("Boutons de la barre d'action")]
+        public GameObject EndTurnButton;
+        public GameObject MoveShipButton;
 
         public static TurnManager Instance { get; private set; }
 
         private bool nonHumanAutoTestActive = false;
+
 
         private void Awake()
         {
@@ -31,21 +33,23 @@ namespace Colfront.GamePlay
 
         public void BounceButton()
         {
-            Button.GetComponent<RawImage>().transform.DOScale(0.5f, 1).SetLoops(-1, LoopType.Yoyo);
+            EndTurnButton.GetComponent<RawImage>().transform.DOScale(0.5f, 1).SetLoops(-1, LoopType.Yoyo);
         }
 
         public void StopBouncing()
         {
-            Button.GetComponent<RawImage>().transform.DOKill();
-            Button.GetComponent<RawImage>().transform.localScale = Vector3.one;
+            EndTurnButton.GetComponent<RawImage>().transform.DOKill();
+            EndTurnButton.GetComponent<RawImage>().transform.localScale = Vector3.one;
         }
 
         public IEnumerator StartTurn()
         {
-            while (ServiceGame.GetCurrentTurn.number < 1000)
+            for (int i = 0; i < 1000; i++)
             {
+                //while (ServiceGame.GetCurrentTurn.number < 1000)
+            //{
                 // démarrage du tour
-                ServiceGame.StartNewTurn();
+                yield return StartCoroutine("NewTurn");
 
                 MainState = TurnState.ActionsStarted;
                 GameManager.Instance.ToggleSquares(false);
@@ -56,10 +60,14 @@ namespace Colfront.GamePlay
                 {
                     Faction faction = ServiceGame.GetFactionFromId(factionTurn.Key);
 
+                    // si la faction ne joue pas, ça dégage
+                    var play = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction)).IsPlaying;
+                    if (!play)
+                        continue;
+
                     // si c'est au joueur humain de jouer, on laisse la main. La fonction reprendra lorsque MainState sera AI
                     if (faction.playerTypeEnum == "HUMAN")
                     {
-                        // TODO : le mouvement du joueur est igoré à des fins de tests
                         if (nonHumanAutoTestActive)
                             continue;
 
@@ -71,8 +79,11 @@ namespace Colfront.GamePlay
                         CurrentTurnText.text =
                             $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {GameManager.Instance.CurrentShipToPlay.name}";
 
+                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+
                         yield return new WaitUntil(() => MainState == TurnState.AI);
-                        // au retour dans la méthode, on passe à la faction suivante
+
+                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                     }
                     else
                     {
@@ -86,103 +97,284 @@ namespace Colfront.GamePlay
                         // application des actions prévues pour chaque navire de la faction
                         foreach (var action in factionTurn.Value)
                         {
-                            // positionnement de la caméra derrière le navire en cours
                             GameManager.Instance.CurrentShipToPlay = ServiceGame.GetShip(action.id);
+                            ShipManager shipManager =
+                                GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>();
+
+                            // mise à jour du navire
+                            shipManager.ship = GameManager.Instance.CurrentShipToPlay;
+                            // positionnement de la caméra derrière le navire en cours
                             GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
+
+                            // mise à jour du texte du tour en cours
                             CurrentTurnText.text =
-                                $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {GameManager.Instance.CurrentShipToPlay.name}";
+                                $"Tour {ServiceGame.GetCurrentTurn.number} : Tour de la faction : {faction.name} - Navire : {shipManager.ship.name}";
 
                             yield return new WaitForSeconds(0.1f);
 
                             // si c'est un navire IA, il effectue les actions prévues
 
-                            // gestion du déplacement
-                            if (action.move != null)
+                            // affichage de l'action prévue
+                            StringBuilder sb = new StringBuilder();
+
+                            // travail sur les objectifs
+                            switch (action.objectiveRuleResult?.objectiveEnum)
                             {
-                                var movement = ServiceGame.PrepareShipMovement(action);
-                                foreach (Square square in movement)
-                                {
-                                    // case physique d'arrivée et mouvement
-                                    var physicalSquare = GameManager.Instance.GetPhysicalSquareFromSquare(square);
-									
-                                    // orientation par rapport à la cible
-                                    yield return GameManager.Instance.GetActualPlayinghipObject.transform.DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
-									
-                                    // déplacement
-                                    GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(physicalSquare.transform.position + (Vector3.down * 10), 1);
-									
-                                    // déplacement de la caméra à la même vitesse
-                                    yield return Camera.main.transform.DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1).WaitForCompletion();
-                                    yield return GameManager.Instance.GetActualPlayinghipObject.transform
-                                        .DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
-										
-                                    // déplacement
-                                    GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(
-                                        physicalSquare.transform.position + (Vector3.down * 10), 1);
-										
-                                    // déplacement de la caméra à la même vitesse
-                                    yield return Camera.main.transform
-                                        .DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet, 1)
-                                        .WaitForCompletion();
-
-                                    // application des effets sur le gréément
-                                    GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= action.move.cost;
-                                }
-
-                                // s'il y a eu mouvement, on l'enregistre le mouvement
-                                if (movement.Any())
-                                {
-                                    ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay,
-                                        movement.Last());
-                                    ServiceGame.RegisterMovement(new MoveDTO
-                                    {
-                                        move = (action.move != null)
-                                            ? new Move {cost = action.move.cost, moveDetails = action.move.moveDetails}
-                                            : null,
-                                        ship = GameManager.Instance.CurrentShipToPlay
-                                    });
-                                }
+                                case "COLONIZE_ISLAND":
+                                    sb.AppendLine("Je souhaite coloniser une île.");
+                                    break;
+                                case "PUNCTURE_CREW":
+                                    sb.AppendLine("Je vais faucher des âmes..");
+                                    break;
+                                case "REFOURGUER_CREW":
+                                    sb.AppendLine("Je souhaite me débarasser de certains matelots !!");
+                                    break;
+                                case "GET_RIGGING":
+                                    sb.AppendLine("Je souhaite acheter du gréément");
+                                    break;
+                                case "GET_FOOD":
+                                    sb.AppendLine("Je dois me réapprovionner en vivres");
+                                    break;
+                                case "GET_CREW":
+                                    sb.AppendLine("Je manque de matelots");
+                                    break;
+                                default:
+                                    sb.AppendLine("Je ne sais plus quoi faire !");
+                                    break;
                             }
 
-                            // gestion de la colonisation=======
-                            if (action.realisation == "COLONIZE")
+                            // travail sur les solutions
+                            switch (action.solutionRuleResult?.solutionEnum)
                             {
-                                // TODO : colonisation type avec 15 vivres, 15 matelots et 15 d'ordre en plus
-                                ServiceGame.ColonizeIsland(
-                                    new ColonisationDTO
+                                case "REFOURGUER_CREW":
+                                    List<Npc> landingNpcs = ServiceGame.GetNpcs(action.realisationRuleResult?.npcs)
+                                        .ToList();
+                                    TradeDTO trade = new TradeDTO
+                                    {
+                                        ship = shipManager.ship,
+                                        island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                        landingNpcs = landingNpcs,
+                                    };
+                                    ServiceGame.Trade(trade);
+                                    sb.AppendLine($"{landingNpcs.Count} ont été débarqués.");
+                                    HistoricsManager.Instance.NewMessage(
+                                        $"[Tour {ServiceGame.GetCurrentTurn.number}] - [Faction : {faction.name}] - " +
+                                        $"Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
+                                        $"a refourgué  {trade.landingNpcs} ! " +
+                                        $"Reste : {GameManager.Instance.CurrentShipToPlay.crew.Count}");
+                                    break;
+                                case "GO_TO_ISLAND":
+                                    if (action.solutionRuleResult?.solutionEnum == "GO_TO_ISLAND")
+                                        sb.AppendLine(
+                                            $"Je me dirige vers : {ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId).name}");
+                                    break;
+                                case "BUY":
+                                    TradeDTO buyTrade = new TradeDTO();
+
+                                    switch (action.solutionRuleResult?.ressource)
+                                    {
+                                        case "RIGGING":
+                                            //  -> 1000 dodris forfaitaires quel que soit la quantité
+                                            //  -> quantité : pour atteindre les 100
+                                            buyTrade = new TradeDTO
+                                            {
+                                                ship = GameManager.Instance.CurrentShipToPlay,
+                                                island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                                buys = new List<TradeLine>
+                                                {
+                                                    {
+                                                        new TradeLine
+                                                        {
+                                                            ressource = "rigging",
+                                                            quantity = 100 - shipManager.ship.shipBoard.rigging, cost = 1000
+                                                        }
+                                                    }
+                                                },
+                                                deltaStuff = new ShipBoard
+                                                {
+                                                    rigging = 100 - shipManager.ship.shipBoard.rigging,
+                                                    dodris = -1000
+                                                }
+                                            };
+                                            sb.AppendLine(
+                                                $"Je viens d'acheter {buyTrade.deltaStuff.rigging} de gréément, contre " +
+                                                $"{-buyTrade.deltaStuff.dodris} dodris.");
+                                            break;
+                                        case "FOOD":
+                                            //  -> 1000 dodris forfaitaires quel que soit la quantité
+                                            //  -> quantité : pour atteindre les 100
+                                            buyTrade = new TradeDTO
+                                            {
+                                                ship = GameManager.Instance.CurrentShipToPlay,
+                                                island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                                buys = new List<TradeLine>
+                                                {
+                                                    {
+                                                        new TradeLine
+                                                        {
+                                                            ressource = "food",
+                                                            quantity = 100 - shipManager.ship.shipBoard.food, cost = 1000
+                                                        }
+                                                    }
+                                                },
+                                                deltaStuff = new ShipBoard
+                                                {
+                                                    food = 100 - shipManager.ship.shipBoard.food,
+                                                    dodris = -1000
+                                                }
+                                            };
+                                            sb.AppendLine(
+                                                $"Je viens d'acheter {buyTrade.deltaStuff.food} tonneaux de vivres, contre " +
+                                                $"{-buyTrade.deltaStuff.dodris} dodris.");
+                                            break;
+                                        case "CREW":
+                                            Island islandCrew = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
+                                                .coordinates);
+                                            //  -> 1000 dodris forfaitaires quel que soit la quantité
+                                            //  -> quantité : pour atteindre les 100
+                                            buyTrade = new TradeDTO
+                                            {
+                                                ship = GameManager.Instance.CurrentShipToPlay,
+                                                island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
+                                                boardingNpcs = ServiceGame.GetNpcs(islandCrew.npcs).Where(x=>x.Rang == "SAILOR")
+                                                    .Take(Mathf.Min(action.solutionRuleResult.quantity, islandCrew.npcs.Count)).ToList()
+                                            };
+                                            sb.AppendLine(
+                                                $"Je viens de recruter {buyTrade.boardingNpcs.Count} matelots, contre " +
+                                                $"{-buyTrade.deltaStuff.dodris} dodris.");
+                                            break;
+                                    }
+
+                                    ServiceGame.Trade(buyTrade);
+                                    
+                                    break;
+                                case "COLONIZE":
+                                    Island island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
+                                        .coordinates);
+                                    // TODO : colonisation type avec 15 vivres, 15 matelots et gain de 15 d'ordre
+                                    ColonisationDTO dtoColonisation = new ColonisationDTO
                                     {
                                         ship = GameManager.Instance.CurrentShipToPlay,
-                                        island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
-                                            .coordinates),
-                                        food = 15,
+                                        island = island,
+                                        food = -15,
                                         // on prend 15 matelots au hasard
                                         npcs = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay).Take(15)
                                             .ToList(),
                                         order = 15
-                                    });
-                            }
+                                    };
 
-                            // TODO : activer le navire fantômes
-                            if (action.solution == "PUNCTURE_CREW" && action.realisation == "GET_SAILORS")
-                            {
-                                //continue;
+                                    ServiceGame.ColonizeIsland(dtoColonisation);
 
-                                if (action.puncture != null)
-                                    ServiceGame.Puncture(new PunctureDTO
+                                    HistoricsManager.Instance.NewMessage(
+                                        $"[Tour {ServiceGame.GetCurrentTurn.number}] - [Faction : {faction.name}] - " +
+                                        $"Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
+                                        $"a installé une nouvelle colonie sur {island.name} ! " +
+                                        $"{dtoColonisation.npcs.Count} matelots ont été débarqués." +
+                                        $"Reste : {GameManager.Instance.CurrentShipToPlay.crew.Count}");
+                                    sb.AppendLine($"Je viens d'établir une colonie sur {island.name} !");
+                                    break;
+                                case "PUNCTURE_CREW":
+                                    sb.AppendLine(
+                                        $"{action.realisationRuleResult.npcs.Count}, ça fera l'affaire pour cette fois !");
+                                    var sailors = ServiceGame.ShipSailors(GameManager.Instance.CurrentShipToPlay);
+
+                                    List<string> npcsToPunct = action.realisationRuleResult.npcs;
+                                    if (npcsToPunct != null && npcsToPunct.Any())
                                     {
-                                        npcIds = action.puncture.npcs,
-                                        sourceShipId = ServiceGame.GetNpc(action.puncture.npcs[0]).currentShip,
-                                        targetShipId = action.id
-                                    });
+                                        PunctureDTO punctureDto = new PunctureDTO
+                                        {
+                                            npcIds = npcsToPunct.ToList(),
+                                            // on prend le navire du premier npc car ils sont tous du même navire
+                                            sourceShipId = ServiceGame.GetNpc(npcsToPunct[0]).currentShip,
+                                            targetShipId = action.id
+                                        };
+                                        ServiceGame.Puncture(punctureDto);
+
+                                        HistoricsManager.Instance.NewMessage(
+                                            $"[Tour {ServiceGame.GetCurrentTurn.number}] - [Faction : {faction.name}] - " +
+                                            $"Le navire fantôme s'est renforcé avec {punctureDto.npcIds.Count} prélevés !' " +
+                                            $"Il paraît qu'ils n'ont pas souffert, mais les cris entendus à bord indiquent le contraire :|");
+                                    }
+
+                                    break;
+                                default:
+                                    break;
                             }
+
+                            // travail sur les réalisations
+                            switch (action.realisationRuleResult?.realisationEnum)
+                            {
+                                case "MOVE":
+                                    // gestion du déplacement
+                                    Move actualMovement = action.realisationRuleResult?.move;
+
+                                    List<Square> movement = ServiceGame.PrepareShipMovement(action);
+                                    foreach (Square square in movement)
+                                    {
+                                        // case physique d'arrivée et mouvement
+                                        var physicalSquare = GameManager.Instance.GetPhysicalSquareFromSquare(square);
+                                        // orientation par rapport à la cible
+                                        yield return GameManager.Instance.GetActualPlayinghipObject.transform
+                                            .DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
+                                        // déplacement
+                                        GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(
+                                            physicalSquare.transform.position + (Vector3.down * 10), 1);
+                                        // déplacement de la caméra à la même vitesse
+                                        yield return Camera.main.transform
+                                            .DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet,
+                                                1)
+                                            .WaitForCompletion();
+                                    }
+
+                                    // application des effets sur le gréément
+                                    GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= actualMovement.cost;
+
+                                    // s'il y a eu mouvement, on enregistre le mouvement
+                                    if (movement.Any())
+                                    {
+                                        ServiceGame.ApplyShipMovement(GameManager.Instance.CurrentShipToPlay,
+                                            movement.Last());
+                                        ServiceGame.RegisterMovement(new MoveDTO
+                                        {
+                                            move = (action.realisationRuleResult.move != null)
+                                                ? new Move
+                                                {
+                                                    cost = actualMovement.cost, moveDetails = actualMovement.moveDetails
+                                                }
+                                                : null,
+                                            ship = GameManager.Instance.CurrentShipToPlay
+                                        });
+
+                                        if (actualMovement.cost > 0)
+                                            HistoricsManager.Instance.NewMessage(
+                                                $"[Tour {ServiceGame.GetCurrentTurn.number}] - [Faction : {faction.name}] - Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
+                                                $"a bougé de {actualMovement.moveDetails.Sum(x => x.Value)} cases et a perdu {actualMovement.cost} de gréément suite à son mouvement ! " +
+                                                $"Reste : {GameManager.Instance.CurrentShipToPlay.shipBoard.rigging}");
+
+                                        sb.AppendLine(
+                                            $"J'ai bougé de {actualMovement.moveDetails.Sum(x => x.Value)} cases et perdu {actualMovement.cost} de gréément.");
+                                    }
+
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            // consommation de nourriture à bord pour tous les navires sauf le ghost
+                            if (faction.playerTypeEnum != "GHOST")
+                                ServiceGame.ConsumeFood(GameManager.Instance.CurrentShipToPlay);
+
+                            shipManager.PrintActionText(sb.ToString());
                         }
                     }
                 }
 
                 // à la fin du tour, on revient par défaut sur le navire du joueur
-                var color = BackgroundColor.GetComponent<Image>().color;
-                var targetColor = new Color(color.r, color.g, color.b, 0);
-                yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
+                // var color = BackgroundColor.GetComponent<Image>().color;
+                // var targetColor = new Color(color.r, color.g, color.b, 0);
+                // yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
+
+                EndTurnButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
 
                 // gestion de la fin du tour
                 if (nonHumanAutoTestActive)
@@ -191,26 +383,43 @@ namespace Colfront.GamePlay
                 {
                     // on se place en attente de fin de tour
                     MainState = TurnState.WaitForEndTurn;
-                    BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
+                   // BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
                     yield return new WaitUntil(() => MainState == TurnState.ActionsFinished);
                 }
 
+                EndTurnButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                 CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Fin du tour";
-                targetColor = new Color(color.r, color.g, color.b, 0.8f);
-                BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
+              //  targetColor = new Color(color.r, color.g, color.b, 0.8f);
+              //  BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
 
                 CurrentTurnText.text = $"Nouveau tour dans 1 seconde...";
-                yield return new WaitForSeconds(1f);
+                //yield return new WaitForSeconds(1f);
 
                 GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetPlayingHumanShipObject);
                 GameManager.Instance.ToggleCamMovement(true);
 
                 // on génère un rapport de fin de tour
-                var dto = ServiceGame.GetReport();
+                //GenerateReport();
+                ServiceGame.GetReport();
+                //yield return StartCoroutine("GenerateReport");
 
                 // fin du tour : envoi du rapport au back
-                ServiceGame.EndTurn();
+                yield return StartCoroutine("EndTurn");
+
+                //StartTurn();
             }
+        }
+
+        IEnumerator NewTurn()
+        {
+            ServiceGame.StartNewTurn();
+            yield return null;
+        }
+
+        IEnumerator EndTurn()
+        {
+            ServiceGame.EndTurn();
+            yield return null;
         }
     }
 

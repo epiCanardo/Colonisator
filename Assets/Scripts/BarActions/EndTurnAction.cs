@@ -16,12 +16,12 @@ namespace Colfront.GamePlay
         public void OnPointerEnter(PointerEventData eventData)
         {
             //if (TurnManager.Instance.MainState == TurnState.WaitForEndTurn)
-                TurnManager.Instance.BounceButton();
+           //     TurnManager.Instance.BounceButton();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            TurnManager.Instance.StopBouncing();
+           // TurnManager.Instance.StopBouncing();
         }
     }
 }

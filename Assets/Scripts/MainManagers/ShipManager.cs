@@ -16,6 +16,7 @@ namespace Colfront.GamePlay
         public GameObject FlagLeftTextile;
         public GameObject FlagRightTextile;
         public Shader FlagShader;
+        public TextMeshProUGUI ActionText;
 
         [Header("Pour le calcul des couleurs des voiles")]
         public List<GameObject> SailsToColor;
@@ -114,6 +115,16 @@ namespace Colfront.GamePlay
             GameManager.Instance.SetInfoPanelFlag(test.Flag);
 
             GameManager.Instance.SetInfoPanelTitle(ship);
+        }
+
+        /// <summary>
+        /// affiche du texte d'action en cours du navire
+        /// </summary>
+        /// <param name="text"></param>
+        public void PrintActionText(string text)
+        { 
+            ActionText.text = text;
+            ActionText.transform.SetAsLastSibling();
         }
     }
 }

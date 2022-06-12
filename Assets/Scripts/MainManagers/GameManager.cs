@@ -11,6 +11,8 @@ namespace Colfront.GamePlay
 {
     public class GameManager : MonoBehaviour
     {
+        public Canvas canvas;
+        
         [Header("Gestion des cases")]
         public GameObject squarePrefab;
         public GameObject harborSquarePrefab;
@@ -29,6 +31,7 @@ namespace Colfront.GamePlay
         [Header("Gestion des navires")]
         public GameObject mainShipPrefab;
         public GameObject[] cuiiShipPrefabs;
+        public GameObject sundercityShipPrefab;
         public GameObject piofoShipPrefab;
         public GameObject[] cplShipPrefabs;
         public GameObject missytownShipPrefab;
@@ -42,11 +45,14 @@ namespace Colfront.GamePlay
         public TextMeshProUGUI PanelActionSelectionCaptainName;
         public TextMeshProUGUI PanelActionSelectionCrewCount;
         public TextMeshProUGUI PanelActionSelectionOfficerCount;
+        public TextMeshProUGUI PanelActionSelectionFoodCount;
 
         public GameObject PanelActionSelectionFactionFlag;
 
         [Header("Map")]
         public RectTransform FullMap;
+
+        public GameObject PortraitFlagTextile;
 
         // l'instance du navire du joueur
         private List<GameObject> instanciedShipObjects = new List<GameObject>();
@@ -71,6 +77,8 @@ namespace Colfront.GamePlay
         public Vector3 camEulerAngles { get; set; }
 
         public Ship CurrentShipToPlay { get; set; }
+
+        public int CurrentOpenedBoard { get; set; }
 
         // récupère l'objet instancié correspondant au navire en cours
         public GameObject GetActualPlayinghipObject => instanciedShipObjects.First(x => x.GetComponent<ShipManager>().ship.Equals(CurrentShipToPlay));
@@ -107,12 +115,18 @@ namespace Colfront.GamePlay
         // Start is called before the first frame update
         void Start()
         {
-            //foreach (var audio in GetComponents<AudioSource>())
-            //{
-            //    audio.Play();
-            //}
+            // définition des vecteurs de position et d'angle pour la camera principale
             camOffSet = new Vector3(0, 400, -260);
             camEulerAngles = new Vector3(60, 0, 0);
+
+            // la map doit être carrée (le plateau de jeu est un carré)
+            // le carré est de 0.8 * le bord le plus petit de côté
+            float shorterBounds = 0.8f * Mathf.Min(Screen.width, Screen.height);
+            float xAnchor = 0.5f * (Screen.width - shorterBounds);
+            float yAnchor = 0.5f * (Screen.height - shorterBounds);
+            //FullMap.anchorMin = FullMap.anchorMax = new Vector2(xAnchor, yAnchor);
+
+            FullMap.sizeDelta = new Vector2(2000, 2000);
         }
 
         // On lance la game !
@@ -144,6 +158,7 @@ namespace Colfront.GamePlay
             PanelActionSelectionCaptainName.text = ServiceGame.ShipCaptain(ship).fullName;
             PanelActionSelectionCrewCount.text = ServiceGame.ShipSailors(ship).Count().ToString();
             PanelActionSelectionOfficerCount.text = ServiceGame.ShipOfficiers(ship).Count().ToString();
+            PanelActionSelectionFoodCount.text = CurrentShipToPlay.shipBoard.food.ToString();
         }
 
         // Update is called once per frame
@@ -154,8 +169,8 @@ namespace Colfront.GamePlay
                 ToggleMap(!FullMap.gameObject.activeSelf);
 
             // en cas de ragequit !
-            if (Input.GetKeyDown(KeyCode.Escape))
-                Application.Quit();
+            //if (Input.GetKeyDown(KeyCode.Escape))
+               // Application.Quit();
 
             // pas de contrôle en cas de tour IA
             if (TurnManager.Instance.MainState == TurnState.AI)
@@ -275,33 +290,24 @@ namespace Colfront.GamePlay
 
         public void PlayerSpawn()
         {
-            //// postionnement du navire principal du joueur au port de Sundercity
-            //var sundercity = game.GetIsland("Sundercity");
-            //var square = squares.First(x => x.coordinates.x == sundercity.harbourCoordinates.x && x.coordinates.y == sundercity.harbourCoordinates.y);
-            //var startSquare = square.gameObject;
-            //playerShip = Instantiate(mainShipPrefab, startSquare.transform.position + new Vector3(0, -10f, 0), startSquare.transform.rotation);
+            // récupération du joueur humain
+            //foreach (var faction in ServiceGame.Factions.Where(x => x.playerTypeEnum == "HUMAN"))
+            //{
+            //    var fM = new FactionManager
+            //    {
+            //        Faction = faction,
+            //        Colors = new List<Color32> { Color.blue, Color.white, Color.red },
+            //        IsPlaying = false
+            //    };
+            //    fM.SetFactionFlag(fM.Colors);
 
-            //// cr�ation du navire. TODO : vient du back !
-            //playerShip.GetComponent<ShipManager>().ship = new Ship();
+            //    // ajout du faction mananger à la liste
+            //    FactionsManager.Instance.Factions.Add(fM);
 
-            //// positionnement des coordonn�es du navire
-            //playerShip.GetComponent<ShipManager>().ship.coordinates = square.coordinates;
-
-            // récupération des joueurs humains
-            foreach (var faction in ServiceGame.Factions.Where(x => x.playerTypeEnum == "HUMAN"))
-            {
-                var fM = new FactionManager
-                {
-                    Faction = faction,
-                    Colors = new List<Color32> { Color.blue, Color.white, Color.red }
-                };
-                fM.SetFactionFlag(fM.Colors);
-
-                // ajout du faction mananger à la liste
-                FactionsManager.Instance.Factions.Add(fM);
-
-                ShipsInstanciation(faction, new GameObject[1] { mainShipPrefab });
-            }
+                Faction human = ServiceGame.Factions.First(x => x.playerTypeEnum == "HUMAN");
+                SetFactionToManager(human, new List<Color32> { Color.blue, Color.white, Color.red });
+                ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
+           // }
         }
 
         public void NpcsSpawn()
@@ -310,6 +316,11 @@ namespace Colfront.GamePlay
             Faction cuii = ServiceGame.Factions.First(x => x.playerTypeEnum == "NEUTRAL");
             SetFactionToManager(cuii, new List<Color32> { Color.yellow, Color.black, Color.white });
             ShipsInstanciation(cuii, cuiiShipPrefabs);
+
+            // Sundercity
+            Faction sundercity = ServiceGame.Factions.First(x => x.playerTypeEnum == "TOWN");
+            SetFactionToManager(sundercity, new List<Color32> { Color.cyan, Color.black, Color.white });
+            ShipsInstanciation(sundercity, new GameObject[1] { sundercityShipPrefab });
 
             // Piofo
             Faction piofo = ServiceGame.Factions.First(x => x.playerTypeEnum == "PENITENTIARY");
@@ -342,12 +353,13 @@ namespace Colfront.GamePlay
             ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
         }
 
-        private void SetFactionToManager(Faction faction, List<Color32> colors)
+        private void SetFactionToManager(Faction faction, List<Color32> colors, bool isPlaying = true)
         {
             var fM = new FactionManager
             {
                 Faction = faction,
-                Colors = colors
+                Colors = colors,
+                IsPlaying = isPlaying
             };
             fM.SetFactionFlag(fM.Colors);
             FactionsManager.Instance.Factions.Add(fM);

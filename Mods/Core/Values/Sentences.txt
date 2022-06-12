@@ -1,0 +1,7 @@
+OBJECTIVE_WANNA_COLONIZE=Je souhaite coloniser une île.
+OBJECTIVE_WANNA_PUNCTURE=Je vais faucher des âmes..
+OBJECTIVE_WANNA_FIRECREW=Je souhaite me débarasser de certains matelots !!
+OBJECTIVE_WANNA_BUY_RIGGING=Il me manque du gréement
+OBJECTIVE_WANNA_BUY_FOOD=Je dois me réapprovisionner en vivres
+OBJECTIVE_WANNA_BUY_CREW=Je manque de matelots
+OBJECTIVE_NOTHING=Je ne sais plus quoi faire !
