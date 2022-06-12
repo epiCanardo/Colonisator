@@ -21,7 +21,7 @@ namespace Colfront.GamePlay
 
         public static TurnManager Instance { get; private set; }
 
-        private bool nonHumanAutoTestActive = true;
+        private bool nonHumanAutoTestActive = false;
 
 
         private void Awake()

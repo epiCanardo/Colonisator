@@ -14,6 +14,11 @@ namespace ColanderSource
         public Wind wind { get; set; }
 
         /// <summary>
+        /// la carte qui a été piochée ce tour
+        /// </summary>
+        public Card card { get; set; }
+
+        /// <summary>
         /// la description de l'objectif de tour du navire
         /// </summary>
         public ObjectiveRuleResult objectiveRuleResult { get; set; }
