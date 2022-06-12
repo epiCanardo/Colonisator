@@ -9,11 +9,11 @@ namespace ColanderSource
     /// </summary>
     public class CardsDTO
     {
-        public List<Card> cards { get; set; }
+        public List<string> cards { get; set; }
 
         public CardsDTO()
         {
-            cards = new List<Card>();
+            cards = new List<string>();
         }
 
         public string ToJson()
