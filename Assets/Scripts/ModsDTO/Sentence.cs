@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ColanderSource;
 using Newtonsoft.Json;
 
-namespace Colonisator.Mods
+namespace Colonisator.ModsDTO
 {
     public class Sentence
     {

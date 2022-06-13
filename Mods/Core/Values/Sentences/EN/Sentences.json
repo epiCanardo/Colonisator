@@ -1,0 +1,32 @@
+{
+	"sentences": [
+		{
+			"key": "OBJECTIVE_WANNA_COLONIZE",
+			"value": "I must colonize an island"
+		},
+		{
+			"key": "OBJECTIVE_WANNA_PUNCTURE",
+			"value": "I'm gonna kill some sailors.."
+		},
+		{
+			"key": "OBJECTIVE_WANNA_FIRECREW",
+			"value": "Some morrons must be refurbished !"
+		},
+		{
+			"key": "OBJECTIVE_WANNA_BUY_RIGGING",
+			"value": "I need some rigging"
+		},
+		{
+			"key": "OBJECTIVE_WANNA_BUY_FOOD",
+			"value" :"I need food"
+		},
+		{
+			"key" :"OBJECTIVE_WANNA_BUY_CREW",
+			"value" :"I need to onboard some sailors"
+		},
+		{
+			"key" :"OBJECTIVE_NOTHING",
+			"value" :"I don't know what to do !"
+		}
+	]
+}

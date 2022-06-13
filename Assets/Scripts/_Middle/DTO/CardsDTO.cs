@@ -23,9 +23,11 @@ namespace ColanderSource
         public string ToJson()
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine("{");
+            sb.AppendLine("\"cards\" :");
             sb.AppendLine("[");
             sb.AppendLine(string.Join(",", cards));
-            sb.AppendLine("]");
+            sb.AppendLine("]}");
 
             return sb.ToString();
         }

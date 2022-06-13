@@ -1,0 +1,29 @@
+{
+  "id": "2",
+  "title": "Epouser la fille du gouverneur dans la réserve",
+  "description": "Vous avez retrouvé le parchemin d'accès à la taverne de remise en forme ! Pour fêter ça, vous décidez d'épouser Gwendoline. Dans la reserve ou à la salle des fêtes ?",
+  "priority": 1,
+  "choices": [
+    {
+      "label": "Mêle toi de tes courgettes, je descends à la réserve uesh !",
+      "shipCarac": {
+        "ship": "CURRENT_SHIP"
+      },
+      "shipBoardDelta": {
+        "order": -10
+      },
+      "shipCrewDelta": 0
+    },
+    {
+      "label": "Allezzzzz fais péter la des fêtes avec ton cheveu sur la langue !",
+      "shipCarac": {
+        "ship": "CURRENT_SHIP"
+      },
+      "shipBoardDelta": {
+        "order": 10,
+		"food": -10,
+		"dodris": -1000
+      }
+    }
+  ]
+}

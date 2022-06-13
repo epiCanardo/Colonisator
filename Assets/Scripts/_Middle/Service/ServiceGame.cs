@@ -653,7 +653,5 @@ namespace ColanderSource
             request.AddJsonBody(report.ToJson());
             client.Post<ReportDTO<EventDTO>>(request);
         }
-
-
     }
 }

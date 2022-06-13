@@ -74,7 +74,7 @@ namespace Colfront.GamePlay
         {
             Stopwatch timer = Stopwatch.StartNew();
             ServiceGame.GenerateGame(1000, string.Empty);
-            //ServiceGame.SendCards();
+            ServiceGame.SendCards();
             timer.Stop();
             technicalreport.Add($"Temps de génération de la partie : {timer.Elapsed.TotalSeconds}");
 

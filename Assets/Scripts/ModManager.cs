@@ -6,7 +6,7 @@ using System.Security.Authentication.ExtendedProtection.Configuration;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Colonisator.Mods;
+using Colonisator.ModsDTO;
 using ColanderSource;
 using UnityEditor.PackageManager.Requests;
 
@@ -16,10 +16,16 @@ namespace Colfront.GamePlay
     {
         private static string activeMod = "Core";
 
-        private static List<string> activeCards = new List<string>(); // la liste des cartes atives
-        private static List<SentenceObject> activeSentences = new List<SentenceObject>(); // le dico des phrases
+        private MainConfig mainConfig;
+        private List<string> activeCards = new List<string>(); // la liste des cartes atives
+        private List<SentenceObject> activeSentences = new List<SentenceObject>(); // le dico des phrases
 
         private static ModManager _instance;
+
+        public ModManager()
+        {
+            Initialization();
+        }
 
         public static ModManager Instance
         {
@@ -32,6 +38,14 @@ namespace Colfront.GamePlay
 
                 return _instance;
             }
+        }
+
+        /// <summary>
+        /// initialisation des fichiers mod (config et repertoires liés aux langues)
+        /// </summary>
+        public void Initialization()
+        {
+            mainConfig = MainConfig.LoadFromFile($"Mods/Config.json");
         }
 
         public List<string> GetCards()
@@ -51,7 +65,7 @@ namespace Colfront.GamePlay
         public void LoadSentences()
         {
             StringBuilder sb = new StringBuilder();
-            string txtName = $"Mods/{activeMod}/Values/Sentences.json";
+            string txtName = $"Mods/{mainConfig.activeMods[0]}/Values/Sentences/{mainConfig.language}/sentences.json";
             
             Sentence sentence = Sentence.LoadFromFile(txtName);
             activeSentences = sentence.sentences;

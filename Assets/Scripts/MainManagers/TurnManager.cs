@@ -7,7 +7,7 @@ using DG.Tweening;
 using System.Linq;
 using UnityEngine.UI;
 using System.Text;
-using Colonisator.Mods;
+using Colonisator.ModsDTO;
 
 namespace Colfront.GamePlay
 {
