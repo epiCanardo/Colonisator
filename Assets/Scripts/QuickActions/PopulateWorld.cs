@@ -1,3 +1,4 @@
+using System;
 using ColanderSource;
 using UnityEngine;
 using UnityEngine.UI;
@@ -69,7 +70,7 @@ namespace Colfront.GamePlay
 
             //ServiceGame.GenerateGame("GameData/v1testdata_100npc.txt");
             Stopwatch timer = Stopwatch.StartNew();
-            ServiceGame.GenerateGame(100);
+            ServiceGame.GenerateGame(100, String.Empty);
             timer.Stop();
             technicalreport.Add($"Temps de génération de la partie : {timer.Elapsed.TotalSeconds}");
             //gm.game = new ServiceGame();

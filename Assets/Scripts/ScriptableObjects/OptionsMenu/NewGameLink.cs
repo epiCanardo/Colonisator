@@ -35,8 +35,11 @@ namespace Colfront.GamePlay
 
             yield return loading.transform.GetComponent<Image>().DOFade(0, 1).WaitForCompletion();
             //yield return new WaitForSeconds(1);
+
             Destroy(loading);
-            //MenusManager.Instance.TryDestroyMenu(MenusManager.MenuType.Options);
+            MenusManager.Instance.TryDestroyMenu(MenusManager.MenuType.Options);
+
+            ModManager.Instance.LoadSentences();
         }
 
         void DoPopulateWorld()
@@ -69,14 +72,11 @@ namespace Colfront.GamePlay
 
         public void GenerateMap()
         {
-            //ServiceGame.GenerateGame("GameData/v1testdata_100npc.txt");
             Stopwatch timer = Stopwatch.StartNew();
-            ServiceGame.GenerateGame(1000);
+            ServiceGame.GenerateGame(1000, string.Empty);
+            //ServiceGame.SendCards();
             timer.Stop();
             technicalreport.Add($"Temps de génération de la partie : {timer.Elapsed.TotalSeconds}");
-            //gm.game = new ServiceGame();
-            //gm.game.GenerateGame(50);
-            //gm.game.GenerateGame("GameData/v1testdata_100npc.txt");
 
             // création des cases
             Stopwatch timer2 = Stopwatch.StartNew();
@@ -106,17 +106,6 @@ namespace Colfront.GamePlay
             timer3.Stop();
             technicalreport.Add($"Temps de démarrage du premier tour : {timer3.Elapsed.TotalSeconds}");
 
-            //Debug.Log($"Le monde a été peuplé avec succès !");
-            //Debug.Log($"Nombre d'îles : {ServiceGame.Islands.Count()}");
-            //Debug.Log($"Nombre de factions : {ServiceGame.Factions.Count()}");
-            //Debug.Log($"Nombre de PNJ sur les îles: {ServiceGame.GetGroundNpcs.Count()}");
-            //Debug.Log($"Nombre de PNJ à bord des navires: {ServiceGame.GetNpcs(ServiceGame.Ships).Count()}");
-            ////Debug.Log($"C'est au tour du navire {GameManager.Instance.CurrentShipToPlay.name } / faction : { ServiceGame.GetFaction(GameManager.Instance.CurrentShipToPlay).name } de jouer");
-
-            //foreach (var faction in ServiceGame.Factions)
-            //{
-            //    Debug.Log($"Nombre de vaisseau de la faction {faction.name} : {ServiceGame.GetShipsFromFaction(faction).Count()}");
-            //}
         }
     }
 }

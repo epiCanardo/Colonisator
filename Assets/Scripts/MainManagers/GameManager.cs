@@ -305,7 +305,7 @@ namespace Colfront.GamePlay
             //    FactionsManager.Instance.Factions.Add(fM);
 
                 Faction human = ServiceGame.Factions.First(x => x.playerTypeEnum == "HUMAN");
-                SetFactionToManager(human, new List<Color32> { Color.blue, Color.white, Color.red });
+                SetFactionToManager(human, new List<Color32> { Color.blue, Color.white, Color.red }, false);
                 ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
            // }
         }

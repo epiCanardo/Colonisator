@@ -7,6 +7,7 @@ using DG.Tweening;
 using System.Linq;
 using UnityEngine.UI;
 using System.Text;
+using Colonisator.Mods;
 
 namespace Colfront.GamePlay
 {
@@ -121,25 +122,25 @@ namespace Colfront.GamePlay
                             switch (action.objectiveRuleResult?.objectiveEnum)
                             {
                                 case "COLONIZE_ISLAND":
-                                    sb.AppendLine("Je souhaite coloniser une île.");
+                                    sb.AppendLine(ModManager.Instance.GetValue(Sentence.OBJECTIVE_WANNA_COLONIZE));
                                     break;
                                 case "PUNCTURE_CREW":
-                                    sb.AppendLine("Je vais faucher des âmes..");
+                                    sb.AppendLine(ModManager.Instance.GetValue(Sentence.OBJECTIVE_WANNA_PUNCTURE));
                                     break;
                                 case "REFOURGUER_CREW":
-                                    sb.AppendLine("Je souhaite me débarasser de certains matelots !!");
+                                    sb.AppendLine(ModManager.Instance.GetValue(Sentence.OBJECTIVE_WANNA_FIRECREW));
                                     break;
                                 case "GET_RIGGING":
-                                    sb.AppendLine("Je souhaite acheter du gréément");
+                                    sb.AppendLine(ModManager.Instance.GetValue(Sentence.OBJECTIVE_WANNA_BUY_RIGGING));
                                     break;
                                 case "GET_FOOD":
-                                    sb.AppendLine("Je dois me réapprovionner en vivres");
+                                    sb.AppendLine(ModManager.Instance.GetValue(Sentence.OBJECTIVE_WANNA_BUY_FOOD));
                                     break;
                                 case "GET_CREW":
-                                    sb.AppendLine("Je manque de matelots");
+                                    sb.AppendLine(ModManager.Instance.GetValue(Sentence.OBJECTIVE_WANNA_BUY_CREW));
                                     break;
                                 default:
-                                    sb.AppendLine("Je ne sais plus quoi faire !");
+                                    sb.AppendLine(ModManager.Instance.GetValue(Sentence.OBJECTIVE_NOTHING));
                                     break;
                             }
 

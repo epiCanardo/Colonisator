@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Colfront.GamePlay;
 
 namespace ColanderSource
 {
@@ -17,13 +18,17 @@ namespace ColanderSource
         /// génération d'une partie en exploitant l'api rest
         /// </summary>
         /// <param name="npcCount">nombre de pnj demandés</param>
+        /// <param name="rndSeed"></param>
         /// <returns></returns>
-        public static void GenerateGame(int npcCount)
+        public static void GenerateGame(int npcCount, string rndSeed)
         {
             var client = new RestClient($"http://localhost:8080/games/init?nbNPC={npcCount}");
 
             var request = new RestRequest(Method.GET);
             game = client.Execute<Game>(request).Data;
+
+            if (!string.IsNullOrEmpty(rndSeed))
+                InitRandomWithSeed(rndSeed);
         }
 
         /// <summary>
@@ -47,6 +52,44 @@ namespace ColanderSource
 
             //game = JsonSerializer.Deserialize<Game>(jsonMoq, options);
             game = JsonConvert.DeserializeObject<Game>(jsonMoq);
+        }
+
+        /// <summary>
+        /// récupération en envoi des cartes
+        /// </summary>
+        public static void SendCards()
+        {
+            var client = new RestClient($"http://localhost:8080/games/{game.id}/cards");
+            var request = new RestRequest(Method.POST);
+
+            CardsDTO cards = new CardsDTO(ModManager.Instance.GetCards());
+
+            request.AddJsonBody(cards.ToJson());
+            client.Post<CardsDTO>(request);
+        }
+
+        /// <summary>
+        /// démarrage d'un nouveau tour
+        /// </summary>
+        public static void StartNewTurn(bool test = false)
+        {
+            if (!test)
+            {
+                var client = new RestClient($"http://localhost:8080/games/{game.id}/nextTurn");
+                var request = new RestRequest(Method.GET);
+
+                // le game est écrasé avec les nouvelles données renvoyées
+                game = client.Execute<Game>(request).Data;
+            }
+
+            // initialisation du rapport du tour à transmettre en fin de tour
+            report = new ReportDTO<EventDTO>();
+
+            using (StreamWriter sW = new StreamWriter($"Reports/game_turn_{GetCurrentTurn.number}.json"))
+            {
+                sW.Write(game.ToJson());
+                sW.Close();
+            }
         }
 
         /// <summary>
@@ -601,30 +644,6 @@ namespace ColanderSource
         }
 
         /// <summary>
-        /// démarrage d'un nouveau tour
-        /// </summary>
-        public static void StartNewTurn(bool test = false)
-        {
-            if (!test)
-            {
-                var client = new RestClient($"http://localhost:8080/games/{game.id}/nextTurn");
-                var request = new RestRequest(Method.GET);
-
-                // le game est écrasé avec les nouvelles données renvoyées
-                game = client.Execute<Game>(request).Data;
-            }
-
-            // initialisation du rapport du tour à transmettre en fin de tour
-            report = new ReportDTO<EventDTO>();
-
-            using (StreamWriter sW = new StreamWriter($"Reports/game_turn_{GetCurrentTurn.number}.json"))
-            {
-                sW.Write(game.ToJson());
-                sW.Close();
-            }
-        }
-
-        /// <summary>
         /// la fin du tour consiste à envoyer le rapport au back
         /// </summary>
         public static void EndTurn()
@@ -635,12 +654,6 @@ namespace ColanderSource
             client.Post<ReportDTO<EventDTO>>(request);
         }
 
-        public static void SendCards()
-        {
-            var client = new RestClient($"http://localhost:8080/games/{game.id}/cards");
-            var request = new RestRequest(Method.POST);
-            request.AddJsonBody(report.ToJson());
-            client.Post<ReportDTO<EventDTO>>(request);
-        }
+
     }
 }
