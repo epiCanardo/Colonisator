@@ -1,1 +1,1 @@
-Rien. Démerdez vous !
+Si vous êtes joueurs, suprrimez le répertoire /Core..

@@ -1,0 +1,32 @@
+{
+	"sentences": [
+		{
+			"key": "OBJECTIVE_WANNA_COLONIZE",
+			"value": "Je souhaite coloniser une île."
+		},
+		{
+			"key": "OBJECTIVE_WANNA_PUNCTURE",
+			"value": "Je vais faucher des âmes.."
+		},
+		{
+			"key": "OBJECTIVE_WANNA_FIRECREW",
+			"value": "Je dois me débarasser de certains matelots !"
+		},
+		{
+			"key": "OBJECTIVE_WANNA_BUY_RIGGING",
+			"value": "Il me manque du gréement"
+		},
+		{
+			"key": "OBJECTIVE_WANNA_BUY_FOOD",
+			"value" :"Je dois me réapprovisionner en vivres"
+		},
+		{
+			"key" :"OBJECTIVE_WANNA_BUY_CREW",
+			"value" :"Je manque de matelots"
+		},
+		{
+			"key" :"OBJECTIVE_NOTHING",
+			"value" :"Je ne sais plus quoi faire !"
+		}
+	]
+}

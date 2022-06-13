@@ -1,3 +1,4 @@
+using System;
 using ColanderSource;
 using UnityEngine;
 using UnityEngine.UI;
@@ -62,7 +63,7 @@ namespace Colfront.GamePlay
         public void GenerateMap()
         {
             Stopwatch timer = Stopwatch.StartNew();
-            ServiceGame.GenerateGame(100);
+            ServiceGame.GenerateGame(100, String.Empty);
             timer.Stop();
             technicalreport.Add($"Temps de génération de la partie : {timer.Elapsed.TotalSeconds}");
 
