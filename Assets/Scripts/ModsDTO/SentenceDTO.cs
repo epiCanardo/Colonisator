@@ -28,6 +28,7 @@ namespace Assets.Scripts.ModsDTO
         public static string HISTORIC_FIRECREW_DONE = "HISTORIC_FIRECREW_DONE";
         public static string HISTORIC_COLONIZATION_DONE = "HISTORIC_COLONIZATION_DONE";
         public static string HISTORIC_PUNCTURE_DONE = "HISTORIC_PUNCTURE_DONE";
+        public static string HISTORIC_MOVE_DONE = "HISTORIC_MOVE_DONE";
 
         public List<SentenceDTOObject> sentences { get; set; }
 

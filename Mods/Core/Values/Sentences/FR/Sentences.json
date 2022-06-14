@@ -74,19 +74,23 @@
 		},
 		{
 			"key" :"CURRENT_TURN_DETAIL",
-			"value" : "Tour {0} : Tour de la faction : {1} - Navire : {2}"
+			"value" : "Tour {0} : Tour de la faction : <b>{1}</b> - Navire : {2}"
 		},
 		{
 			"key" :"HISTORIC_FIRECREW_DONE",
-			"value" : "[Tour {0}] - [Faction : <link=\"id\">{1}</link>] - Le navire '{2}' <b>a refourgué {3} matelots</b> ! Il en reste : <b>{GameManager.Instance.CurrentShipToPlay.crew.Count}</b>"
+			"value" : "[Tour {0}] - [Faction : <b>{1}</b>] - Le navire '{2}' <b>a refourgué {3} matelots</b> ! Il en reste : <b>{GameManager.Instance.CurrentShipToPlay.crew.Count}</b>"
 		},
 		{
 			"key" :"HISTORIC_COLONIZATION_DONE",
-			"value" : "Tour {0}] - [Faction : {1}] - Le navire '{2}' a installé une nouvelle colonie sur {3} ! {4} matelots ont été débarqués. Reste : {5}"
+			"value" : "Tour {0}] - [Faction : <b>{1}</b>] - Le navire '{2}' a installé une nouvelle colonie sur {3} ! {4} matelots ont été débarqués. Reste : {5}"
 		},
 		{
 			"key" :"HISTORIC_PUNCTURE_DONE",
-			"value" : "[Tour {0}] - [Faction : {1}] - Le navire fantôme s'est renforcé avec {2} prélevés !'. Il paraît qu'ils n'ont pas souffert, mais les cris entendus à bord indiquent le contraire !"
+			"value" : "[Tour {0}] - [Faction : <b>{1}</b>] - Le navire fantôme s'est renforcé avec {2} prélevés !'. Il paraît qu'ils n'ont pas souffert, mais les cris entendus à bord indiquent le contraire !"
+		},
+		{
+			"key" :"HISTORIC_MOVE_DONE",
+			"value" : "[Tour {0}] - [Faction : <b>{1}</b>] - Le navire '{2}' a bougé de {3} cases et a perdu {4} de gréément suite à son mouvement ! Il reste : {5} de gréement"
 		}
 	]
 }

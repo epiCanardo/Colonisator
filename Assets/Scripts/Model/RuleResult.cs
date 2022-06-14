@@ -42,6 +42,12 @@ namespace Assets.Scripts.Model
         /// la description textuelle de la réalisation
         /// </summary>
         public string realisationEnum { get; set; }
+
+        public const string MOVE = "MOVE";
+        public const string GET_SAILORS = "GET_SAILORS";
+        public const string REFOURGUER_MATELOTS = "REFOURGUER_MATELOTS";
+        public const string COLONIZE = "COLONIZE";
+
     }
 
     public class SolutionRuleResult : AbstractRuleResult
@@ -72,13 +78,5 @@ namespace Assets.Scripts.Model
         public const string GET_RIGGING = "GET_RIGGING";
         public const string GET_FOOD = "GET_FOOD";
         public const string GET_CREW = "GET_CREW";
-    }
-
-    public enum RealisationsEnum
-    {
-        MOVE,
-        GET_SAILORS,
-        REFOURGUER_MATELOTS,
-        COLONIZE
     }
 }

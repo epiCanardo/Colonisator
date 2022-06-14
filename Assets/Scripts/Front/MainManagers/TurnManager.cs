@@ -116,7 +116,7 @@ namespace Assets.Scripts.Front.MainManagers
                             // mise à jour du texte du tour en cours
                             CurrentTurnText.text =
                                 string.Format(ModManager.Instance.GetSentence(SentenceDTO.CURRENT_TURN_DETAIL),
-                                    ServiceGame.GetCurrentTurn.number, faction.name,
+                                    ServiceGame.GetCurrentTurn.number, ModManager.Instance.GetFactionLabel(faction.playerTypeEnum, x=>x.shortLabel),
                                     GameManager.Instance.CurrentShipToPlay.name);
 
                             yield return new WaitForSeconds(0.1f);
@@ -165,17 +165,17 @@ namespace Assets.Scripts.Front.MainManagers
                                         landingNpcs = landingNpcs,
                                     };
                                     ServiceGame.Trade(trade);
-                                    sb.AppendLine(ModManager.Instance.GetSentence(string.Format(SentenceDTO.SOLUTION_FIRECREW_DONE, landingNpcs.Count)));
+                                    sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_FIRECREW_DONE), landingNpcs.Count));
 
-                                    HistoricsManager.Instance.NewMessage(ModManager.Instance.GetSentence(string.Format(
-                                        SentenceDTO.HISTORIC_FIRECREW_DONE,
+                                    HistoricsManager.Instance.NewMessage(string.Format(ModManager.Instance.GetSentence(
+                                        SentenceDTO.HISTORIC_FIRECREW_DONE),
                                         ServiceGame.GetCurrentTurn.number, faction.name,
                                         GameManager.Instance.CurrentShipToPlay.name,
-                                        trade.landingNpcs.Count, GameManager.Instance.CurrentShipToPlay.crew.Count)));
+                                        trade.landingNpcs.Count, GameManager.Instance.CurrentShipToPlay.crew.Count));
 
                                     break;
                                 case SolutionRuleResult.GO_TO_ISLAND:
-                                    sb.AppendLine(string.Format(SentenceDTO.SOLUTION_GO_TO_ISLAND,
+                                    sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_GO_TO_ISLAND),
                                         ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId).name));
                                     break;
                                 case SolutionRuleResult.BUY:
@@ -204,8 +204,8 @@ namespace Assets.Scripts.Front.MainManagers
                                                     dodris = -1000
                                                 }
                                             };
-                                            sb.AppendLine(ModManager.Instance.GetSentence(string.Format(SentenceDTO.SOLUTION_BOUGHT_RIGGING,
-                                                buyTrade.deltaStuff.rigging, -buyTrade.deltaStuff.dodris)));
+                                            sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_BOUGHT_RIGGING),
+                                                buyTrade.deltaStuff.rigging, -buyTrade.deltaStuff.dodris));
                                             break;
                                         case "FOOD":
                                             //  -> 1000 dodris forfaitaires quel que soit la quantité
@@ -230,8 +230,8 @@ namespace Assets.Scripts.Front.MainManagers
                                                     dodris = -1000
                                                 }
                                             };
-                                            sb.AppendLine(ModManager.Instance.GetSentence(string.Format(SentenceDTO.SOLUTION_BOUGHT_FOOD,
-                                                buyTrade.deltaStuff.food, -buyTrade.deltaStuff.food)));
+                                            sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_BOUGHT_FOOD),
+                                                buyTrade.deltaStuff.food, -buyTrade.deltaStuff.food));
                                             break;
                                         case "CREW":
                                             Island islandCrew = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
@@ -245,8 +245,8 @@ namespace Assets.Scripts.Front.MainManagers
                                                 boardingNpcs = ServiceGame.GetNpcs(islandCrew.npcs).Where(x=>x.Rang == "SAILOR")
                                                     .Take(Mathf.Min(action.solutionRuleResult.quantity, islandCrew.npcs.Count)).ToList()
                                             };
-                                            sb.AppendLine(ModManager.Instance.GetSentence(string.Format(SentenceDTO.SOLUTION_HIRED_CREW,
-                                                buyTrade.boardingNpcs.Count, -buyTrade.deltaStuff.dodris)));
+                                            sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_HIRED_CREW),
+                                                buyTrade.boardingNpcs.Count, -buyTrade.deltaStuff.dodris));
                                             break;
                                     }
 
@@ -271,18 +271,18 @@ namespace Assets.Scripts.Front.MainManagers
 
                                     ServiceGame.ColonizeIsland(dtoColonisation);
 
-                                    HistoricsManager.Instance.NewMessage(ModManager.Instance.GetSentence(string.Format(
-                                        SentenceDTO.HISTORIC_COLONIZATION_DONE,
+                                    HistoricsManager.Instance.NewMessage(string.Format(ModManager.Instance.GetSentence(
+                                        SentenceDTO.HISTORIC_COLONIZATION_DONE),
                                         ServiceGame.GetCurrentTurn.number, faction.name,
                                         GameManager.Instance.CurrentShipToPlay.name,
                                         island.name, dtoColonisation.npcs.Count,
-                                        GameManager.Instance.CurrentShipToPlay.crew.Count)));
+                                        GameManager.Instance.CurrentShipToPlay.crew.Count));
 
-                                    sb.AppendLine(ModManager.Instance.GetSentence(string.Format(SentenceDTO.SOLUTION_COLONIZATION_DONE, island.name)));
+                                    sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_COLONIZATION_DONE), island.name));
                                     break;
                                 case SolutionRuleResult.PUNCTURE_CREW:
-                                    sb.AppendLine(ModManager.Instance.GetSentence(string.Format(SentenceDTO.SOLUTION_PUNCTURE_DONE,
-                                        action.realisationRuleResult.npcs.Count)));
+                                    sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_PUNCTURE_DONE),
+                                        action.realisationRuleResult.npcs.Count));
                                     
                                     List<string> npcsToPunct = action.realisationRuleResult.npcs;
                                     if (npcsToPunct != null && npcsToPunct.Any())
@@ -296,10 +296,9 @@ namespace Assets.Scripts.Front.MainManagers
                                         };
                                         ServiceGame.Puncture(punctureDto);
 
-                                        HistoricsManager.Instance.NewMessage(ModManager.Instance.GetSentence(
-                                            string.Format(SentenceDTO.HISTORIC_PUNCTURE_DONE,
+                                        HistoricsManager.Instance.NewMessage(string.Format(ModManager.Instance.GetSentence(SentenceDTO.HISTORIC_PUNCTURE_DONE),
                                                 ServiceGame.GetCurrentTurn.number, faction.name,
-                                                punctureDto.npcIds.Count)));
+                                                punctureDto.npcIds.Count));
                                     }
 
                                     break;
@@ -310,7 +309,7 @@ namespace Assets.Scripts.Front.MainManagers
                             // travail sur les réalisations
                             switch (action.realisationRuleResult?.realisationEnum)
                             {
-                                case "MOVE":
+                                case RealisationRuleResult.MOVE:
                                     // gestion du déplacement
                                     Move actualMovement = action.realisationRuleResult?.move;
 
@@ -352,10 +351,10 @@ namespace Assets.Scripts.Front.MainManagers
                                         });
 
                                         if (actualMovement.cost > 0)
-                                            HistoricsManager.Instance.NewMessage(
-                                                $"[Tour {ServiceGame.GetCurrentTurn.number}] - [Faction : {faction.name}] - Le navire '{GameManager.Instance.CurrentShipToPlay.name}' " +
-                                                $"a bougé de {actualMovement.moveDetails.Sum(x => x.Value)} cases et a perdu {actualMovement.cost} de gréément suite à son mouvement ! " +
-                                                $"Reste : {GameManager.Instance.CurrentShipToPlay.shipBoard.rigging}");
+                                            HistoricsManager.Instance.NewMessage(string.Format(ModManager.Instance.GetSentence(SentenceDTO.HISTORIC_MOVE_DONE),
+                                                ServiceGame.GetCurrentTurn.number, ModManager.Instance.GetFactionLabel(faction.playerTypeEnum, x => x.shortLabel),
+                                                GameManager.Instance.CurrentShipToPlay.name, actualMovement.moveDetails.Sum(x => x.Value), actualMovement.cost,
+                                                GameManager.Instance.CurrentShipToPlay.shipBoard.rigging));
 
                                         sb.AppendLine(
                                             $"J'ai bougé de {actualMovement.moveDetails.Sum(x => x.Value)} cases et perdu {actualMovement.cost} de gréément.");
@@ -367,9 +366,10 @@ namespace Assets.Scripts.Front.MainManagers
                             }
 
                             // consommation de nourriture à bord pour tous les navires sauf le ghost
-                            if (faction.playerTypeEnum != "GHOST")
+                            if (faction.playerTypeEnum != FactionsDTO.GHOST)
                                 ServiceGame.ConsumeFood(GameManager.Instance.CurrentShipToPlay);
 
+                            // affichage des actions
                             shipManager.PrintActionText(sb.ToString());
                         }
                     }
