@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
-
-[CreateAssetMenu]
+namespace Assets.Shared.Ramps.Runtime
+{
+    [CreateAssetMenu]
     public class RampAsset : ScriptableObject
     {
         public Gradient gradient = new Gradient();
@@ -9,3 +10,4 @@
         public bool up = false;
         public bool overwriteExisting = true;
     }
+}

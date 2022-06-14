@@ -43622,7 +43622,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1687258581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be76e5f14cfee674cb30b491fb72b09b, type: 3}
+  m_Script: {fileID: 11500000, guid: d5818d96d4059c640aaf15dc555781e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boost: 8
@@ -43752,7 +43752,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1687258581}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2dbe06bab4921b40889503bd5bbe7f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fb6b439f9663924282b53f2e2d77f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   camspeed: 1000

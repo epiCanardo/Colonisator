@@ -2,7 +2,7 @@
 	"sentences": [
 		{
 			"key": "OBJECTIVE_WANNA_COLONIZE",
-			"value": "Je souhaite coloniser une île."
+			"value": "Je souhaite coloniser une île"
 		},
 		{
 			"key": "OBJECTIVE_WANNA_PUNCTURE",
@@ -27,6 +27,66 @@
 		{
 			"key" :"OBJECTIVE_NOTHING",
 			"value" :"Je ne sais plus quoi faire !"
+		},
+		{
+			"key": "OBJECTIVE_WANNA_BUY_FOOD",
+			"value" :"Je dois me réapprovisionner en vivres"
+		},
+		{
+			"key" :"OBJECTIVE_WANNA_BUY_CREW",
+			"value" :"Je manque de matelots"
+		},
+		{
+			"key" :"OBJECTIVE_NOTHING",
+			"value" :"<b>Je ne sais plus quoi faire !</b>"
+		},
+		{
+			"key": "SOLUTION_FIRECREW_DONE",
+			"value": "{0} matelots ont été débarqués"
+		},
+		{
+			"key": "SOLUTION_GO_TO_ISLAND",
+			"value": "Je me dirige vers {0}"
+		},
+		{
+			"key": "SOLUTION_BOUGHT_RIGGING",
+			"value": "Je viens d'acheter {0} de gréément, contre {1} dodris."
+		},
+		{
+			"key": "SOLUTION_BOUGHT_FOOD",
+			"value": "{0} tonneaux de vivres ont été acquéris, contre {1} dodris."
+		},
+		{
+			"key": "SOLUTION_HIRED_CREW",
+			"value": "Je viens de recruter {0} matelots, contre {1} dodris."
+		},
+		{
+			"key": "SOLUTION_COLONIZATION_DONE",
+			"value": "Je viens d'établir une colonie sur {0} !"
+		},
+		{
+			"key": "SOLUTION_PUNCTURE_DONE",
+			"value": "{0} matelots, ça fera l'affaire pour cette fois !"
+		},
+		{
+			"key" :"CURRENT_TURN_START",
+			"value" :"Tour {0} : Début du tour"
+		},
+		{
+			"key" :"CURRENT_TURN_DETAIL",
+			"value" : "Tour {0} : Tour de la faction : {1} - Navire : {2}"
+		},
+		{
+			"key" :"HISTORIC_FIRECREW_DONE",
+			"value" : "[Tour {0}] - [Faction : <link=\"id\">{1}</link>] - Le navire '{2}' <b>a refourgué {3} matelots</b> ! Il en reste : <b>{GameManager.Instance.CurrentShipToPlay.crew.Count}</b>"
+		},
+		{
+			"key" :"HISTORIC_COLONIZATION_DONE",
+			"value" : "Tour {0}] - [Faction : {1}] - Le navire '{2}' a installé une nouvelle colonie sur {3} ! {4} matelots ont été débarqués. Reste : {5}"
+		},
+		{
+			"key" :"HISTORIC_PUNCTURE_DONE",
+			"value" : "[Tour {0}] - [Faction : {1}] - Le navire fantôme s'est renforcé avec {2} prélevés !'. Il paraît qu'ils n'ont pas souffert, mais les cris entendus à bord indiquent le contraire !"
 		}
 	]
 }

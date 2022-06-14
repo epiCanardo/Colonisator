@@ -1,0 +1,39 @@
+{
+	"factions": [
+		{
+			"key": "NEUTRAL",
+			"shortLabel": "CUII",
+			"longLabel": "Comité d'Union des Îles Indépendantes"
+		},
+		{
+			"key": "PIRATE",
+			"shortLabel": "CPL",
+			"longLabel": "Communauté des Pirates Libres"
+		},
+		{
+			"key": "REBEL_SAILORS",
+			"shortLabel": "CMR",
+			"longLabel": "Confrérie des Matelots Révoltés"
+		},
+		{
+			"key": "TOWN",
+			"shortLabel": "Sundercity",
+			"longLabel": "Cité de Sundercity"
+		},
+		{
+			"key": "PENITENTIARY",
+			"shortLabel": "Piofo",
+			"longLabel": "Centre de détention de Piofo"
+		},
+		{
+			"key": "PRISON",
+			"shortLabel": "Missytown",
+			"longLabel": "Colonie pénitencière de Missytown"
+		},
+		{
+			"key": "GHOST",
+			"shortLabel": "Fantôme",
+			"longLabel": "Navire Fantôme"
+		}
+	]
+}
