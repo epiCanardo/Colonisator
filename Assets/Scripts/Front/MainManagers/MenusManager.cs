@@ -8,13 +8,13 @@ namespace Assets.Scripts.Front.MainManagers
 
     public class MenusManager : UnityEngine.MonoBehaviour
     {
-        private Dictionary<MenuType, GameObject> menus;
+        private Dictionary<string, GameObject> menus;
 
         public static MenusManager Instance { get; private set; }
 
         public MenusManager()
         {
-            menus = new Dictionary<MenuType, GameObject>();
+            menus = new Dictionary<string, GameObject>();
         }
 
         private void Awake()
@@ -22,34 +22,31 @@ namespace Assets.Scripts.Front.MainManagers
             if (Instance == null) { Instance = this; }
         }
 
-        public void TryOpenMenu(MenuType menuType, GameObject objectToOpen)
+        public GameObject TryOpenMenu(string menuKey, GameObject objectToOpen)
         {
-            if (!menus.ContainsKey(menuType))
+            if (!menus.ContainsKey(menuKey))
             {
                 var menu = Instantiate(objectToOpen, GameManager.Instance.canvas.transform);
                 menu.transform.SetAsLastSibling();
-                menus.Add(menuType, menu);
+                menus.Add(menuKey, menu);
+                return menu;
             }
+
+            return null;
         }
 
-        public void TryDestroyMenu(MenuType menuType)
+        public void TryDestroyMenu(string menuKey)
         {
-            if (menus.ContainsKey(menuType))
+            if (menus.ContainsKey(menuKey))
             {
-                Destroy(menus[menuType]);
-                menus.Remove(menuType);
+                Destroy(menus[menuKey]);
+                menus.Remove(menuKey);
             }
         }
 
-        public void HideMenu(MenuType menuType)
+        public void HideMenu(string menuKey)
         {
-            menus[menuType].transform.GetComponent<Image>().DOFade(0,0);
-        }
-
-        public enum MenuType
-        {
-            Options,
-            Loading
+            menus[menuKey].transform.GetComponent<Image>().DOFade(0,0);
         }
     }
 }

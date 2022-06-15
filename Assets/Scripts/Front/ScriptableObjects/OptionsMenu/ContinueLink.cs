@@ -11,13 +11,13 @@ namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu
 
         public override void OnPointerDown(PointerEventData eventData)
         {
-            MenusManager.Instance.TryDestroyMenu(MenusManager.MenuType.Options);
+            MenusManager.Instance.TryDestroyMenu("systemOptions");
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
-                MenusManager.Instance.TryDestroyMenu(MenusManager.MenuType.Options);
+                MenusManager.Instance.TryDestroyMenu("systemOptions");
         }
     }
 }

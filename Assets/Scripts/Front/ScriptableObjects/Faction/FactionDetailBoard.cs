@@ -15,5 +15,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.Faction
         {
             title.text = $"Détail de la faction {faction.longName}";
         }
+
+        public override string key => "factionDetailBoard";
     }
 }

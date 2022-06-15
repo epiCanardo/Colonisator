@@ -32,7 +32,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu
             yield return loading.transform.GetComponent<Image>().DOFade(0, 1).WaitForCompletion();
 
             Destroy(loading);
-            MenusManager.Instance.TryDestroyMenu(MenusManager.MenuType.Options);
+            MenusManager.Instance.TryDestroyMenu("systemOptions");
         }
 
         void DoPopulateWorld()

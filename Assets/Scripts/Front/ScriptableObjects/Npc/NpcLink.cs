@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Front.ScriptableObjects.Ancestors;
+using Assets.Scripts.Service;
+using TMPro;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Front.ScriptableObjects.Npc

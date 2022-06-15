@@ -22,6 +22,8 @@ namespace Assets.Scripts.ModsDTO
         public static string SOLUTION_COLONIZATION_DONE = "SOLUTION_COLONIZATION_DONE";
         public static string SOLUTION_PUNCTURE_DONE = "SOLUTION_PUNCTURE_DONE";
 
+        public static string REALISATION_MOVE_DONE = "REALISATION_MOVE_DONE";
+
         public static string CURRENT_TURN_START = "CURRENT_TURN_START";
         public static string CURRENT_TURN_DETAIL = "CURRENT_TURN_DETAIL";
 
@@ -29,6 +31,8 @@ namespace Assets.Scripts.ModsDTO
         public static string HISTORIC_COLONIZATION_DONE = "HISTORIC_COLONIZATION_DONE";
         public static string HISTORIC_PUNCTURE_DONE = "HISTORIC_PUNCTURE_DONE";
         public static string HISTORIC_MOVE_DONE = "HISTORIC_MOVE_DONE";
+
+        public static string CARD_ID = "CARD_ID";
 
         public List<SentenceDTOObject> sentences { get; set; }
 

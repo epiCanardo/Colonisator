@@ -13,6 +13,8 @@ namespace Assets.Scripts.Front.ScriptableObjects.Faction
 {
     public class FactionsBoard : UIBoard
     {
+        public override string key => "factionsBoard";
+
         public GameObject parent;
 
         [Header("Titre")]
@@ -125,6 +127,5 @@ namespace Assets.Scripts.Front.ScriptableObjects.Faction
             int shipsCount = ServiceGame.FactionOwnedShips(faction.id).Count();
             factionLine.Find("FactionOwnedShipsCell").Find("Text").GetComponent<TextMeshProUGUI>().text = Convert.ToString(shipsCount);
         }
-
     }
 }

@@ -27,7 +27,7 @@ namespace Assets.Scripts.Front.HUD.MiniButtons
         private void MenuCreation()
         {
             //Instantiate(optionsMenu, GameManager.Instance.canvas.transform).SetAsLastSibling();
-            MenusManager.Instance.TryOpenMenu(MenusManager.MenuType.Options, optionsMenu);
+            MenusManager.Instance.TryOpenMenu("systemOptions", optionsMenu);
         }
 
         private void Update()

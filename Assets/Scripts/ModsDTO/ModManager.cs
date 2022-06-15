@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Front.MainManagers;
 
 namespace Assets.Scripts.ModsDTO
 {
@@ -100,7 +101,9 @@ namespace Assets.Scripts.ModsDTO
         public string GetFactionLabel(string sourceKey, Func<FactionDTOObject, string> label)
         {
             if (!_factionsDTO.factions.Any(x => x.key.Equals(sourceKey)))
-                return $"[{sourceKey}] undefinded";
+                //return $"[{sourceKey}] undefinded";
+                return FactionsManager.Instance.Factions.First(x => x.Faction.playerTypeEnum.Equals(sourceKey)).Faction
+                    .longName;
 
             return label(_factionsDTO.factions.First(x => x.key.Equals(sourceKey)));
         }

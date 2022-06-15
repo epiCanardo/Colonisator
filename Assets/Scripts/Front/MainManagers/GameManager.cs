@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Front.Cams;
+using Assets.Scripts.Front.ScriptableObjects.Faction;
+using Assets.Scripts.Front.ScriptableObjects.Npc;
 using Assets.Scripts.Front.ShipScreen;
 using Assets.Scripts.Front.Squares;
 using Assets.Scripts.Model;
@@ -156,8 +158,13 @@ namespace Assets.Scripts.Front.MainManagers
         public void SetInfoPanelTitle(Ship ship)
         {
             PanelActionSelectionShipName.text = ship.name;
+
             PanelActionSelectionFactionName.text = ServiceGame.GetFaction(ship).name;
+            PanelActionSelectionFactionName.GetComponent<FactionLink>().faction = ServiceGame.GetFaction(ship);
+
             PanelActionSelectionCaptainName.text = ServiceGame.ShipCaptain(ship).fullName;
+            PanelActionSelectionCaptainName.GetComponent<NpcLink>().npc = ServiceGame.ShipCaptain(ship);
+
             PanelActionSelectionCrewCount.text = ServiceGame.ShipSailors(ship).Count().ToString();
             PanelActionSelectionOfficerCount.text = ServiceGame.ShipOfficiers(ship).Count().ToString();
             PanelActionSelectionFoodCount.text = CurrentShipToPlay.shipBoard.food.ToString();

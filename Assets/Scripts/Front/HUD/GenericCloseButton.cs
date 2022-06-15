@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Front.MainManagers;
+using Assets.Scripts.Front.ScriptableObjects.Ancestors;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,10 +32,11 @@ namespace Assets.Scripts.Front.HUD
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            text.color = color;
+           //text.color = color;
             //objectToClose.SetActive(false);
-            Destroy(objectToClose);
-            GameManager.Instance.CurrentOpenedBoard -= 1;
+            //Destroy(objectToClose);
+           // GameManager.Instance.CurrentOpenedBoard -= 1;
+            MenusManager.Instance.TryDestroyMenu(objectToClose.GetComponent<UIBoard>().key);
         }
     }
 }

@@ -351,17 +351,20 @@ namespace Assets.Scripts.Front.MainManagers
                                         });
 
                                         if (actualMovement.cost > 0)
-                                            HistoricsManager.Instance.NewMessage(string.Format(ModManager.Instance.GetSentence(SentenceDTO.HISTORIC_MOVE_DONE),
-                                                ServiceGame.GetCurrentTurn.number, ModManager.Instance.GetFactionLabel(faction.playerTypeEnum, x => x.shortLabel),
-                                                GameManager.Instance.CurrentShipToPlay.name, actualMovement.moveDetails.Sum(x => x.Value), actualMovement.cost,
+                                            HistoricsManager.Instance.NewMessage(string.Format(
+                                                ModManager.Instance.GetSentence(SentenceDTO.HISTORIC_MOVE_DONE),
+                                                ServiceGame.GetCurrentTurn.number,
+                                                ModManager.Instance.GetFactionLabel(faction.playerTypeEnum,
+                                                    x => x.shortLabel),
+                                                GameManager.Instance.CurrentShipToPlay.name,
+                                                actualMovement.moveDetails.Sum(x => x.Value), actualMovement.cost,
                                                 GameManager.Instance.CurrentShipToPlay.shipBoard.rigging));
 
-                                        sb.AppendLine(
-                                            $"J'ai bougé de {actualMovement.moveDetails.Sum(x => x.Value)} cases et perdu {actualMovement.cost} de gréément.");
+                                        sb.AppendLine(string.Format(
+                                            ModManager.Instance.GetSentence(SentenceDTO.REALISATION_MOVE_DONE),
+                                            actualMovement.moveDetails.Sum(x => x.Value), actualMovement.cost));
                                     }
 
-                                    break;
-                                default:
                                     break;
                             }
 

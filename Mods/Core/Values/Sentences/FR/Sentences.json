@@ -69,6 +69,10 @@
 			"value": "{0} matelots, ça fera l'affaire pour cette fois !"
 		},
 		{
+			"key": "REALISATION_MOVE_DONE",
+			"value": "J'ai bougé de {0} cases et perdu {1} de gréément."
+		},
+		{
 			"key" :"CURRENT_TURN_START",
 			"value" :"Tour {0} : Début du tour"
 		},
@@ -91,6 +95,10 @@
 		{
 			"key" :"HISTORIC_MOVE_DONE",
 			"value" : "[Tour {0}] - [Faction : <b>{1}</b>] - Le navire '{2}' a bougé de {3} cases et a perdu {4} de gréément suite à son mouvement ! Il reste : {5} de gréement"
+		},
+		{
+			"key" :"CARD_ID",
+			"value" : "Carte {0}"
 		}
 	]
 }

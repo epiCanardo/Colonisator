@@ -1,7 +1,7 @@
 {
   "id": "2",
   "title": "Epouser la fille du gouverneur dans la réserve",
-  "description": "Vous avez retrouvé le parchemin d'accès à la taverne de remise en forme ! Pour fêter ça, vous décidez d'épouser Gwendoline. Dans la reserve ou à la salle des fêtes ?",
+  "description": "Vous avez retrouvé le parchemin d'accès à la taverne de remise en forme ! Pour fêter ça, vous décidez d'épouser Gwendoline, fille du gouverneur de Sundercity. Dans la reserve ou à la salle des fêtes ?",
   "priority": 1,
   "choices": [
     {
@@ -15,7 +15,7 @@
       "shipCrewDelta": 0
     },
     {
-      "label": "Allezzzzz fais péter la des fêtes avec ton cheveu sur la langue !",
+      "label": "Allezzzzz fais péter la salle des fêtes avec ton cheveu sur la langue ! Y'aura même des filets o fish !",
       "shipCarac": {
         "ship": "CURRENT_SHIP"
       },

@@ -10,6 +10,8 @@ namespace Assets.Scripts.Front.ScriptableObjects.Npc
 {
     public class NpcDetailBoard : UIBoard
     {
+        public override string key => "npcDetailBoard";
+        
         public Model.Npc npc;
 
         [Header("Titre")]
