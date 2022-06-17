@@ -35,5 +35,10 @@
 			"shortLabel": "Fantôme",
 			"longLabel": "Navire Fantôme"
 		}
+	],
+	"customNames" : [
+	"La Confrérie des naufrageurs des mers du sud et associés","La Classe Armoricaine","Les Tipiaques", "Ingénierie maritime","Naufrageurs Inc.","L'Amicale des anciens matelots","Alpha 1.1",
+"Les Semi-moelleux","La Compagnie de la beuverie","Les Ferrailleurs","Les Commerçants régionaux","Les Sanguinaires","Les Amis de la bouteille","Les Prêcheurs Alcoolisés","Les Copains d'Abord",
+"Les Inventeurs du Fil à Couper le Beurre","Les Pique-Assiette"
 	]
 }

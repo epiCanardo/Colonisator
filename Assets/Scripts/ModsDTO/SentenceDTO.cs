@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Assets.Scripts.ModsDTO
 {
-    public class SentenceDTO
+    public class SentenceDTO : ConfigDTO<SentenceDTO>
     {
         public static string OBJECTIVE_WANNA_COLONIZE = "OBJECTIVE_WANNA_COLONIZE";
         public static string OBJECTIVE_WANNA_PUNCTURE = "OBJECTIVE_WANNA_PUNCTURE";
@@ -35,25 +35,25 @@ namespace Assets.Scripts.ModsDTO
         public static string CARD_ID = "CARD_ID";
 
         public List<SentenceDTOObject> sentences { get; set; }
-
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        public static SentenceDTO LoadFromFile(string file)
-        {
-            string jsonMoq;
-
-            using (StreamReader sR = new StreamReader(file))
-            {
-                jsonMoq = sR.ReadToEnd();
-                sR.Close();
-            }
-
-            return JsonConvert.DeserializeObject<SentenceDTO>(jsonMoq);
-        }
     }
+
+    //    public string ToJson()
+    //    {
+    //        return JsonConvert.SerializeObject(this, Formatting.Indented);
+    //    }
+
+    //    public static SentenceDTO LoadFromFile(string file)
+    //    {
+    //        string jsonMoq;
+
+    //        using (StreamReader sR = new StreamReader(file))
+    //        {
+    //            jsonMoq = sR.ReadToEnd();
+    //            sR.Close();
+    //        }
+
+    //        return JsonConvert.DeserializeObject<SentenceDTO>(jsonMoq);
+    //    }
 
     public class SentenceDTOObject
     {

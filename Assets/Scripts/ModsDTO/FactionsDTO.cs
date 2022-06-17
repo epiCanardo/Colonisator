@@ -17,6 +17,7 @@ namespace Assets.Scripts.ModsDTO
         public const string GHOST = "GHOST";
 
         public List<FactionDTOObject> factions { get; set; }
+        public List<string> customNames { get; set; }
 
         public string ToJson()
         {
