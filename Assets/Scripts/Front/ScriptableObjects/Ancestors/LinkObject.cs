@@ -31,10 +31,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.Ancestors
         /// <param name="eventData"></param>
         public virtual void OnPointerDown(PointerEventData eventData)
         {
-            MenusManager.Instance.TryOpenMenu(target.GetComponent<UIBoard>().key, target.gameObject);
-            //targetInstance = Instantiate(target, GameManager.Instance.canvas.transform);
-            //targetInstance.SetAsLastSibling();
-            //GameManager.Instance.CurrentOpenedBoard += 1;
+            targetInstance = MenusManager.Instance.TryOpenMenu(target.GetComponent<UIBoard>().key, target.gameObject).transform;
             targetInstance.GetComponent<RectTransform>().anchoredPosition += GameManager.Instance.CurrentOpenedBoard * new Vector2(50, -50);
         }
     }
