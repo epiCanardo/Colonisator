@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Assets.Scripts.DTO;
 using Assets.Scripts.EventsDTO;
+using Assets.Scripts.Front.ScriptableObjects.Faction;
 using Assets.Scripts.Model;
 using Assets.Scripts.ModsDTO;
 using Assets.Scripts.Service;
@@ -23,6 +24,8 @@ namespace Assets.Scripts.Front.MainManagers
         public GameObject EndTurnButton;
         public GameObject MoveShipButton;
 
+        [Header("Carte")]
+        public GameObject cardObject;
         public static TurnManager Instance { get; private set; }
 
         private bool nonHumanAutoTestActive = false;
@@ -86,10 +89,22 @@ namespace Assets.Scripts.Front.MainManagers
                                 ServiceGame.GetCurrentTurn.number, faction.name,
                                 GameManager.Instance.CurrentShipToPlay.name);
 
+                        // carte piochée ou mouvement ?
+                        Card card = factionTurn.Value.First().card;
+                        if (card != null)
+                        {
+                            var cardMenu = MenusManager.Instance.TryOpenMenu("card", cardObject);
+                            CardBoard cardBoard = cardMenu.GetComponent<CardBoard>();
+                            cardBoard.callbacKFunc += CardChoiceCallBack;
+                            cardBoard.SetCard(card);
+
+                            yield return new WaitUntil(() => MainState == TurnState.CardChoiceDone);
+                            MenusManager.Instance.TryDestroyMenu("card");
+
+                        }
                         MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
 
                         yield return new WaitUntil(() => MainState == TurnState.AI);
-
                         MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                     }
                     else
@@ -116,7 +131,7 @@ namespace Assets.Scripts.Front.MainManagers
                             // mise à jour du texte du tour en cours
                             CurrentTurnText.text =
                                 string.Format(ModManager.Instance.GetSentence(SentenceDTO.CURRENT_TURN_DETAIL),
-                                    ServiceGame.GetCurrentTurn.number, ModManager.Instance.GetFactionLabel(faction.playerTypeEnum, x=>x.shortLabel),
+                                    ServiceGame.GetCurrentTurn.number, ModManager.Instance.GetFactionLabel(faction.playerTypeEnum, x => x.shortLabel),
                                     GameManager.Instance.CurrentShipToPlay.name);
 
                             yield return new WaitForSeconds(0.1f);
@@ -242,7 +257,7 @@ namespace Assets.Scripts.Front.MainManagers
                                             {
                                                 ship = GameManager.Instance.CurrentShipToPlay,
                                                 island = ServiceGame.GetIslandFromId(action.solutionRuleResult.islandId),
-                                                boardingNpcs = ServiceGame.GetNpcs(islandCrew.npcs).Where(x=>x.Rang == "SAILOR")
+                                                boardingNpcs = ServiceGame.GetNpcs(islandCrew.npcs).Where(x => x.Rang == "SAILOR")
                                                     .Take(Mathf.Min(action.solutionRuleResult.quantity, islandCrew.npcs.Count)).ToList()
                                             };
                                             sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_HIRED_CREW),
@@ -252,7 +267,7 @@ namespace Assets.Scripts.Front.MainManagers
 
                                     // réalisation du trade
                                     ServiceGame.Trade(buyTrade);
-                                    
+
                                     break;
                                 case SolutionRuleResult.COLONIZE:
                                     Island island = ServiceGame.GetIsland(GameManager.Instance.CurrentShipToPlay
@@ -283,7 +298,7 @@ namespace Assets.Scripts.Front.MainManagers
                                 case SolutionRuleResult.PUNCTURE_CREW:
                                     sb.AppendLine(string.Format(ModManager.Instance.GetSentence(SentenceDTO.SOLUTION_PUNCTURE_DONE),
                                         action.realisationRuleResult.npcs.Count));
-                                    
+
                                     List<string> npcsToPunct = action.realisationRuleResult.npcs;
                                     if (npcsToPunct != null && npcsToPunct.Any())
                                     {
@@ -344,7 +359,8 @@ namespace Assets.Scripts.Front.MainManagers
                                             move = (action.realisationRuleResult.move != null)
                                                 ? new Move
                                                 {
-                                                    cost = actualMovement.cost, moveDetails = actualMovement.moveDetails
+                                                    cost = actualMovement.cost,
+                                                    moveDetails = actualMovement.moveDetails
                                                 }
                                                 : null,
                                             ship = GameManager.Instance.CurrentShipToPlay
@@ -430,12 +446,22 @@ namespace Assets.Scripts.Front.MainManagers
             ServiceGame.EndTurn();
             yield return null;
         }
+        /// <summary>
+        /// récupération du choix réalisé et application des conséquences
+        /// </summary>
+        /// <param name="choice"></param>
+        private void CardChoiceCallBack(CardChoice choice)
+        {
+            StartCoroutine(GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().PrintCardConsequencesText(choice.FormatedConsequence));
+            MainState = TurnState.CardChoiceDone;
+        }
     }
 
     public enum TurnState
     {
         ActionsStarted,
         Human,
+        CardChoiceDone,
         AI,
         WaitForEndTurn,
         ActionsFinished,

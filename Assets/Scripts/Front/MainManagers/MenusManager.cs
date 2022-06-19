@@ -9,6 +9,7 @@ namespace Assets.Scripts.Front.MainManagers
     public class MenusManager : UnityEngine.MonoBehaviour
     {
         private Dictionary<string, GameObject> menus;
+        private int currentOpenedBoards;
 
         public static MenusManager Instance { get; private set; }
 
@@ -28,6 +29,8 @@ namespace Assets.Scripts.Front.MainManagers
             {
                 var menu = Instantiate(objectToOpen, GameManager.Instance.canvas.transform);
                 menu.transform.SetAsLastSibling();
+                menu.GetComponent<RectTransform>().anchoredPosition += currentOpenedBoards * new Vector2(50, -50);
+                currentOpenedBoards++;
                 menus.Add(menuKey, menu);
                 return menu;
             }
@@ -41,6 +44,7 @@ namespace Assets.Scripts.Front.MainManagers
             {
                 Destroy(menus[menuKey]);
                 menus.Remove(menuKey);
+                currentOpenedBoards--;
             }
         }
 

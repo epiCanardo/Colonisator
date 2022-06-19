@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Model
 {
@@ -23,5 +24,8 @@ namespace Assets.Scripts.Model
         public string islandId { get; set; } // pour déterminer l'île
         public IslandBoard islandBoardDelta { get; set; } // les conséquences sur le islandboard
         public int islandCrewDelta { get; set; } // les conséquences sur le nombre de matelots
+
+        [JsonIgnore]
+        public string FormatedConsequence { get; set; }
     }
 }

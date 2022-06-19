@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Front.MainManagers;
+using Assets.Scripts.Model;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,10 @@ namespace Assets.Scripts.Front.ScriptableObjects.Ancestors
     public class CardChoiceLink : UnityEngine.MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
         private Color sourceColor;
+
+        public CardChoice choice;
+        public delegate void CarchoiceDelegate(CardChoice choice);
+        public CarchoiceDelegate callbacKFunc;
 
         void Start()
         {
@@ -29,12 +34,12 @@ namespace Assets.Scripts.Front.ScriptableObjects.Ancestors
         }
 
         /// <summary>
-        /// création de la cible et passage au premier plan
+        /// sélection du choix de la carte : application des conséquences
         /// </summary>
         /// <param name="eventData"></param>
         public virtual void OnPointerDown(PointerEventData eventData)
         {
-            
+            callbacKFunc(choice);
         }
     }
 }

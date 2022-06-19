@@ -44,13 +44,16 @@ namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu
             timer.Stop();
             _technicalreport.Add($"Temps de création total du monde : {timer.Elapsed.TotalSeconds}");
 
+            // chargement des mods
+            LoadMods();
+
+            // envoi des cartes au back
+            ServiceGame.SendCards();
+
             Stopwatch timer2 = Stopwatch.StartNew();
             PopulateWorldTask();
             timer2.Stop();
             _technicalreport.Add($"Temps de population total du monde : {timer2.Elapsed.TotalSeconds}");
-
-            // chargement des mods
-            LoadMods();
 
             timerGlobal.Stop();
             _technicalreport.Add($"Temps total : {timerGlobal.Elapsed.TotalSeconds}");
@@ -69,7 +72,6 @@ namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu
         {
             Stopwatch timer = Stopwatch.StartNew();
             ServiceGame.GenerateGame(1000, string.Empty);
-            ServiceGame.SendCards();
             timer.Stop();
             _technicalreport.Add($"Temps de génération de la partie : {timer.Elapsed.TotalSeconds}");
 
@@ -102,8 +104,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu
         private void LoadMods()
         {
             Stopwatch timer = Stopwatch.StartNew();
-            ModManager.Instance.LoadSentences();
-            ModManager.Instance.LoadFactions();
+            ModManager.Instance.Initialization();
             timer.Stop();
             _technicalreport.Add($"Temps de chargement des mods : {timer.Elapsed.TotalSeconds}");
         }

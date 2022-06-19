@@ -27,12 +27,14 @@ namespace Assets.Scripts.Front.HUD.MiniButtons
         /// <param name="eventData"></param>
         public virtual void OnPointerClick(PointerEventData eventData)
         {
-            var targetInstance = Instantiate(target, GameManager.Instance.canvas.transform);
-            targetInstance.SetAsLastSibling();
-            GameManager.Instance.CurrentOpenedBoard += 1;
-            targetInstance.GetComponent<RectTransform>().anchoredPosition += GameManager.Instance.CurrentOpenedBoard * new Vector2(50, -50);
+            var targetInstance = MenusManager.Instance.TryOpenMenu("npcDetailBoard", target.gameObject);
+            //var targetInstance = Instantiate(target, GameManager.Instance.canvas.transform);
+            //targetInstance.SetAsLastSibling();
+            //GameManager.Instance.CurrentOpenedBoard += 1;
+            //targetInstance.GetComponent<RectTransform>().anchoredPosition += GameManager.Instance.CurrentOpenedBoard * new Vector2(50, -50);
 
-            targetInstance.GetComponent<NpcDetailBoard>().npc = ServiceGame.Npcs.First(); // todo à remplacer par le personnage du joueur
+            if (targetInstance != null)
+                targetInstance.GetComponent<NpcDetailBoard>().npc = ServiceGame.Npcs.First(); // todo à remplacer par le personnage du joueur
         }
     }
 }

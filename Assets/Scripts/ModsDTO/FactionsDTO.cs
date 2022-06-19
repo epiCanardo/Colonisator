@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Assets.Scripts.ModsDTO
 {
-    public class FactionsDTO
+    public class FactionsDTO : ConfigDTO<FactionsDTO>
     {
         public const string COMPETITOR = "COMPETITOR";
         public const string NEUTRAL = "NEUTRAL";
@@ -17,25 +17,7 @@ namespace Assets.Scripts.ModsDTO
         public const string GHOST = "GHOST";
 
         public List<FactionDTOObject> factions { get; set; }
-        public List<string> customNames { get; set; }
-
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        public static FactionsDTO LoadFromFile(string file)
-        {
-            string jsonMoq;
-
-            using (StreamReader sR = new StreamReader(file))
-            {
-                jsonMoq = sR.ReadToEnd();
-                sR.Close();
-            }
-
-            return JsonConvert.DeserializeObject<FactionsDTO>(jsonMoq);
-        }
+        public List<string> customNames { get; set; }        
     }
 
     public class FactionDTOObject

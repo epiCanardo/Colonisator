@@ -1,0 +1,40 @@
+{
+	"boards": [
+		{
+			"key": "dodris",
+			"value": "dodris"
+		},
+		{
+			"key": "food",
+			"value": "tonneaux de vivres"
+		},
+		{
+			"key": "order",
+			"value": "ordre"
+		},
+		{
+			"key": "rigging",
+			"value": "gréement"
+		},
+		{
+			"key": "hull",
+			"value" :"coque"
+		},
+		{
+			"key" :"cannons",
+			"value" :"canons"
+		},
+		{
+			"key" :"ammo",
+			"value" :"munitions"
+		},
+		{
+			"key": "powderBarrels",
+			"value" :"Barils de poudre"
+		},	
+		{
+			"key": "defenceLevel",
+			"value" :"Niveau de défense"
+		},	
+	]
+}

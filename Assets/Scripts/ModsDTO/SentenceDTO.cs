@@ -33,27 +33,11 @@ namespace Assets.Scripts.ModsDTO
         public static string HISTORIC_MOVE_DONE = "HISTORIC_MOVE_DONE";
 
         public static string CARD_ID = "CARD_ID";
+        public static string CARD_CHOICE_SHIPBOARD = "CARD_CHOICE_SHIPBOARD";
 
         public List<SentenceDTOObject> sentences { get; set; }
     }
-
-    //    public string ToJson()
-    //    {
-    //        return JsonConvert.SerializeObject(this, Formatting.Indented);
-    //    }
-
-    //    public static SentenceDTO LoadFromFile(string file)
-    //    {
-    //        string jsonMoq;
-
-    //        using (StreamReader sR = new StreamReader(file))
-    //        {
-    //            jsonMoq = sR.ReadToEnd();
-    //            sR.Close();
-    //        }
-
-    //        return JsonConvert.DeserializeObject<SentenceDTO>(jsonMoq);
-    //    }
+   
 
     public class SentenceDTOObject
     {

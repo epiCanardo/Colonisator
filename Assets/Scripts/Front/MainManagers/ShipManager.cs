@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Model;
@@ -17,7 +18,8 @@ namespace Assets.Scripts.Front.MainManagers
         public GameObject FlagLeftTextile;
         public GameObject FlagRightTextile;
         public Shader FlagShader;
-        public TextMeshProUGUI ActionText;
+        public TextMeshProUGUI ActionText; // texte des actions / intentions du navire
+        public TextMeshProUGUI CardConsequencesText; // texte des conséquences de cartes
 
         [Header("Pour le calcul des couleurs des voiles")]
         public List<GameObject> SailsToColor;
@@ -97,10 +99,6 @@ namespace Assets.Scripts.Front.MainManagers
             transform.Translate(direction);
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        }
 
         private void OnMouseDown()
         {
@@ -114,7 +112,6 @@ namespace Assets.Scripts.Front.MainManagers
             Faction faction = ServiceGame.GetFactionFromId(ship.owner);
             var test = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
             GameManager.Instance.SetInfoPanelFlag(test.Flag);
-
             GameManager.Instance.SetInfoPanelTitle(ship);
         }
 
@@ -126,6 +123,14 @@ namespace Assets.Scripts.Front.MainManagers
         { 
             ActionText.text = text;
             ActionText.transform.SetAsLastSibling();
+        }
+
+        public IEnumerator PrintCardConsequencesText(string text)
+        {            
+            CardConsequencesText.text = text;
+            ActionText.transform.SetAsLastSibling();
+            yield return CardConsequencesText.transform.DOMoveY(200, 5).WaitForCompletion();
+            yield return CardConsequencesText.transform.DOMoveY(-200, 0);
         }
     }
 }

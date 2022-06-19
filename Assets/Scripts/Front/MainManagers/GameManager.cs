@@ -80,9 +80,7 @@ namespace Assets.Scripts.Front.MainManagers
         public Vector3 camOffSet { get; set; }
         public Vector3 camEulerAngles { get; set; }
 
-        public Ship CurrentShipToPlay { get; set; }
-
-        public int CurrentOpenedBoard { get; set; }
+        public Ship CurrentShipToPlay { get; set; }        
 
         // récupère l'objet instancié correspondant au navire en cours
         public GameObject GetActualPlayinghipObject => instanciedShipObjects.First(x => x.GetComponent<ShipManager>().ship.Equals(CurrentShipToPlay));
@@ -314,7 +312,7 @@ namespace Assets.Scripts.Front.MainManagers
             //    FactionsManager.Instance.Factions.Add(fM);
 
                 Faction human = ServiceGame.Factions.First(x => x.playerTypeEnum == "HUMAN");
-                SetFactionToManager(human, new List<Color32> { Color.blue, Color.white, Color.red }, false);
+                SetFactionToManager(human, new List<Color32> { Color.blue, Color.white, Color.red });
                 ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
            // }
         }

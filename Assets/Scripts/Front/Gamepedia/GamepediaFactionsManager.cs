@@ -24,22 +24,22 @@ namespace Assets.Scripts.Front.Gamepedia
 
         public void ShowFactions()
         {
-            //panel = Instantiate(panelPrefab, canvas);
-            //panel.GetComponent<FactionsBoard>().ShowBoard(x => x.longName);
-            //MenusManager.Instance.TryOpenMenu(MenusManager.MenuType.FactionsBoard, panel);
+            panel = MenusManager.Instance.TryOpenMenu("factionsBoard", panelPrefab);
+            if (panel != null)
+                    panel.GetComponent<FactionsBoard>().ShowBoard(x => x.longName);
 
-            var cardMenu = MenusManager.Instance.TryOpenMenu("card", cardPrefab);
-            cardMenu.GetComponent<CardBoard>().SetCard(new Card
-            {
-                id = "test",
-                description = "test de <b>description</b>",
-                title = "test de titre !",
-                choices = new List<CardChoice>
-                {
-                    new CardChoice { label = "choix 1", shipBoardDelta = new ShipBoard()},
-                    new CardChoice { label = "choix 2", shipBoardDelta = new ShipBoard()}
-                }
-            });
+            //var cardMenu = MenusManager.Instance.TryOpenMenu("card", cardPrefab);
+            //cardMenu.GetComponent<CardBoard>().SetCard(new Card
+            //{
+            //    id = "test",
+            //    description = "test de <b>description</b>",
+            //    title = "test de titre !",
+            //    choices = new List<CardChoice>
+            //    {
+            //        new CardChoice { label = "choix 1", shipBoardDelta = new ShipBoard()},
+            //        new CardChoice { label = "choix 2", shipBoardDelta = new ShipBoard()}
+            //    }
+            //});
         }
 
         private void Update()

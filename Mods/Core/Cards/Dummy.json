@@ -13,7 +13,8 @@
         "ship": "CURRENT_SHIP"
       },
       "shipBoardDelta": {
-        "food": -7
+        "food": -7, 
+		"dodris": -1000
       },
       "shipCrewDelta": -3,
       "islandCarac": {

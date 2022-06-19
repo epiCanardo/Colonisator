@@ -4,27 +4,15 @@ using Newtonsoft.Json;
 
 namespace Assets.Scripts.ModsDTO
 {
-    public class ShipsDTO
+    public class ShipsDTO : ConfigDTO<ShipsDTO>
     {
-
         public List<string> shipNames { get; set; }
+        public List<ShipClass> shipClasses { get; set; }
 
-        public string ToJson()
+        public class ShipClass
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        public static ShipsDTO LoadFromFile(string file)
-        {
-            string jsonMoq;
-
-            using (StreamReader sR = new StreamReader(file))
-            {
-                jsonMoq = sR.ReadToEnd();
-                sR.Close();
-            }
-
-            return JsonConvert.DeserializeObject<ShipsDTO>(jsonMoq);
+            public int rank { get; set; }
+            public string className { get; set; }
         }
     }
 }

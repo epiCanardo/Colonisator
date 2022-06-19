@@ -99,6 +99,10 @@
 		{
 			"key" :"CARD_ID",
 			"value" : "Carte {0}"
+		},
+		{
+			"key" :"CARD_CHOICE_SHIPBOARD",
+			"value" : "Sur le navire : {0}"
 		}
 	]
 }

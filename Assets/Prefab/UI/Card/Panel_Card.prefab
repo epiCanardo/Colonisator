@@ -804,6 +804,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panel_Close
       objectReference: {fileID: 0}
+    - target: {fileID: 171117396311618346, guid: 765c24385d6b4d54fa96cb1afda19e4d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 171117396311618347, guid: 765c24385d6b4d54fa96cb1afda19e4d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -9,20 +9,16 @@ namespace Assets.Scripts.ModsDTO
 {
     public class ModManager
     {
-        private static string activeMod = "Core";
-
         private MainConfigDTO _mainConfigDto;
         private FactionsDTO _factionsDTO;
         private SentenceDTO _sentencesDTO;
-
-        private List<string> activeCards = new List<string>(); // la liste des cartes atives
+        private IslandsDTO _islandsDTO;
+        private NpcsDTO _npcsDTO;
+        private ShipsDTO _shipsDTO;
+        private GeneralDTO _generalDTO;
+        private PropertiesDTO _propertiesDTO;
 
         private static ModManager _instance;
-
-        public ModManager()
-        {
-            Initialization();
-        }
 
         public static ModManager Instance
         {
@@ -39,16 +35,30 @@ namespace Assets.Scripts.ModsDTO
 
         /// <summary>
         /// initialisation des fichiers mod (config et repertoires liés aux langues)
+        /// initialisation de toutes les configurations
         /// </summary>
         public void Initialization()
         {
+            // chargement de la configuration globale
             _mainConfigDto = MainConfigDTO.LoadFromFile($"Mods/Config.json");
+
+            // chargement des configurations liées aux mods actifs
+            LoadSentences();
+            LoadFactions();
+            LoadGeneralValues();
+            LoadIslands();
+            LoadShips();
+            LoadNpcs();
+            LoadProperties();
         }
 
         public List<string> GetCards()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (string txtName in Directory.GetFiles($"Mods/{activeMod}/Cards/", "*.json"))
+            List<string> activeCards = new List<string>();
+
+            foreach (string txtName in Directory.GetFiles($"Mods/{_mainConfigDto.activeMods[0]}/Cards/", "*.json"))
+            // TODO : seul le Core est activé actuellement
             {
                 using (StreamReader sr = new StreamReader(txtName))
                 {
@@ -58,27 +68,6 @@ namespace Assets.Scripts.ModsDTO
 
             return activeCards;
         }
-
-        /// <summary>
-        /// chargement des phrases selon les mods et la langue
-        /// </summary>
-        public void LoadSentences()
-        {
-            StringBuilder sb = new StringBuilder();
-            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/sentences.json"; 
-            // TODO : seul le Core est activé actuellement
-            
-            _sentencesDTO = SentenceDTO.LoadFromFile(txtName);
-        }
-
-        public void LoadFactions()
-        {
-            StringBuilder sb = new StringBuilder();
-            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/factions.json";
-            // TODO : seul le Core est activé actuellement
-
-            _factionsDTO = FactionsDTO.LoadFromFile(txtName);
-  }
 
         /// <summary>
         /// donne la valeur en string associée à la clé passée
@@ -101,11 +90,88 @@ namespace Assets.Scripts.ModsDTO
         public string GetFactionLabel(string sourceKey, Func<FactionDTOObject, string> label)
         {
             if (!_factionsDTO.factions.Any(x => x.key.Equals(sourceKey)))
-                //return $"[{sourceKey}] undefinded";
                 return FactionsManager.Instance.Factions.First(x => x.Faction.playerTypeEnum.Equals(sourceKey)).Faction
                     .longName;
 
             return label(_factionsDTO.factions.First(x => x.key.Equals(sourceKey)));
+        }
+
+        /// <summary>
+        /// retourne le label correspondant à une propriété
+        /// </summary>
+        /// <param name="sourceKey"></param>
+        /// <returns></returns>
+        public string GetPropertyLabel(string sourceKey)
+        {
+            if (!_propertiesDTO.boards.Any(x => x.key.Equals(sourceKey)))
+                return $"[{sourceKey}] undefinded";
+
+            return _propertiesDTO.boards.First(x => x.key.Equals(sourceKey)).value;
+        }
+
+        /// <summary>
+        /// chargement des phrases selon les mods et la langue
+        /// </summary>
+        private void LoadSentences()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/sentences.json";
+            // TODO : seul le Core est activé actuellement
+
+            _sentencesDTO = SentenceDTO.LoadFromFile(txtName);
+        }
+
+        private void LoadFactions()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/factions.json";
+            // TODO : seul le Core est activé actuellement
+
+            _factionsDTO = FactionsDTO.LoadFromFile(txtName);
+        }
+
+        private void LoadIslands()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/islands.json";
+            // TODO : seul le Core est activé actuellement
+
+            _islandsDTO = IslandsDTO.LoadFromFile(txtName);
+        }
+
+        private void LoadNpcs()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/npcs.json";
+            // TODO : seul le Core est activé actuellement
+
+            _npcsDTO = NpcsDTO.LoadFromFile(txtName);
+        }
+
+        private void LoadShips()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/ships.json";
+            // TODO : seul le Core est activé actuellement
+
+            _shipsDTO = ShipsDTO.LoadFromFile(txtName);
+        }
+        private void LoadGeneralValues()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Gameplay/general.json";
+            // TODO : seul le Core est activé actuellement
+
+            _generalDTO = GeneralDTO.LoadFromFile(txtName);
+        }
+
+        private void LoadProperties()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/properties.json";
+            // TODO : seul le Core est activé actuellement
+
+            _propertiesDTO = PropertiesDTO.LoadFromFile(txtName);
         }
     }
 }
