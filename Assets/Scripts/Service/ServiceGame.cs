@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
+using System.Threading;
 using Assets.Scripts.DTO;
 using Assets.Scripts.EventsDTO;
 using Assets.Scripts.Model;
@@ -23,6 +25,34 @@ namespace Assets.Scripts.Service
         public static void StartBack()
         {
             Process.Start("C:\\Users\\M20NBSP\\source\\repos\\Colback\\Colback.bat");
+
+            bool isPortOpen = false;
+            while(!isPortOpen)
+            {
+                isPortOpen = IsPortOpen("localhost", 8080, new TimeSpan(0, 0, 10));
+                if (isPortOpen)
+                    break;
+
+                Thread.Sleep(2000);
+            }
+        }
+
+        private static bool IsPortOpen(string host, int port, TimeSpan timeout)
+        {
+            try
+            {
+                using (var client = new TcpClient())
+                {
+                    var result = client.BeginConnect(host, port, null, null);
+                    var success = result.AsyncWaitHandle.WaitOne(timeout);
+                    client.EndConnect(result);
+                    return success;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -33,7 +63,7 @@ namespace Assets.Scripts.Service
         /// <returns></returns>
         public static void GenerateGame(int npcCount, string rndSeed)
         {
-            var client = new RestClient($"http://localhost:8080/games/init?nbNPC={npcCount}");
+            var client = new RestClient($"http://localhost:8080/games/init?nbNPC={npcCount}&nbCompetitors=10");
 
             var request = new RestRequest(Method.GET);
             game = client.Execute<Game>(request).Data;
@@ -631,7 +661,7 @@ namespace Assets.Scripts.Service
 
                 // report de la modification du npc
                 report.events.Add(new NpcEventDTO
-                {
+                {   
                     npc = npc
                 });
             }

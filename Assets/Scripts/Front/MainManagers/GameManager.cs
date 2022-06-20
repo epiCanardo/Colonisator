@@ -350,9 +350,11 @@ namespace Assets.Scripts.Front.MainManagers
             ShipsInstanciation(cmr, cmrShipPrefabs);
 
             // Competitor
-            Faction competitor = ServiceGame.Factions.First(x => x.playerTypeEnum == "COMPETITOR");
-            SetFactionToManager(competitor, new List<Color32> { Color.white, Color.green, Color.gray });
-            ShipsInstanciation(competitor, competitorShipPrefabs);
+            foreach (Faction competitor in ServiceGame.Factions.Where(x => x.playerTypeEnum == "COMPETITOR"))
+            {
+                SetFactionToManager(competitor, new List<Color32> { Color.white, Color.green, Color.gray });
+                ShipsInstanciation(competitor, competitorShipPrefabs);
+            }
 
             // Ghost
             Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == "GHOST");

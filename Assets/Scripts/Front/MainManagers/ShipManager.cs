@@ -103,7 +103,6 @@ namespace Assets.Scripts.Front.MainManagers
 
         public void SelectShip()
         {           
-
             Faction faction = ServiceGame.GetFactionFromId(ship.owner);
             var test = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
             GameManager.Instance.SetInfoPanelFlag(test.Flag);
