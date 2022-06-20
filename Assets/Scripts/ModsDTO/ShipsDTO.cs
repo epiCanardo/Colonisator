@@ -11,7 +11,7 @@ namespace Assets.Scripts.ModsDTO
 
         public class ShipClass
         {
-            public int rank { get; set; }
+            public string shipTypeEnum { get; set; }
             public string className { get; set; }
         }
     }

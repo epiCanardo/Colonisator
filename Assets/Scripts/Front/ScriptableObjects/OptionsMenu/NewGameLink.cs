@@ -71,7 +71,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu
         public void GenerateMap()
         {
             Stopwatch timer = Stopwatch.StartNew();
-            ServiceGame.GenerateGame(1000, string.Empty);
+            ServiceGame.GenerateGame(100, string.Empty);
             timer.Stop();
             _technicalreport.Add($"Temps de génération de la partie : {timer.Elapsed.TotalSeconds}");
 

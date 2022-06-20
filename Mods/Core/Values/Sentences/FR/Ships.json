@@ -4,23 +4,23 @@
 	],	
 	"shipClasses": [
 	{
-		"rank": 1,
+		"shipTypeEnum": "PINNACE",
 		"className": "Chaloupe"
 	},
 	{
-		"rank": 2,
-		"className": "Poubelle Flottante"
+		"shipTypeEnum": "FLOATING_TRASH_CAN",
+		"className": "Poubelle Flottante"		
 	},
 	{
-		"rank": 3,
+		"shipTypeEnum": "SLOOP",
 		"className": "Sloop"
 	},
 	{
-		"rank": 4,
+		"shipTypeEnum": "FRIGATE",
 		"className": "Frégate"
 	},
 	{
-		"rank": 5,
+		"shipTypeEnum": "GALLEON",
 		"className": "Galion"
 	}	
 	]

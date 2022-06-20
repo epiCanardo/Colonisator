@@ -1,4 +1,5 @@
 {
+	"gameplayValues": {
 	"RIGGING_COST_WIND_DIRECTION": 0,
 	"RIGGING_COST_AGAINST_WIND_DIRECTION": 2,
 	"RIGGING_COST_CROSS_CROSS_WIND_DIRECTION": 1,
@@ -7,4 +8,87 @@
 	"SHIP_MINIMUM_SAILORS": 10,
 	"SHIP_FOOD_CONSUMPTION_BASE_RATE": 1,
 	"SHIP_FOOD_CONSUMPTION_CREW_STEP": 50
+	},
+	"shipDefinitions": [
+		{
+			"shipTypeEnum": "PINNACE",
+			"shipboardBounds":
+			{
+				"food": 25,
+				"rigging": 25,
+				"hull": 25,
+				"cannonsCount": 1,
+				"powderBarrels": 5,
+				"ammoCount": 25
+			},
+			"crewBounds": {
+				"min": 5,
+				"max": 25
+			}
+		},
+		{
+			"shipTypeEnum": "FLOATING_TRASH_CAN",
+			"shipboardBounds":
+			{
+				"food": 50,
+				"rigging": 50,
+				"hull": 50,
+				"cannonsCount": 5,
+				"powderBarrels": 25,
+				"ammoCount": 125
+			},
+			"crewBounds": {
+				"min": 10,
+				"max": 50
+			}
+		},
+		{
+			"shipTypeEnum": "SLOOP",
+			"shipboardBounds":
+			{
+				"food": 100,
+				"rigging": 100,
+				"hull": 100,
+				"cannonsCount": 15,
+				"powderBarrels": 75,
+				"ammoCount": 375
+			},
+			"crewBounds": {
+				"min": 20,
+				"max": 100
+			}
+		},
+		{
+			"shipTypeEnum": "FRIGATE",
+			"shipboardBounds":
+			{
+				"food": 200,
+				"rigging": 200,
+				"hull": 200,
+				"cannonsCount": 30,
+				"powderBarrels": 150,
+				"ammoCount": 750
+			},
+			"crewBounds": {
+				"min": 40,
+				"max": 200
+			}
+		},
+		{
+			"shipTypeEnum": "GALLEON",
+			"shipboardBounds":
+			{
+				"food": 400,
+				"rigging": 400,
+				"hull": 400,
+				"cannonsCount": 60,
+				"powderBarrels": 300,
+				"ammoCount": 1500
+			},
+			"crewBounds": {
+				"min": 80,
+				"max": 400
+			}
+		}
+	]
 }

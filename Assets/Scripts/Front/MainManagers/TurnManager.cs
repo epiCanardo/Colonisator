@@ -95,16 +95,19 @@ namespace Assets.Scripts.Front.MainManagers
                         {
                             var cardMenu = MenusManager.Instance.TryOpenMenu("card", cardObject);
                             CardBoard cardBoard = cardMenu.GetComponent<CardBoard>();
-                            cardBoard.callbacKFunc += CardChoiceCallBack;
+                            cardBoard.callbackFunc += CardChoiceCallBack;
                             cardBoard.SetCard(card);
 
                             yield return new WaitUntil(() => MainState == TurnState.CardChoiceDone);
                             MenusManager.Instance.TryDestroyMenu("card");
 
                         }
-                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+                        // si pas de carte piochée, on peut avancer
+                        else
+                            MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
 
-                        yield return new WaitUntil(() => MainState == TurnState.AI);
+                        // TODO : mettre un bouton pour mettre fin ou tour du joueur
+                        yield return new WaitUntil(() => MainState == TurnState.AI || MainState == TurnState.CardChoiceDone);
                         MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                     }
                     else
@@ -452,6 +455,15 @@ namespace Assets.Scripts.Front.MainManagers
         /// <param name="choice"></param>
         private void CardChoiceCallBack(CardChoice choice)
         {
+            // création d'un trade pour les conséquences
+            // TODO : actuellement, seul le différentiel de table de board est géré
+            ServiceGame.Trade(new TradeDTO
+            {
+                deltaStuff = choice.shipBoardDelta,
+                ship = ServiceGame.GetShip(choice.shipId)
+            });
+            
+            // affichage des conséquences
             StartCoroutine(GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().PrintCardConsequencesText(choice.FormatedConsequence));
             MainState = TurnState.CardChoiceDone;
         }

@@ -3418,10 +3418,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2592990299884036207}
     m_Modifications:
-    - target: {fileID: 4002057142388002848, guid: 49874145939f9d04dae2249d28ac3e2a, type: 3}
-      propertyPath: m_text
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4898489289723609395, guid: 49874145939f9d04dae2249d28ac3e2a, type: 3}
       propertyPath: m_Name
       value: CardConsequencesText

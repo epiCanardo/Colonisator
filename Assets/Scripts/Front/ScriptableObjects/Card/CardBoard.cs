@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Front.ScriptableObjects.Ancestors;
+﻿using System;
+using Assets.Scripts.Front.ScriptableObjects.Ancestors;
 using Assets.Scripts.Model;
 using Assets.Scripts.ModsDTO;
 using Assets.Scripts.Service;
@@ -21,8 +22,9 @@ namespace Assets.Scripts.Front.ScriptableObjects.Faction
         public GameObject cardChoicesPrefab;
         public GameObject cardChoicePrefab;
 
-        public delegate void CarchoiceDelegate(CardChoice choice);
-        public CarchoiceDelegate callbacKFunc;
+        //public delegate void CarchoiceDelegate(CardChoice choice);
+        //public CarchoiceDelegate callbacKFunc;
+        public Action<CardChoice> callbackFunc;
 
         void Start()
         {
@@ -74,7 +76,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.Faction
         /// <param name="choice"></param>
         private void CardChoiceCallBack(CardChoice choice)
         {
-            callbacKFunc(choice);
+            callbackFunc(choice);
         }
     }
 }

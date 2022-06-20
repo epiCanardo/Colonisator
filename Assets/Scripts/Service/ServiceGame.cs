@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Assets.Scripts.DTO;
@@ -8,6 +9,8 @@ using Assets.Scripts.Model;
 using Assets.Scripts.ModsDTO;
 using Newtonsoft.Json;
 using RestSharp;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Assets.Scripts.Service
 {
@@ -16,6 +19,11 @@ namespace Assets.Scripts.Service
         private static Game game;
         private static Random rnd = new Random(DateTime.Now.Millisecond);
         private static ReportDTO<EventDTO> report;
+
+        public static void StartBack()
+        {
+            Process.Start("C:\\Users\\M20NBSP\\source\\repos\\Colback\\Colback.bat");
+        }
 
         /// <summary>
         /// génération d'une partie en exploitant l'api rest
@@ -455,18 +463,18 @@ namespace Assets.Scripts.Service
         /// <param name="startSquare">la case de départ</param>
         /// <param name="move">le nombre de cases de mouvement</param>
         /// <returns></returns>
-        private static Square SingleDirectionShipMoving(Square startSquare, KeyValuePair<string, int> move, int coeff = 1)
+        private static Square SingleDirectionShipMoving(Square startSquare, KeyValuePair<string, int> move)
         {
             switch (move.Key)
             {
                 case "NORTH":
-                    return new Square(startSquare.x, startSquare.y + move.Value * coeff);
+                    return new Square(startSquare.x, startSquare.y + move.Value);
                 case "SOUTH":
-                    return new Square(startSquare.x, startSquare.y - move.Value * coeff);
+                    return new Square(startSquare.x, startSquare.y - move.Value);
                 case "WEST":
-                    return new Square(startSquare.x - move.Value, startSquare.y * coeff);
+                    return new Square(startSquare.x - move.Value, startSquare.y);
                 case "EAST":
-                    return new Square(startSquare.x + move.Value, startSquare.y * coeff);
+                    return new Square(startSquare.x + move.Value, startSquare.y);
             }
 
             return startSquare;
@@ -556,7 +564,7 @@ namespace Assets.Scripts.Service
                     id = tradeDTO.ship.id,
                     shipBoard = tradeDTO.ship.shipBoard
                 },
-                islandId = tradeDTO.island.id,
+                islandId = tradeDTO.island?.id,
                 boardingNpcs = tradeDTO.boardingNpcs?.Select(x=>x.id).ToList(),
                 landingNpcs = tradeDTO.landingNpcs?.Select(x => x.id).ToList(),
                 buys = tradeDTO.buys,
@@ -564,14 +572,6 @@ namespace Assets.Scripts.Service
             };
 
             report.events.Add(tradeEvent);
-
-            //// si des npcs ont été débarqués
-            //if (tradeDTO.landingNpcs != null)
-            //    LandNpcs(tradeDTO.island, tradeDTO.landingNpcs);
-
-            //// si des npcs ont été embarqués
-            //if (tradeDTO.boardingNpcs != null)
-            //    BoardNpcs(tradeDTO.ship, tradeDTO.boardingNpcs);
         }
 
         /// <summary>
@@ -580,6 +580,11 @@ namespace Assets.Scripts.Service
         /// <param name="ship"></param>
         public static void ConsumeFood(Ship ship)
         {
+            int baseRate = ModManager.Instance.GetGameplayValue(x => x.gameplayValues.SHIP_FOOD_CONSUMPTION_BASE_RATE);
+            float crewStep = ModManager.Instance.GetGameplayValue(x => x.gameplayValues.SHIP_FOOD_CONSUMPTION_CREW_STEP);
+
+            int consumption = Mathf.CeilToInt(ship.crew.Count / crewStep) * baseRate;
+
             TradeEventDTO tradeEvent = new TradeEventDTO
             {
                 shipDelta = new Ship
@@ -587,8 +592,8 @@ namespace Assets.Scripts.Service
                     id = ship.id,
                     shipBoard = new ShipBoard
                     {
-                        food = ship.crew.Count > 100 ? ship.shipBoard.food - 8
-                            : ship.crew.Count > 50 ? ship.shipBoard.food - 4 : ship.shipBoard.food - 2,
+                        food = Mathf.Clamp(ship.shipBoard.food - consumption, 0, 
+                            ModManager.Instance.GetShipBoardBound(x=>x.food, ship.shipTypeEnum)),
                         dodris = ship.shipBoard.dodris,
                         hull = ship.shipBoard.hull,
                         rigging = ship.shipBoard.rigging,

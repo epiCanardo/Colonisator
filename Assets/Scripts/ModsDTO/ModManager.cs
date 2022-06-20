@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.Front.MainManagers;
+using Assets.Scripts.Model;
 
 namespace Assets.Scripts.ModsDTO
 {
@@ -57,9 +58,9 @@ namespace Assets.Scripts.ModsDTO
             StringBuilder sb = new StringBuilder();
             List<string> activeCards = new List<string>();
 
-            foreach (string txtName in Directory.GetFiles($"Mods/{_mainConfigDto.activeMods[0]}/Cards/", "*.json"))
+            foreach (string txtName in Directory.GetFiles($"Mods/{_mainConfigDto.activeMods[0]}/Cards/{_mainConfigDto.language}", "*.json"))
             // TODO : seul le Core est activé actuellement
-            {
+            {   
                 using (StreamReader sr = new StreamReader(txtName))
                 {
                     activeCards.Add(sr.ReadToEnd());
@@ -107,6 +108,39 @@ namespace Assets.Scripts.ModsDTO
                 return $"[{sourceKey}] undefinded";
 
             return _propertiesDTO.boards.First(x => x.key.Equals(sourceKey)).value;
+        }
+
+        /// <summary>
+        /// donne la valeur de gameplay associée à son 
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public int GetGameplayValue(Func<GeneralDTO, int> property)
+        {
+            return property(_generalDTO);
+        }
+
+        /// <summary>
+        /// retourne la borne max pour une propriété de ShipBoard
+        /// </summary>
+        /// <param name="ShipboardBounds">predicat sur la propriété</param>
+        /// <param name="shipTypeEnum">le type de navire</param>
+        /// <returns></returns>
+        public int GetShipBoardBound(Func<GeneralDTO.ShipboardBounds, int> boardProperty, string shipTypeEnum)
+        {
+            return boardProperty(_generalDTO.shipDefinitions.First(x => x.shipTypeEnum.Equals(shipTypeEnum))
+                .shipboardBounds);
+        }
+
+        /// <summary>
+        /// retourn les bornes min et max sur le nombre de matelots selon le type de navire
+        /// </summary>
+        /// <param name="shipTypeEnum"></param>
+        /// <returns></returns>
+        public Tuple<int, int> GetShipCrewBounds(string shipTypeEnum)
+        {
+            var bounds = _generalDTO.shipDefinitions.First(x => x.shipTypeEnum.Equals(shipTypeEnum)).crewBounds;
+            return new Tuple<int, int>(bounds.min, bounds.max);
         }
 
         /// <summary>

@@ -31,12 +31,8 @@ namespace Assets.Scripts.Front.MainManagers
         public GameObject MinimapSprite;
 
         private bool isSwinging = true;
+        private Vector3 cardConsequencesPosition;
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            //StartSwing(2);
-        }
 
         public void StartSwing(float halfArc)
         {
@@ -103,7 +99,6 @@ namespace Assets.Scripts.Front.MainManagers
         private void OnMouseDown()
         {
             SelectShip();
-            //GameManager.Instance.ToggleShipScreen(true, ship);
         }
 
         public void SelectShip()
@@ -126,11 +121,16 @@ namespace Assets.Scripts.Front.MainManagers
         }
 
         public IEnumerator PrintCardConsequencesText(string text)
-        {            
+        {
+            cardConsequencesPosition = CardConsequencesText.transform.position;
+
             CardConsequencesText.text = text;
             ActionText.transform.SetAsLastSibling();
-            yield return CardConsequencesText.transform.DOMoveY(200, 5).WaitForCompletion();
-            yield return CardConsequencesText.transform.DOMoveY(-200, 0);
+            yield return CardConsequencesText.transform.DOMoveY(150, 3).WaitForCompletion();
+
+            // retour à la position de départ
+            CardConsequencesText.text = string.Empty;
+            CardConsequencesText.transform.position = cardConsequencesPosition;
         }
     }
 }
