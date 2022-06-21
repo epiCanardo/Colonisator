@@ -9,6 +9,8 @@ namespace Assets.Scripts.ModsDTO
         public string language { get; set; }
         public string version { get; set; }
         public List<string> activeMods { get; set; }
-        
+
+        public string colbackLocation { get; set; }
+
     }
 }

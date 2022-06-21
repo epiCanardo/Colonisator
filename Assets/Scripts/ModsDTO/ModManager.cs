@@ -154,6 +154,15 @@ namespace Assets.Scripts.ModsDTO
         }
 
         /// <summary>
+        /// retourne le chemin d'accès vers le .bat du serveur colback
+        /// </summary>
+        /// <returns></returns>
+        public string GetColbackLocation()
+        {
+            return _mainConfigDto.colbackLocation;
+        }
+
+        /// <summary>
         /// chargement des phrases selon les mods et la langue
         /// </summary>
         private void LoadSentences()

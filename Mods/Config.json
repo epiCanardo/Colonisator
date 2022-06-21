@@ -3,5 +3,6 @@
 	"version" : "alpha 1.1",
 	"activeMods": [
 		"Core"
-	]
+	],
+	"colbackLocation": "C:\\Users\\artem\\source\\repos\\Colback\\Colback.bat"
 }

@@ -39,13 +39,13 @@ namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu
         {
             Stopwatch timerGlobal = Stopwatch.StartNew();
 
+            // chargement de la config et des mods
+            LoadMods();
+
             Stopwatch timer = Stopwatch.StartNew();
             GenerateMap();
             timer.Stop();
-            _technicalreport.Add($"Temps de création total du monde : {timer.Elapsed.TotalSeconds}");
-
-            // chargement des mods
-            LoadMods();
+            _technicalreport.Add($"Temps de création total du monde : {timer.Elapsed.TotalSeconds}");            
 
             // envoi des cartes au back
             ServiceGame.SendCards();
@@ -107,7 +107,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu
             Stopwatch timer = Stopwatch.StartNew();
             ModManager.Instance.Initialization();
             timer.Stop();
-            _technicalreport.Add($"Temps de chargement des mods : {timer.Elapsed.TotalSeconds}");
+            _technicalreport.Add($"Temps de chargement de la config / mods : {timer.Elapsed.TotalSeconds}");
         }
     }
 }
