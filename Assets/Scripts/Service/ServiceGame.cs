@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using Assets.Scripts.DTO;
@@ -22,14 +23,14 @@ namespace Assets.Scripts.Service
         private static Random rnd = new Random(DateTime.Now.Millisecond);
         private static ReportDTO<EventDTO> report;
 
-        public static void StartBack()
+        private static void StartBack()
         {
             Process.Start("C:\\Users\\M20NBSP\\source\\repos\\Colback\\Colback.bat");
 
             bool isPortOpen = false;
             while(!isPortOpen)
             {
-                isPortOpen = IsPortOpen("localhost", 8080, new TimeSpan(0, 0, 10));
+                isPortOpen = IsPortOpen(/*"localhost",*/ 8080/*, new TimeSpan(0, 0, 10)*/);
                 if (isPortOpen)
                     break;
 
@@ -37,22 +38,22 @@ namespace Assets.Scripts.Service
             }
         }
 
-        private static bool IsPortOpen(string host, int port, TimeSpan timeout)
+        private static bool IsPortOpen(/*string host,*/ int port/*, TimeSpan timeout*/)
         {
-            try
+            // Evaluate current system tcp connections. This is the same information provided
+            // by the netstat command line application, just in .Net strongly-typed object
+            // form.  We will look through the list, and if our port we would like to use
+            // in our TcpClient is occupied, we will set isAvailable to false.
+            IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+            TcpConnectionInformation[] tcpConnInfoArray = ipGlobalProperties.GetActiveTcpConnections();
+
+            foreach (TcpConnectionInformation tcpi in tcpConnInfoArray)
             {
-                using (var client = new TcpClient())
-                {
-                    var result = client.BeginConnect(host, port, null, null);
-                    var success = result.AsyncWaitHandle.WaitOne(timeout);
-                    client.EndConnect(result);
-                    return success;
-                }
+                if (tcpi.LocalEndPoint.Port == port)
+                    return true;
             }
-            catch
-            {
-                return false;
-            }
+
+            return false;
         }
 
         /// <summary>
@@ -63,9 +64,12 @@ namespace Assets.Scripts.Service
         /// <returns></returns>
         public static void GenerateGame(int npcCount, string rndSeed)
         {
-            var client = new RestClient($"http://localhost:8080/games/init?nbNPC={npcCount}&nbCompetitors=10");
+            bool isPortOpen = IsPortOpen(8080);
+            if (!isPortOpen)
+                StartBack();
 
-            var request = new RestRequest(Method.GET);
+            RestClient client = new RestClient($"http://localhost:8080/games/init?nbNPC={npcCount}&nbCompetitors=3");
+            RestRequest request = new RestRequest(Method.GET);
             game = client.Execute<Game>(request).Data;
 
             if (!string.IsNullOrEmpty(rndSeed))

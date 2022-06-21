@@ -10,7 +10,11 @@ namespace Assets.Scripts.Front.HUD
 
         public void OnDrag(PointerEventData eventData)
         {
-            dragRectTransform.anchoredPosition += eventData.delta / GameManager.Instance.canvas.scaleFactor;
+            Debug.Log($"{eventData.position.x}-{eventData.position.y} / {Screen.width}-{Screen.height}");
+            
+            if (eventData.position.y > 10 && eventData.position.y < Screen.height - 10 &&
+                eventData.position.x > 10 && eventData.position.x < Screen.width - 10)
+                dragRectTransform.anchoredPosition += eventData.delta / GameManager.Instance.canvas.scaleFactor;
         }
 
         public void OnPointerDown(PointerEventData eventData)

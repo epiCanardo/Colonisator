@@ -45,25 +45,25 @@ namespace Assets.Scripts.Model
             powderBarrels += delta.powderBarrels;
         }
 
-        public string TextFromShipBoardDelta(ShipBoard delta)
+        public string TextFromShipBoardDelta(ShipBoard delta, GeneralDTO.ShipboardBounds shipboardBounds)
         {
             List<string> items = new List<string>();
             if (delta!= null)
             {
                 if (delta.dodris != 0)
-                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("dodris"), dodris, delta.dodris, 0, 100000));
+                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("dodris"), dodris, delta.dodris, 0, 1000000));
                 if (delta.food != 0)
-                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("food"), food, delta.food, 0, 100));
+                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("food"), food, delta.food, 0, shipboardBounds.food));
                 if (delta.order != 0)
                     items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("order"), order, delta.order, 0, 100));
                 if (delta.rigging != 0)
-                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("rigging"), rigging, delta.rigging, 0, 100));
+                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("rigging"), rigging, delta.rigging, 0, shipboardBounds.rigging));
                 if (delta.hull != 0)
-                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("hull"), hull, delta.hull, 0, 100));
+                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("hull"), hull, delta.hull, 0, shipboardBounds.hull));
                 if (delta.cannons != null)
-                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("cannons"), cannons.Count, delta.cannons.Count, 0, 20));
+                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("cannons"), cannons.Count, delta.cannons.Count, 0, shipboardBounds.cannonsCount));
                 if (delta.powderBarrels != 0)
-                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("powderBarrels"), powderBarrels, delta.powderBarrels, 0, 100));
+                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("powderBarrels"), powderBarrels, delta.powderBarrels, 0, shipboardBounds.powderBarrels));
 
             }
             return string.Join(",", items);

@@ -58,6 +58,9 @@ namespace Assets.Scripts.Front.MainManagers
                     standings.Add(actualColor, 1);
                 else
                     standings[actualColor] += 1;
+                // dès qu'on a les 3 couleurs on quitte
+                if (standings.Count() == 3)
+                    break;
             }
 
             return new List<Color32>(standings.OrderByDescending(x => x.Value).Take(3).Select(x=>x.Key));

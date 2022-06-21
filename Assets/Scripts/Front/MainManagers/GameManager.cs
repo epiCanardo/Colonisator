@@ -153,11 +153,16 @@ namespace Assets.Scripts.Front.MainManagers
             raw.texture = texture;
         }
 
+        /// <summary>
+        /// affichage des informations sur la selection du navive en cours
+        /// TODO : est ce le bon emplacement ? (plutôt shipmanager)
+        /// </summary>
+        /// <param name="ship"></param>
         public void SetInfoPanelTitle(Ship ship)
         {
             PanelActionSelectionShipName.text = ship.name;
 
-            PanelActionSelectionFactionName.text = ServiceGame.GetFaction(ship).name;
+            PanelActionSelectionFactionName.text = ServiceGame.GetFaction(ship).longName;
             PanelActionSelectionFactionName.GetComponent<FactionLink>().faction = ServiceGame.GetFaction(ship);
 
             PanelActionSelectionCaptainName.text = ServiceGame.ShipCaptain(ship).fullName;

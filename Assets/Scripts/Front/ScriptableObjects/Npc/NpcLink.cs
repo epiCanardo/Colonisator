@@ -12,7 +12,9 @@ namespace Assets.Scripts.Front.ScriptableObjects.Npc
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
-            targetInstance.GetComponent<NpcDetailBoard>().npc = npc;
+            
+            if (targetInstance != null) 
+                targetInstance.GetComponent<NpcDetailBoard>().npc = npc;
         }
     }
 }

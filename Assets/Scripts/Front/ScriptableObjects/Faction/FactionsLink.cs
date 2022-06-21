@@ -8,7 +8,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.Faction
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
-            targetInstance.GetComponent<FactionsBoard>().ShowBoard(x => x.longName);
+            targetInstance?.GetComponent<FactionsBoard>().ShowBoard(x => x.longName);
         }
     }
 }

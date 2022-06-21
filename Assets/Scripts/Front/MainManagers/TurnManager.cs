@@ -86,7 +86,7 @@ namespace Assets.Scripts.Front.MainManagers
                         GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
                         CurrentTurnText.text =
                             string.Format(ModManager.Instance.GetSentence(SentenceDTO.CURRENT_TURN_DETAIL),
-                                ServiceGame.GetCurrentTurn.number, faction.name,
+                                ServiceGame.GetCurrentTurn.number, ServiceGame.GetFaction(GameManager.Instance.CurrentShipToPlay).longName,
                                 GameManager.Instance.CurrentShipToPlay.name);
 
                         // carte piochée ou mouvement ?
@@ -187,7 +187,7 @@ namespace Assets.Scripts.Front.MainManagers
 
                                     HistoricsManager.Instance.NewMessage(string.Format(ModManager.Instance.GetSentence(
                                         SentenceDTO.HISTORIC_FIRECREW_DONE),
-                                        ServiceGame.GetCurrentTurn.number, faction.name,
+                                        ServiceGame.GetCurrentTurn.number, ServiceGame.GetFaction(GameManager.Instance.CurrentShipToPlay).longName,
                                         GameManager.Instance.CurrentShipToPlay.name,
                                         trade.landingNpcs.Count, GameManager.Instance.CurrentShipToPlay.crew.Count));
 
@@ -291,7 +291,7 @@ namespace Assets.Scripts.Front.MainManagers
 
                                     HistoricsManager.Instance.NewMessage(string.Format(ModManager.Instance.GetSentence(
                                         SentenceDTO.HISTORIC_COLONIZATION_DONE),
-                                        ServiceGame.GetCurrentTurn.number, faction.name,
+                                        ServiceGame.GetCurrentTurn.number, ServiceGame.GetFaction(GameManager.Instance.CurrentShipToPlay).longName,
                                         GameManager.Instance.CurrentShipToPlay.name,
                                         island.name, dtoColonisation.npcs.Count,
                                         GameManager.Instance.CurrentShipToPlay.crew.Count));
@@ -315,7 +315,7 @@ namespace Assets.Scripts.Front.MainManagers
                                         ServiceGame.Puncture(punctureDto);
 
                                         HistoricsManager.Instance.NewMessage(string.Format(ModManager.Instance.GetSentence(SentenceDTO.HISTORIC_PUNCTURE_DONE),
-                                                ServiceGame.GetCurrentTurn.number, faction.name,
+                                                ServiceGame.GetCurrentTurn.number, ServiceGame.GetFaction(GameManager.Instance.CurrentShipToPlay).longName,
                                                 punctureDto.npcIds.Count));
                                     }
 
@@ -373,8 +373,7 @@ namespace Assets.Scripts.Front.MainManagers
                                             HistoricsManager.Instance.NewMessage(string.Format(
                                                 ModManager.Instance.GetSentence(SentenceDTO.HISTORIC_MOVE_DONE),
                                                 ServiceGame.GetCurrentTurn.number,
-                                                ModManager.Instance.GetFactionLabel(faction.playerTypeEnum,
-                                                    x => x.shortLabel),
+                                                ServiceGame.GetFaction(GameManager.Instance.CurrentShipToPlay).longName,
                                                 GameManager.Instance.CurrentShipToPlay.name,
                                                 actualMovement.moveDetails.Sum(x => x.Value), actualMovement.cost,
                                                 GameManager.Instance.CurrentShipToPlay.shipBoard.rigging));

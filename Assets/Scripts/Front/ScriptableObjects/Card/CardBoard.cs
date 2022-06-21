@@ -61,8 +61,9 @@ namespace Assets.Scripts.Front.ScriptableObjects.Faction
                 StringBuilder consequences = new StringBuilder();
                 if (choice.shipId != null)
                 {
+                    Ship ship = ServiceGame.GetShip(choice.shipId);
                     choice.FormatedConsequence = string.Format(ModManager.Instance.GetSentence(SentenceDTO.CARD_CHOICE_SHIPBOARD),
-                        ServiceGame.GetShip(choice.shipId).shipBoard.TextFromShipBoardDelta(choice.shipBoardDelta));
+                        ship.shipBoard.TextFromShipBoardDelta(choice.shipBoardDelta, ModManager.Instance.GetShipboardBounds(ship.shipTypeEnum)));
                     consequences.AppendLine(choice.FormatedConsequence);
                 }
 

@@ -133,6 +133,16 @@ namespace Assets.Scripts.ModsDTO
         }
 
         /// <summary>
+        /// retourne l'objet contenant les limites max selon le type de navire passé en paramètre
+        /// </summary>
+        /// <param name="shipTypeEnum"></param>
+        /// <returns></returns>
+        public GeneralDTO.ShipboardBounds GetShipboardBounds(string shipTypeEnum)
+        {
+            return _generalDTO.shipDefinitions.First(x => x.shipTypeEnum.Equals(shipTypeEnum)).shipboardBounds;
+        }
+
+        /// <summary>
         /// retourn les bornes min et max sur le nombre de matelots selon le type de navire
         /// </summary>
         /// <param name="shipTypeEnum"></param>
