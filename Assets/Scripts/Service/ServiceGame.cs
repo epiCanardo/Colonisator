@@ -13,6 +13,7 @@ using Assets.Scripts.ModsDTO;
 using Newtonsoft.Json;
 using RestSharp;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using Random = System.Random;
 
 namespace Assets.Scripts.Service
@@ -25,9 +26,20 @@ namespace Assets.Scripts.Service
 
         private static void StartBack()
         {
-            Process.Start("cmd", $"/k {ModManager.Instance.GetColbackLocation()}");
+            string processLocation = ModManager.Instance.GetColbackLocation();
 
-            bool isPortOpen = false;
+            Process p = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = @"/k " + processLocation // cmd.exe specific implementation
+            };
+            p.StartInfo = startInfo;
+            p.Start();
+
+            // Process.Start("cmd", $"/k {processLocation}");
+
+           bool isPortOpen = false;
             while(!isPortOpen)
             {
                 isPortOpen = IsPortOpen(/*"localhost",*/ 8080/*, new TimeSpan(0, 0, 10)*/);
