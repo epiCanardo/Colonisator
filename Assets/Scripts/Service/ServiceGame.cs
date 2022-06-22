@@ -25,8 +25,7 @@ namespace Assets.Scripts.Service
 
         private static void StartBack()
         {
-            //Process.Start(ModManager.Instance.GetColbackLocation());
-            Process.Start("cmd", "/k C:\\Users\\artem\\source\\repos\\Colback\\Colback.bat");
+            Process.Start("cmd", $"/k {ModManager.Instance.GetColbackLocation()}");
 
             bool isPortOpen = false;
             while(!isPortOpen)
