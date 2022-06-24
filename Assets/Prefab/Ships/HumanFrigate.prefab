@@ -2506,13 +2506,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2592990299883816599}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75215afeb99f1fc48aacad291a415f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   waterObject: {fileID: 0}
-  autoFind: 0
+  autoFind: 1
   dynamicMaterial: 0
   waterLevelSource: 0
   waterLevel: 0

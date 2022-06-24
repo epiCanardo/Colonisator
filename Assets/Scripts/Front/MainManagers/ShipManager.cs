@@ -33,25 +33,6 @@ namespace Assets.Scripts.Front.MainManagers
         private bool isSwinging = true;
         private Vector3 cardConsequencesPosition;
 
-
-        public void StartSwing(float halfArc)
-        {
-            if (isSwinging)
-                transform.DORotate(new Vector3(0, 0, halfArc), 3f).SetEase(Ease.InOutFlash)
-                    .OnComplete(() => StartSwing(-halfArc));
-        }
-
-        public void PauseSwing()
-        {
-            isSwinging = false;
-        }
-
-        public void ResumeSwing()
-        {
-            isSwinging = true;
-            StartSwing(2);
-        }
-
         public void AssignCrew()
         {
             NpcsManager.Instance.InstanciateNPC(NpcType.Captain, CaptainSpot, gameObject);

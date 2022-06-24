@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using Assets.Scripts.Front.Squares;
 using Assets.Scripts.Model;
+using StylizedWater2;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,8 +37,6 @@ namespace Assets.Scripts.Front.MainManagers
         [SerializeField]
         private float distanceToDestination;
 
-        private DevOptionsManager dom;
-
         public static NavigationModeManager Instance { get; private set; }
 
         private void Awake()
@@ -48,9 +47,7 @@ namespace Assets.Scripts.Front.MainManagers
         // Start is called before the first frame update
         void Start()
         {         
-            valider.onClick.AddListener(ValidateNavigation);
-
-            dom = FindObjectOfType<DevOptionsManager>();
+            valider.onClick.AddListener(ValidateNavigation);            
         }
 
         void Update()
@@ -96,8 +93,6 @@ namespace Assets.Scripts.Front.MainManagers
                 // fin de la séquence de mouvement
                 case MovementStep.End:
                     dialog.SetActive(false);
-                    dom.currentState = DevOptionsManager.GameState.TurnFinished;
-                    dom.RefreshGameState();
                     activeMoveStep = MovementStep.Nope;
                     shipM.ship.shipBoard.rigging -= pendingRiggingSpent;
                     pendingRiggingSpent = 0;
@@ -188,8 +183,13 @@ namespace Assets.Scripts.Front.MainManagers
 
         private void ValidateNavigation()
         {
-            if (/*squaresRemaning == 0 && */!isNavModeFinished)
+            if (!isNavModeFinished)
             {
+                // retour de la cam à la normale
+                GameManager.Instance.camOffSet = new Vector3(0, 300, -160);
+                GameManager.Instance.camEulerAngles = new Vector3(60, 0, 0);
+                GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
+
                 // retrait de la position de base de la liste
                 recordedMovement.RemoveAt(0);
                 GameManager.Instance.ToggleNavigationMode(false);

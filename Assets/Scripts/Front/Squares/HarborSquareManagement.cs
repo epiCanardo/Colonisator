@@ -12,6 +12,8 @@ namespace Assets.Scripts.Front.Squares
 {
     public class HarborSquareManagement : SquareManagement
     {
+        protected override bool navigable => true;
+
         [Header("Prefab pnj")]
         public List<GameObject> npcsPrefabs;
         public List<Material> npcsMaterials;
@@ -39,16 +41,8 @@ namespace Assets.Scripts.Front.Squares
                     var path = instance.AddComponent<PathManager>();
                     path.GlobalPath = defaultPath;
                     //instance.GetComponent<Animator>().runtimeAnimatorController = defaultController;
-                }
-
-                
+                }                
             }
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            //gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         }
 
         // Update is called once per frame
@@ -71,14 +65,14 @@ namespace Assets.Scripts.Front.Squares
             }
         }
 
-        private void OnMouseDown()
-        {
-            if (!toolTipActive)
-            {
-                GameManager.Instance.ToggleHarborTooltip(true, island);
-                toolTipActive = true;
-            }
-        }
+        //private void OnMouseDown()
+        //{
+        //    if (!toolTipActive)
+        //    {
+        //        GameManager.Instance.ToggleHarborTooltip(true, island);
+        //        toolTipActive = true;
+        //    }
+        //}
 
         void OnMouseOver()
         {

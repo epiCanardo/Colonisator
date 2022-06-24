@@ -19,8 +19,8 @@ namespace Assets.Scripts.Front.QuickActions
         // Start is called before the first frame update
         void Start()
         {
-            gm = FindObjectOfType<GameManager>();
-            dom = FindObjectOfType<DevOptionsManager>();
+            gm = GameManager.Instance;
+            //dom = FindObjectOfType<DevOptionsManager>();
 
             button = GetComponent<Button>();
             button.onClick.AddListener(LaunchNavMode);
@@ -32,7 +32,6 @@ namespace Assets.Scripts.Front.QuickActions
             if (!gm.IsNavigationModeActive())
             {
                 var ship = GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().ship;
-                GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().PauseSwing();
                 navMode.StartNavigationMode(ship);
                 navMode.squaresRemaning = Random.Range(2, 13);
                 navMode.windDirection = Random.Range(1, 5);
@@ -45,8 +44,9 @@ namespace Assets.Scripts.Front.QuickActions
                 gm.ToggleNavigationMode(true);
 
                 // refesh des dev options
-                dom.currentState = DevOptionsManager.GameState.TurnStarted;
-                dom.RefreshGameState();
+                // TODO ne sert plus à rien
+                //dom.currentState = DevOptionsManager.GameState.TurnStarted;
+               // dom.RefreshGameState();
             }
         }
     }

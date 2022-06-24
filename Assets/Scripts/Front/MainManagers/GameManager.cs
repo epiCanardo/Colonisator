@@ -6,6 +6,7 @@ using Assets.Scripts.Front.ScriptableObjects.Npc;
 using Assets.Scripts.Front.ShipScreen;
 using Assets.Scripts.Front.Squares;
 using Assets.Scripts.Model;
+using Assets.Scripts.ModsDTO;
 using Assets.Scripts.Service;
 using TMPro;
 using UnityEngine;
@@ -55,8 +56,13 @@ namespace Assets.Scripts.Front.MainManagers
 
         [Header("Map")]
         public RectTransform FullMap;
-
         public GameObject PortraitFlagTextile;
+        public RawImage miniMap;
+
+        public TextMeshProUGUI coordinatesTextObject;
+
+        public Vector3 camOffSet { get; set; }
+        public Vector3 camEulerAngles { get; set; }
 
         // l'instance du navire du joueur
         private List<GameObject> instanciedShipObjects = new List<GameObject>();
@@ -76,9 +82,6 @@ namespace Assets.Scripts.Front.MainManagers
         // mode navigation
         private bool navigationMode;
         private int currentQualityLevel = 0;
-
-        public Vector3 camOffSet { get; set; }
-        public Vector3 camEulerAngles { get; set; }
 
         public Ship CurrentShipToPlay { get; set; }        
 
@@ -118,7 +121,7 @@ namespace Assets.Scripts.Front.MainManagers
         void Start()
         {
             // définition des vecteurs de position et d'angle pour la camera principale
-            camOffSet = new Vector3(0, 400, -260);
+            camOffSet = new Vector3(0, 300, -160);
             camEulerAngles = new Vector3(60, 0, 0);
 
             // la map doit être carrée (le plateau de jeu est un carré)
@@ -128,7 +131,7 @@ namespace Assets.Scripts.Front.MainManagers
             float yAnchor = 0.5f * (Screen.height - shorterBounds);
             //FullMap.anchorMin = FullMap.anchorMax = new Vector2(xAnchor, yAnchor);
 
-            FullMap.sizeDelta = new Vector2(2000, 2000);
+            FullMap.sizeDelta = new Vector2(1000, 1000);
         }
 
         // On lance la game !
@@ -136,6 +139,8 @@ namespace Assets.Scripts.Front.MainManagers
         {
             // affichage du tour courant
             StartCoroutine(TurnManager.Instance.StartTurn());
+
+            miniMap.texture = ModManager.Instance.GenerateMinimapColors();
 
             //// affection du navire courant
             //CurrentShipToPlay = ServiceGame.GetShipsTurnOrder().First();
@@ -249,10 +254,8 @@ namespace Assets.Scripts.Front.MainManagers
                         else if (x + 1 == 27 && z + 1 == 69) CreateIsland(ileNeutre1HarborSqurePrefab, physicalSquare, basicSquare, "ileNeutre1");
                         else
                         {
-                            objectCreated = Instantiate(harborSquarePrefab, physicalSquare, harborSquarePrefab.transform.rotation, squaresParent.transform);
+                            objectCreated = Instantiate(harborSquarePrefab, physicalSquare + 50 * Vector3.up, harborSquarePrefab.transform.rotation, squaresParent.transform);
                             objectCreated.name = $"HarborSquare{basicSquare.x}_{basicSquare.y}";
-                            //objectCreated.GetComponent<SquareManagement>().coordinates = new Square(x + 1, z + 1);
-                            //objectCreated.SetActive(false);
                             var squareManager = objectCreated.GetComponent<HarborSquareManagement>();
                             squareManager.coordinates = basicSquare;
                             squareManager.SetIsland();
@@ -261,13 +264,17 @@ namespace Assets.Scripts.Front.MainManagers
                     }
                     else
                     {
-                        objectCreated = Instantiate(squarePrefab, physicalSquare, squarePrefab.transform.rotation, squaresParent.transform);
+                        objectCreated = Instantiate(squarePrefab, physicalSquare + 50 * Vector3.up, squarePrefab.transform.rotation, squaresParent.transform);
                         objectCreated.name = $"Square{basicSquare.x}_{basicSquare.y}";
                         //objectCreated.GetComponent<SquareManagement>().coordinates = new Square(x + 1, z + 1);
                         //objectCreated.SetActive(false);
                         var squareManager = objectCreated.GetComponent<NavigableSquareManagement>();
                         squareManager.coordinates = basicSquare;
-                        squares.Add(objectCreated.GetComponent<SquareManagement>());
+                        squares.Add(squareManager);
+
+                        // si la case est non navigable
+                        if (ModManager.Instance.IsSquareNonNavigable(squareManager.coordinates))
+                            squareManager.SetOutlineColor(Color.red);
                     }
 
                     //objectCreated.GetComponent<SquareManagement>().coordinates = new Square(x + 1, z + 1);
@@ -283,7 +290,7 @@ namespace Assets.Scripts.Front.MainManagers
         private void CreateIsland(GameObject harborPrefab, Vector3 square, Square basicSquare, string name)
         {
             //harborPrefab.name = $"{name}_{basicSquare.x}_{basicSquare.y}";
-            var objectCreated = Instantiate(harborPrefab, square, harborPrefab.transform.rotation, squaresParent.transform);
+            var objectCreated = Instantiate(harborPrefab, square + 50*Vector3.up, harborPrefab.transform.rotation, squaresParent.transform);
             var squareManager = objectCreated.GetComponent<HarborSquareManagement>();
             squareManager.coordinates = basicSquare;
             squareManager.SetIsland();

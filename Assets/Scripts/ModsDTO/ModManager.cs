@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Model;
+using UnityEngine;
 
 namespace Assets.Scripts.ModsDTO
 {
     public class ModManager
     {
+        private static ModManager _instance;       
+        
         private MainConfigDTO _mainConfigDto;
         private FactionsDTO _factionsDTO;
         private SentenceDTO _sentencesDTO;
@@ -18,8 +21,10 @@ namespace Assets.Scripts.ModsDTO
         private ShipsDTO _shipsDTO;
         private GeneralDTO _generalDTO;
         private PropertiesDTO _propertiesDTO;
+        private MapDTO _mapDTO;
 
-        private static ModManager _instance;
+        private Color[] miniMapColors;
+        public Texture2D miniMap;
 
         public static ModManager Instance
         {
@@ -51,8 +56,11 @@ namespace Assets.Scripts.ModsDTO
             LoadShips();
             LoadNpcs();
             LoadProperties();
-        }
+            LoadMap();
 
+            // gestion de la minimap
+            //GenerateMinimapColors();
+        }
         public List<string> GetCards()
         {
             StringBuilder sb = new StringBuilder();
@@ -163,6 +171,49 @@ namespace Assets.Scripts.ModsDTO
         }
 
         /// <summary>
+        /// indique si la case est navigable ou non
+        /// </summary>
+        /// <param name="square"></param>
+        /// <returns></returns>
+        public bool IsSquareNonNavigable(Square square)
+        {
+            var coordinates = new int[] { square.x, square.y };
+            return _mapDTO.IsNonNavigable(coordinates);
+        }
+
+        /// <summary>
+        /// génération de la miniMap en fonction de la liste des case du jeu
+        /// </summary>
+        public Texture2D GenerateMinimapColors()
+        {
+            miniMapColors = new Color[10000];
+
+            for (int i = 0; i < 10000; i++)
+            {
+                ColorUtility.TryParseHtmlString("#A47016", out miniMapColors[i]);
+            }
+
+            foreach (var harbor in _mapDTO.harbors)
+            {
+                miniMapColors[(harbor.coordinates[1]-1) * 100 + (harbor.coordinates[0]-1)] = Color.black;
+            }
+
+            foreach (var squares in _mapDTO.nonNavigableSquares)
+            {
+                //"634510"
+                ColorUtility.TryParseHtmlString("#634510", out miniMapColors[(squares[1] - 1) * 100 + (squares[0] - 1)]);
+                //miniMapColors[(squares[1]-1) * 100 + (squares[0]-1)] = Color.red;
+            }
+
+            miniMap = new Texture2D(100, 100);
+            miniMap.SetPixels(miniMapColors);
+            miniMap.Apply();
+
+            return miniMap;
+            //MinimapManager.Instance.UpdateMiniMap(miniMap);
+        }
+
+        /// <summary>
         /// chargement des phrases selon les mods et la langue
         /// </summary>
         private void LoadSentences()
@@ -225,6 +276,15 @@ namespace Assets.Scripts.ModsDTO
             // TODO : seul le Core est activé actuellement
 
             _propertiesDTO = PropertiesDTO.LoadFromFile(txtName);
+        }
+
+        private void LoadMap()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Gameplay/map.json";
+            // TODO : seul le Core est activé actuellement
+
+            _mapDTO = MapDTO.LoadFromFile(txtName);
         }
     }
 }
