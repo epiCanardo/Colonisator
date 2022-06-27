@@ -18,7 +18,8 @@
 				"hull": 25,
 				"cannonsCount": 1,
 				"powderBarrels": 5,
-				"ammoCount": 25
+				"ammoCount": 25,
+				"pinnaces": 0				
 			},
 			"crewBounds": {
 				"min": 5,
@@ -34,7 +35,8 @@
 				"hull": 50,
 				"cannonsCount": 5,
 				"powderBarrels": 25,
-				"ammoCount": 125
+				"ammoCount": 125,
+				"pinnaces": 1
 			},
 			"crewBounds": {
 				"min": 10,
@@ -50,7 +52,8 @@
 				"hull": 100,
 				"cannonsCount": 15,
 				"powderBarrels": 75,
-				"ammoCount": 375
+				"ammoCount": 375,
+				"pinnaces": 2
 			},
 			"crewBounds": {
 				"min": 20,
@@ -66,7 +69,8 @@
 				"hull": 200,
 				"cannonsCount": 30,
 				"powderBarrels": 150,
-				"ammoCount": 750
+				"ammoCount": 750,
+				"pinnaces": 4
 			},
 			"crewBounds": {
 				"min": 40,
@@ -82,7 +86,8 @@
 				"hull": 400,
 				"cannonsCount": 60,
 				"powderBarrels": 300,
-				"ammoCount": 1500
+				"ammoCount": 1500,
+				"pinnaces": 8
 			},
 			"crewBounds": {
 				"min": 80,

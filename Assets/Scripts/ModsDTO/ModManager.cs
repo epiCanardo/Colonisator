@@ -21,7 +21,8 @@ namespace Assets.Scripts.ModsDTO
         private ShipsDTO _shipsDTO;
         private GeneralDTO _generalDTO;
         private PropertiesDTO _propertiesDTO;
-        private MapDTO _mapDTO;
+        private MapDefinitionDTO _mapDTO;
+        private FactionsDefinitionDTO _factionsDefinitionDTO;
 
         private Color[] miniMapColors;
         public Texture2D miniMap;
@@ -57,6 +58,7 @@ namespace Assets.Scripts.ModsDTO
             LoadNpcs();
             LoadProperties();
             LoadMap();
+            LoadFactionsDefinitions();
 
             // gestion de la minimap
             //GenerateMinimapColors();
@@ -281,10 +283,19 @@ namespace Assets.Scripts.ModsDTO
         private void LoadMap()
         {
             StringBuilder sb = new StringBuilder();
-            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Gameplay/map.json";
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Gameplay/mapdefinition.json";
             // TODO : seul le Core est activé actuellement
 
-            _mapDTO = MapDTO.LoadFromFile(txtName);
+            _mapDTO = MapDefinitionDTO.LoadFromFile(txtName);
+        }
+
+        private void LoadFactionsDefinitions()
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Gameplay/factionsDefinitions.json";
+            // TODO : seul le Core est activé actuellement
+
+            _factionsDefinitionDTO = FactionsDefinitionDTO.LoadFromFile(txtName);
         }
     }
 }

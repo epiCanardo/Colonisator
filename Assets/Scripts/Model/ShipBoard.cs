@@ -25,11 +25,14 @@ namespace Assets.Scripts.Model
         /// les munitions (type et quantité)
         /// </summary>
         public Dictionary<CannonBall, int> ammo { get; set; }
-
         /// <summary>
         /// les barils de poudre 
         /// </summary>
         public int powderBarrels { get; set; }
+        /// <summary>
+        /// les chaloupes
+        /// </summary>
+        public int pinnaces { get; set; }
 
         /// <summary>
         /// utilisé pour la table de bord, hors canons et ammo
@@ -43,6 +46,7 @@ namespace Assets.Scripts.Model
             rigging += delta.rigging;
             hull += delta.hull;
             powderBarrels += delta.powderBarrels;
+            pinnaces += delta.pinnaces;
         }
 
         public string TextFromShipBoardDelta(ShipBoard delta, GeneralDTO.ShipboardBounds shipboardBounds)
@@ -64,6 +68,8 @@ namespace Assets.Scripts.Model
                     items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("cannons"), cannons.Count, delta.cannons.Count, 0, shipboardBounds.cannonsCount));
                 if (delta.powderBarrels != 0)
                     items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("powderBarrels"), powderBarrels, delta.powderBarrels, 0, shipboardBounds.powderBarrels));
+                if (delta.pinnaces != 0)
+                    items.Add(TextFromValue(ModManager.Instance.GetPropertyLabel("pinnaces"), pinnaces, delta.pinnaces, 0, shipboardBounds.pinnaces));
 
             }
             return string.Join(",", items);

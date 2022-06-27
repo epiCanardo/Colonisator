@@ -23,6 +23,7 @@ namespace Assets.Scripts.ModsDTO
             public int cannonsCount { get; set; }
             public int powderBarrels { get; set; }
             public int ammoCount { get; set; }
+            public int pinnaces { get; set; }
         }
 
         public class ShipDefinition

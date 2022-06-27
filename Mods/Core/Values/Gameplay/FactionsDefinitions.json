@@ -1,0 +1,372 @@
+{
+	"factionsDefinition": [
+	{
+	  "playerTypeEnum": "PENITENTIARY",
+      "factionPostureEnum": "DEFENSIVE",
+      "allies": [],
+      "neutral": [
+        "NEUTRAL",
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "TOWN"
+      ],
+      "enemies": [
+        "PENITENTIARY",
+        "PRISON",
+        "PIRATE"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "piofo"
+		  }
+	  ]
+	},
+	{
+	  "playerTypeEnum": "PRISON",
+      "factionPostureEnum": "DEFENSIVE",
+      "allies": [],
+      "neutral": [
+        "NEUTRAL",
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "TOWN"
+      ],
+      "enemies": [
+        "PENITENTIARY",
+        "PRISON",
+        "PIRATE"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "missytown"
+		  }
+	  ]
+	},
+	{
+	  "playerTypeEnum": "COMPETITOR",
+      "factionPostureEnum": "DEFAULT",
+      "allies": [],
+      "neutral": [
+        "NEUTRAL",
+        "TOWN",
+        "PIRATE",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "PRISON",
+        "GHOST",
+        "COMPETITOR",
+        "OTHER",
+        "HUMAN"
+      ],
+      "enemies": [],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "SLOOP",
+			  "harbor": "sundercity"
+		  }
+	  ]
+	},
+	{
+	  "playerTypeEnum": "COMPETITOR",
+      "factionPostureEnum": "DEFAULT",
+      "allies": [],
+      "neutral": [
+        "NEUTRAL",
+        "TOWN",
+        "PIRATE",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "PRISON",
+        "GHOST",
+        "COMPETITOR",
+        "OTHER",
+        "HUMAN"
+      ],
+      "enemies": [],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "SLOOP",
+			  "harbor": "sundercity"
+		  }
+	  ]
+	},
+	{
+	  "playerTypeEnum": "COMPETITOR",
+      "factionPostureEnum": "DEFAULT",
+      "allies": [],
+      "neutral": [
+        "NEUTRAL",
+        "TOWN",
+        "PIRATE",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "PRISON",
+        "GHOST",
+        "COMPETITOR",
+        "OTHER",
+        "HUMAN"
+      ],
+      "enemies": [],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "SLOOP",
+			  "harbor": "sundercity"
+		  }
+	  ]
+	},
+	{
+	  "playerTypeEnum": "PIRATE",
+      "factionPostureEnum": "AGGRESSIVE",
+      "allies": [
+        "PIRATE"
+      ],
+      "neutral": [],
+      "enemies": [
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "NEUTRAL",
+        "TOWN"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "pirateIsland1"
+		  }
+	  ]
+	},
+	{
+	  "playerTypeEnum": "PIRATE",
+      "factionPostureEnum": "AGGRESSIVE",
+      "allies": [
+        "PIRATE"
+      ],
+      "neutral": [],
+      "enemies": [
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "NEUTRAL",
+        "TOWN"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "pirateIsland2"
+		  }
+	  ]
+	},
+	{
+	  "playerTypeEnum": "PIRATE",
+      "factionPostureEnum": "AGGRESSIVE",
+      "allies": [
+        "PIRATE"
+      ],
+      "neutral": [],
+      "enemies": [
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "NEUTRAL",
+        "TOWN"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "pirateIsland3"
+		  }
+	  ]
+	},	
+	{
+      "playerTypeEnum": "TOWN",
+      "factionPostureEnum": "DEFENSIVE",
+      "allies": [
+        "TOWN"
+      ],
+      "neutral": [
+        "HUMAN",
+        "NEUTRAL",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "REBEL_SAILORS"
+      ],
+      "enemies": [
+        "PIRATE"
+      ]
+	},
+	{
+	  "playerTypeEnum": "PIRATE",
+      "factionPostureEnum": "AGGRESSIVE",
+      "allies": [
+        "PIRATE"
+      ],
+      "neutral": [],
+      "enemies": [
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "NEUTRAL",
+        "TOWN"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "sundercity"
+		  }
+	  ]
+	},
+	{
+      "playerTypeEnum": "HUMAN",
+      "factionPostureEnum": "DEFAULT",
+      "allies": [],
+      "neutral": [
+        "NEUTRAL",
+        "TOWN",
+        "PIRATE",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "PRISON",
+        "GHOST",
+        "COMPETITOR",
+        "OTHER",
+        "HUMAN"
+      ],
+      "enemies": [],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "SLOOP",
+			  "harbor": "sundercity"
+		  }
+	  ]
+	},
+	{
+      "playerTypeEnum": "NEUTRAL",
+      "factionPostureEnum": "MERCHANT",
+      "allies": [
+        "NEUTRAL"
+      ],
+      "neutral": [
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "TOWN"
+      ],
+      "enemies": [
+        "PIRATE"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "neutralIsland1"
+		  }
+	  ]
+	},
+	{
+      "playerTypeEnum": "NEUTRAL",
+      "factionPostureEnum": "MERCHANT",
+      "allies": [
+        "NEUTRAL"
+      ],
+      "neutral": [
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "TOWN"
+      ],
+      "enemies": [
+        "PIRATE"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "neutralIsland2"
+		  }
+	  ]
+	},
+	{
+      "playerTypeEnum": "NEUTRAL",
+      "factionPostureEnum": "MERCHANT",
+      "allies": [
+        "NEUTRAL"
+      ],
+      "neutral": [
+        "HUMAN",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "TOWN"
+      ],
+      "enemies": [
+        "PIRATE"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "neutralIsland3"
+		  }
+	  ]
+	},
+	{
+     "playerTypeEnum": "REBEL_SAILORS",
+      "factionPostureEnum": "AGGRESSIVE",
+      "allies": [],
+      "neutral": [
+        "HUMAN",
+        "NEUTRAL",
+        "OTHER",
+        "REBEL_SAILORS",
+        "PENITENTIARY",
+        "REBEL_SAILORS",
+        "TOWN"
+      ],
+      "enemies": [
+        "PIRATE"
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "SLOOP",
+			  "harbor": ""
+		  }
+	  ]
+	},
+	{
+      "playerTypeEnum": "GHOST",
+      "factionPostureEnum": "AGGRESSIVE",
+      "allies": [],
+      "neutral": [],
+      "enemies": [],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "GALLION",
+			  "harbor": ""
+		  }
+	  ]
+	}	
+	]
+}

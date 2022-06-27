@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Assets.Scripts.ModsDTO
 {
-    public class MapDTO : ConfigDTO<MapDTO>
+    public class MapDefinitionDTO : ConfigDTO<MapDefinitionDTO>
     {
         public List<Harbor> harbors { get; set; }
         public List<int[]> nonNavigableSquares { get; set; }
