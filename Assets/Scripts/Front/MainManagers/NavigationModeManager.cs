@@ -186,8 +186,8 @@ namespace Assets.Scripts.Front.MainManagers
             if (!isNavModeFinished)
             {
                 // retour de la cam à la normale
-                GameManager.Instance.camOffSet = new Vector3(0, 300, -160);
-                GameManager.Instance.camEulerAngles = new Vector3(60, 0, 0);
+               // GameManager.Instance.camOffSet = new Vector3(0, 300, -160);
+               // GameManager.Instance.camEulerAngles = new Vector3(60, 0, 0);
                 GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
 
                 // retrait de la position de base de la liste

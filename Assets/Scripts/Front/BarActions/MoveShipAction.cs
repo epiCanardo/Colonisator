@@ -19,8 +19,8 @@ namespace Assets.Scripts.Front.BarActions
                 if (!GameManager.Instance.IsNavigationModeActive())
                 {              
                     // positionnement spécifique pour ce mode de déplacement
-                    GameManager.Instance.camOffSet = new Vector3(0, 1000, 0);
-                    GameManager.Instance.camEulerAngles = new Vector3(90, 0, 0); ;
+                   // GameManager.Instance.camOffSet = new Vector3(0, 1000, 0);
+                    //GameManager.Instance.camEulerAngles = new Vector3(90, 0, 0); ;
                     GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
 
                     Ship ship = GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().ship;     

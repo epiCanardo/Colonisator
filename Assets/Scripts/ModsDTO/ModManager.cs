@@ -220,7 +220,6 @@ namespace Assets.Scripts.ModsDTO
         /// </summary>
         private void LoadSentences()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/sentences.json";
             // TODO : seul le Core est activé actuellement
 
@@ -229,7 +228,6 @@ namespace Assets.Scripts.ModsDTO
 
         private void LoadFactions()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/factions.json";
             // TODO : seul le Core est activé actuellement
 
@@ -238,7 +236,6 @@ namespace Assets.Scripts.ModsDTO
 
         private void LoadIslands()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/islands.json";
             // TODO : seul le Core est activé actuellement
 
@@ -247,7 +244,6 @@ namespace Assets.Scripts.ModsDTO
 
         private void LoadNpcs()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/npcs.json";
             // TODO : seul le Core est activé actuellement
 
@@ -256,7 +252,6 @@ namespace Assets.Scripts.ModsDTO
 
         private void LoadShips()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/ships.json";
             // TODO : seul le Core est activé actuellement
 
@@ -264,7 +259,6 @@ namespace Assets.Scripts.ModsDTO
         }
         private void LoadGeneralValues()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Gameplay/general.json";
             // TODO : seul le Core est activé actuellement
 
@@ -273,7 +267,6 @@ namespace Assets.Scripts.ModsDTO
 
         private void LoadProperties()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Sentences/{_mainConfigDto.language}/properties.json";
             // TODO : seul le Core est activé actuellement
 
@@ -282,7 +275,6 @@ namespace Assets.Scripts.ModsDTO
 
         private void LoadMap()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Gameplay/mapdefinition.json";
             // TODO : seul le Core est activé actuellement
 
@@ -291,11 +283,10 @@ namespace Assets.Scripts.ModsDTO
 
         private void LoadFactionsDefinitions()
         {
-            StringBuilder sb = new StringBuilder();
             string txtName = $"Mods/{_mainConfigDto.activeMods[0]}/Values/Gameplay/factionsDefinitions.json";
             // TODO : seul le Core est activé actuellement
 
             _factionsDefinitionDTO = FactionsDefinitionDTO.LoadFromFile(txtName);
-        }
+        }        
     }
 }

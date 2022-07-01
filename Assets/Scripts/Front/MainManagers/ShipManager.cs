@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Assets.Scripts.Model;
+using Assets.Scripts.ModsDTO;
 using Assets.Scripts.Service;
 using DG.Tweening;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Front.MainManagers
@@ -20,7 +23,7 @@ namespace Assets.Scripts.Front.MainManagers
         public Shader FlagShader;
         public TextMeshProUGUI ActionText; // texte des actions / intentions du navire
         public TextMeshProUGUI CardConsequencesText; // texte des conséquences de cartes
-
+        
         [Header("Pour le calcul des couleurs des voiles")]
         public List<GameObject> SailsToColor;
 
@@ -28,7 +31,10 @@ namespace Assets.Scripts.Front.MainManagers
         public GameObject HullToColor;
 
         [Header("Pour le calcul des couleurs de la minimap")]
-        public GameObject MinimapSprite;
+        public SpriteRenderer MiniMapRenderer;
+        //public GameObject MinimapSprite;
+
+        public GameObject selectionCircle;
 
         private bool isSwinging = true;
         private Vector3 cardConsequencesPosition;
@@ -41,19 +47,20 @@ namespace Assets.Scripts.Front.MainManagers
         public void AssignFlag()
         {
             Faction faction = ServiceGame.GetFactionFromId(ship.owner);
+            FactionManager factionManager = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
 
             MeshRenderer rend = FlagLeftTextile.GetComponent<MeshRenderer>();
             rend.material = new Material(FlagShader);
-            rend.material.SetTexture("flagTexture", FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction)).Flag);
+            rend.material.SetTexture("flagTexture", factionManager.Flag);
             rend.material.SetFloat("amplitude", Random.Range(3, 8));
 
             rend = FlagRightTextile.GetComponent<MeshRenderer>();
             rend.material = new Material(FlagShader);
-            rend.material.SetTexture("flagTexture", FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction)).Flag);
+            rend.material.SetTexture("flagTexture", factionManager.Flag);
             rend.material.SetFloat("amplitude", Random.Range(3, 8));
 
             // couleurs du navire
-            var colors = FlagsManager.Instance.GetMainColorsFromTexture(FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction)).Flag);
+            var colors = FlagsManager.Instance.GetMainColorsFromTexture(factionManager.Flag);
 
             MeshRenderer hullMesh;
             hullMesh = HullToColor.GetComponent<MeshRenderer>();
@@ -68,7 +75,31 @@ namespace Assets.Scripts.Front.MainManagers
                 sailMesh.material.color = colors[1];
             }
 
-            MinimapSprite.GetComponent<SpriteRenderer>().color = new Color32(colors[0].r, colors[0].g, colors[0].b, 255);
+            // couleur du sprite pour la minimap
+            //MiniMapRenderer.sprite = Sprite.Create(ModManager.Instance.GetTexture2D(x=>x.ships, factionManager.Colors[0]), MiniMapRenderer.sprite.rect, MiniMapRenderer.sprite.pivot,1,0,SpriteMeshType.FullRect);
+            MiniMapRenderer.sprite = Resources.Load<Sprite>($"Textures/Icons/Ships/{factionManager.MainColor}");
+
+            //MinimapSprite.GetComponent<SpriteRenderer>().color = new Color32(colors[0].r, colors[0].g, colors[0].b, 255);
+
+            //var fullPixels = MiniMapRenderer.sprite.texture.GetPixels();
+
+            //// couleur du map renderer
+            //for (int i = 0; i < fullPixels.Length; i++)
+            //{
+            //    if (fullPixels[i].a > 0)
+            //        fullPixels[i] = Color.gray; //colors[1];
+            //}
+            //Texture2D text = new Texture2D((int)MiniMapRenderer.sprite.rect.width, (int)MiniMapRenderer.sprite.rect.height);
+            ////text.SetPixels32(fullPixels);
+            //text.SetPixels(fullPixels);
+            //text.Apply();
+            //text.name = "test";
+            //var bytes = text.EncodeToPNG();
+            //File.WriteAllBytes("Assets/Textures/Icones/text.png", bytes);
+
+            //Sprite newSprite = Sprite.Create(text, MiniMapRenderer.sprite.rect, MiniMapRenderer.sprite.pivot);
+            //newSprite.name = "test";
+            //MiniMapRenderer.sprite = newSprite;            
         }
 
         public void Move(Vector3 direction)
@@ -76,17 +107,27 @@ namespace Assets.Scripts.Front.MainManagers
             transform.Translate(direction);
         }
 
-
         private void OnMouseDown()
         {
             SelectShip();
         }
 
+        private void Start()
+        {
+            if (selectionCircle != null)
+                selectionCircle.transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetRelative(true).SetEase(Ease.Linear);
+        }
+
+        private void Update()
+        {
+            //MiniMapRenderer.transform.eulerAngles = new Vector3(90, 0, 0);
+        }
+
         public void SelectShip()
         {           
             Faction faction = ServiceGame.GetFactionFromId(ship.owner);
-            var test = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
-            GameManager.Instance.SetInfoPanelFlag(test.Flag);
+            FactionManager factionManager = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
+            GameManager.Instance.SetInfoPanelFlag(factionManager.Flag);
             GameManager.Instance.SetInfoPanelTitle(ship);
         }
 

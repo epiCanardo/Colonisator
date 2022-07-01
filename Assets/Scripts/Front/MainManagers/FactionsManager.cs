@@ -27,6 +27,8 @@ namespace Assets.Scripts.Front.MainManagers
 
         public List<Color32> Colors { get; set; }
 
+        public string MainColor { get; set; }
+
         public void SetFactionFlag(List<Color32> colors)
         {
             Flag = FlagsManager.Instance.GetRandomFlag();
