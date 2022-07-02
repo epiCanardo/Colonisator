@@ -203,7 +203,14 @@
       ],
       "enemies": [
         "PIRATE"
-      ]
+      ],
+	  "ships" :
+	  [
+		  {
+			  "shipTypeEnum": "FRIGATE",
+			  "harbor": "sundercity"
+		  }
+	  ]
 	},
 	{
    	  "id": "F9",     
