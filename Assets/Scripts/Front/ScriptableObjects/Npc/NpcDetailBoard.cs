@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Front.ScriptableObjects.Ancestors;
 using Assets.Scripts.Front.ScriptableObjects.Faction;
 using Assets.Scripts.Service;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Front.ScriptableObjects.Npc
 {
@@ -16,6 +18,9 @@ namespace Assets.Scripts.Front.ScriptableObjects.Npc
 
         [Header("Titre")]
         public TextMeshProUGUI title;
+
+        [Header("Couleur de la faction")]
+        public List<Image> borders;
 
         [Header("Data")]
         public TextMeshProUGUI fullNameText;
@@ -55,7 +60,13 @@ namespace Assets.Scripts.Front.ScriptableObjects.Npc
         void Start()
         {
             Model.Faction faction = ServiceGame.GetFactionFromId(npc.faction);
+            FactionManager factionManager = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
 
+            // rendu des bordures aux couleurs de la faction
+            foreach (var border in borders)
+            {
+                border.color = factionManager.Colors[0];
+            }
 
             title.text = $"Détail de {npc.fullName}, {npc.description}";
 

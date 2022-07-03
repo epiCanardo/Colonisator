@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7285609955795151205}
   - component: {fileID: 4515786289260772100}
   - component: {fileID: -1566049986574616416}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square
   m_TagString: Square
   m_Icon: {fileID: 0}
@@ -124,8 +124,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 1
-  outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  outlineWidth: 1
+  outlineColor: {r: 0.10980393, g: 0.10980393, b: 0.12941177, a: 1}
+  outlineWidth: 5
   precomputeOutline: 1
   bakeKeys:
   - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

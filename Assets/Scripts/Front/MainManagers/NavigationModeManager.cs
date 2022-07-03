@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Front.Cams;
 using Assets.Scripts.Front.Squares;
 using Assets.Scripts.Model;
 using StylizedWater2;
@@ -105,11 +106,12 @@ namespace Assets.Scripts.Front.MainManagers
 
         public void StartNavigationMode(Ship ship)
         {
+            TurnManager.Instance.MainState = TurnState.NavigationMode;
             shipM = GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>();
             recordedMovement = new List<Square> { ship.coordinates };
             isNavModeFinished = false;
             activeMoveStep = MovementStep.Nope;
-            GameManager.Instance.ToggleSquares(true);
+            Camera.main.GetComponent<CamMovement>().SetCamToMapLevel();
         }
 
         public IEnumerable<Square> NextPossibleSquare()
@@ -194,7 +196,8 @@ namespace Assets.Scripts.Front.MainManagers
                 recordedMovement.RemoveAt(0);
                 GameManager.Instance.ToggleNavigationMode(false);
                 isNavModeFinished = true;
-                GameManager.Instance.ToggleSquares(false);
+
+                Camera.main.GetComponent<CamMovement>().SetCamToActionLevel();
 
                 // démarrage du movement
                 activeMoveStep = MovementStep.Start;

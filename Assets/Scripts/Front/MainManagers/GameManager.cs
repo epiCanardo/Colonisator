@@ -53,9 +53,9 @@ namespace Assets.Scripts.Front.MainManagers
         public TextMeshProUGUI PanelActionSelectionFoodCount;
 
         public GameObject PanelActionSelectionFactionFlag;
+        public Image PanelActionSelectionBorder;
 
         [Header("Map")]
-        public RectTransform FullMap;
         public GameObject PortraitFlagTextile;
         public RawImage miniMap;
 
@@ -74,7 +74,7 @@ namespace Assets.Scripts.Front.MainManagers
         private float xSize = 5000f;
         private float zSquares = 100f;
         private float xSquares = 100f;
-        public bool squaresShowed;
+        private bool squaresShowed;
         private List<SquareManagement> squares = new List<SquareManagement>();
         private SquareManagement squareM;
         private SquareManagement harborSquareM;
@@ -94,7 +94,9 @@ namespace Assets.Scripts.Front.MainManagers
         {
             // postionnement de la caméra par rapport au navire actuel
             ToggleCamMovement(false);
-            Camera.main.transform.position = ship.transform.position + camOffSet;
+            Camera.main.transform.position = ship.transform.position + Vector3.back * 100;
+            Camera.main.GetComponent<CamMovement>().SetCamToActionLevel();
+
             //Camera.main.transform.eulerAngles = camEulerAngles;
 
             // on rend la camera libre si ce n'est pas le tour du joueur humain
@@ -132,9 +134,6 @@ namespace Assets.Scripts.Front.MainManagers
             float shorterBounds = 0.8f * Mathf.Min(Screen.width, Screen.height);
             float xAnchor = 0.5f * (Screen.width - shorterBounds);
             float yAnchor = 0.5f * (Screen.height - shorterBounds);
-            //FullMap.anchorMin = FullMap.anchorMax = new Vector2(xAnchor, yAnchor);
-
-            FullMap.sizeDelta = new Vector2(1000, 1000);
         }
 
         // On lance la game !
@@ -151,6 +150,11 @@ namespace Assets.Scripts.Front.MainManagers
 
             //// positionnement de la cam
             //FocusCamOnCurrentPlayingShip();
+        }
+
+        public void SetInfoPanelBorderColor(Color color)
+        {
+            PanelActionSelectionBorder.color = color;
         }
 
         public void SetInfoPanelFlag(Texture2D texture)
@@ -184,28 +188,17 @@ namespace Assets.Scripts.Front.MainManagers
         // Update is called once per frame
         void Update()
         {
-            // affichage de la map
-            if (Input.GetKeyDown(KeyCode.M))
-                ToggleMap(!FullMap.gameObject.activeSelf);
-
-            // en cas de ragequit !
-            //if (Input.GetKeyDown(KeyCode.Escape))
-               // Application.Quit();
-
             // pas de contrôle en cas de tour IA
             if (TurnManager.Instance.MainState == TurnState.AI)
                 return;
 
-            // faire apparaitre / disparaitre les cases
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                if (squaresShowed)
-                    squaresShowed = false;
-                else
-                    squaresShowed = true;
+            // fin du tour
+            if (TurnManager.Instance.MainState == TurnState.WaitForEndTurn && Input.GetKeyDown(KeyCode.Space))
+                TurnManager.Instance.MainState = TurnState.ActionsFinished;
 
-                ToggleSquares(squaresShowed);
-            }
+            // faire apparaitre / disparaitre les cases
+            if (Input.GetKeyDown(KeyCode.C))            
+                ToggleSquares(squaresShowed);            
 
             // positionnement sur le navire du joueur humain
             if (Input.GetKeyDown(KeyCode.S))
@@ -310,33 +303,16 @@ namespace Assets.Scripts.Front.MainManagers
             return squares.First(x => x.coordinates.Equals(square));
         }
 
-        public void PlayerSpawn()
+        public void PlayersSpawn()
         {
-            // récupération du joueur humain
-            //foreach (var faction in ServiceGame.Factions.Where(x => x.playerTypeEnum == "HUMAN"))
-            //{
-            //    var fM = new FactionManager
-            //    {
-            //        Faction = faction,
-            //        Colors = new List<Color32> { Color.blue, Color.white, Color.red },
-            //        IsPlaying = false
-            //    };
-            //    fM.SetFactionFlag(fM.Colors);
+            // Joueur
+            Faction human = ServiceGame.Factions.First(x => x.playerTypeEnum == "HUMAN");
+            SetFactionToManager(human, "blue", new List<Color32> { Color.blue, Color.white, Color.red });
+            ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
 
-            //    // ajout du faction mananger à la liste
-            //    FactionsManager.Instance.Factions.Add(fM);
-
-                Faction human = ServiceGame.Factions.First(x => x.playerTypeEnum == "HUMAN");
-                SetFactionToManager(human, "blue", new List<Color32> { Color.blue, Color.white, Color.red });
-                ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
-           // }
-        }
-
-        public void NpcsSpawn()
-        {
             // CUII
             Faction cuii = ServiceGame.Factions.First(x => x.playerTypeEnum == "NEUTRAL");
-            SetFactionToManager(cuii, "yellow", new List<Color32> { Color.yellow, Color.black, Color.white }) ;
+            SetFactionToManager(cuii, "yellow", new List<Color32> { Color.yellow, Color.black, Color.white });
             ShipsInstanciation(cuii, cuiiShipPrefabs);
 
             // Sundercity
@@ -365,15 +341,19 @@ namespace Assets.Scripts.Front.MainManagers
             ShipsInstanciation(cmr, cmrShipPrefabs);
 
             // Competitor
-            foreach (Faction competitor in ServiceGame.Factions.Where(x => x.playerTypeEnum == "COMPETITOR"))
+            int count = 0;
+            var competitors = ServiceGame.Factions.Where(x => x.playerTypeEnum == "COMPETITOR");
+            List<string> colors = new List<string> { "lime", "navy", "olive" };
+            foreach (Faction competitor in competitors)
             {
-                SetFactionToManager(competitor, "gray", new List<Color32> { Color.gray, Color.green, Color.gray });
+                SetFactionToManager(competitor, colors[count], new List<Color32> { ColorTools.NameToColor(colors[count]), Color.green, Color.gray });
                 ShipsInstanciation(competitor, competitorShipPrefabs);
+                count++;
             }
 
             // Ghost
             Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == "GHOST");
-            SetFactionToManager(ghost, "cyan", new List<Color32> { Color.gray, Color.red, Color.white });
+            SetFactionToManager(ghost, "gray", new List<Color32> { Color.gray, Color.red, Color.white });
             ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
         }
 
@@ -392,13 +372,11 @@ namespace Assets.Scripts.Front.MainManagers
 
         private void ShipsInstanciation(Faction faction, GameObject[] shipPrefabs)
         {
-            var ships = ServiceGame.GetShipsFromFaction(faction);
-            //var i = 0;                     
+            var ships = ServiceGame.GetShipsFromFaction(faction);                  
 
             foreach (var ship in ships)
             {
-                ShipInstanciation(shipPrefabs[0], ship);
-                //i++;
+                ShipInstanciation(shipPrefabs[0], ship);   
             }
         }
 
@@ -430,7 +408,7 @@ namespace Assets.Scripts.Front.MainManagers
                 // apparition de l'équipage
                 sM.AssignCrew();
                 // apparition des drapeaux
-                sM.AssignFlag();
+                sM.AssignColors();
             }
 
             instanciedShipObjects.Add(currentShipObject);
@@ -438,12 +416,8 @@ namespace Assets.Scripts.Front.MainManagers
 
         public void ToggleSquares(bool active)
         {
-            squaresParent.SetActive(active);
-        }
-
-        public void ToggleMap(bool active)
-        {
-            FullMap.gameObject.SetActive(active);
+            squaresShowed = active;
+            squaresParent.SetActive(squaresShowed);
         }
 
         /// <summary>

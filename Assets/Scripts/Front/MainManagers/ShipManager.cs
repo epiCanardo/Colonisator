@@ -44,7 +44,7 @@ namespace Assets.Scripts.Front.MainManagers
             NpcsManager.Instance.InstanciateNPC(NpcType.Captain, CaptainSpot, gameObject);
         }
 
-        public void AssignFlag()
+        public void AssignColors()
         {
             Faction faction = ServiceGame.GetFactionFromId(ship.owner);
             FactionManager factionManager = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
@@ -65,19 +65,23 @@ namespace Assets.Scripts.Front.MainManagers
             MeshRenderer hullMesh;
             hullMesh = HullToColor.GetComponent<MeshRenderer>();
             hullMesh.material = new Material(hullMesh.material);
-            hullMesh.material.color = colors[0];
+            hullMesh.material.color = colors[0]; // la teinte de la coque est donnée par la première couleur du drapeau
 
             MeshRenderer sailMesh;
             for (int i = 0; i < colors.Count; i++)
             {
                 sailMesh = SailsToColor[i].GetComponent<MeshRenderer>();
                 sailMesh.material = new Material(sailMesh.material);
-                sailMesh.material.color = colors[1];
+                sailMesh.material.color = factionManager.Colors[0]; // la teinte des voiles est donnée par la couleur du joueur
             }
 
-            // couleur du sprite pour la minimap
-            //MiniMapRenderer.sprite = Sprite.Create(ModManager.Instance.GetTexture2D(x=>x.ships, factionManager.Colors[0]), MiniMapRenderer.sprite.rect, MiniMapRenderer.sprite.pivot,1,0,SpriteMeshType.FullRect);
+            // couleur du sprite pour la minimap            
             MiniMapRenderer.sprite = Resources.Load<Sprite>($"Textures/Icons/Ships/{factionManager.MainColor}");
+
+            // couleur de l'anneau de sélection
+            MeshRenderer ringMesh = selectionCircle.GetComponent<MeshRenderer>();
+            ringMesh.material = new Material(ringMesh.material);
+            ringMesh.material.color = factionManager.Colors[0]; // la teinte des l'anneau est donné par la couleur du joueur
 
             //MinimapSprite.GetComponent<SpriteRenderer>().color = new Color32(colors[0].r, colors[0].g, colors[0].b, 255);
 
@@ -127,6 +131,7 @@ namespace Assets.Scripts.Front.MainManagers
         {           
             Faction faction = ServiceGame.GetFactionFromId(ship.owner);
             FactionManager factionManager = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
+            GameManager.Instance.SetInfoPanelBorderColor(factionManager.Colors[0]);
             GameManager.Instance.SetInfoPanelFlag(factionManager.Flag);
             GameManager.Instance.SetInfoPanelTitle(ship);
         }

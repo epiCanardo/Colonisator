@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Front.MainManagers;
+﻿using Assets.Scripts.Front.Cams;
+using Assets.Scripts.Front.MainManagers;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Front.HUD.MiniButtons
@@ -18,7 +20,7 @@ namespace Assets.Scripts.Front.HUD.MiniButtons
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            GameManager.Instance.ToggleMap(true);
+            Camera.main.GetComponent<CamMovement>().SetCamToMapLevel();
         }
     }
 }

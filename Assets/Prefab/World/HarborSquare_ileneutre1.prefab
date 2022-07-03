@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5174662426452854834}
   - component: {fileID: -3155608612902802561}
   - component: {fileID: -2373067530793538804}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HarborSquare_ileneutre1
   m_TagString: Square
   m_Icon: {fileID: 0}
@@ -31,6 +31,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1975, y: 10, z: 5806.88}
   m_LocalScale: {x: 45, y: 0.1, z: 45}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,6 +55,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -62,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7e694ef8da0188648b82e0c37f6b5870, type: 2}
+  - {fileID: 2100000, guid: 96f3ea756f0243d41a9fe3da388c3e44, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -142,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 1
   outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  outlineWidth: 1
+  outlineWidth: 5
   precomputeOutline: 1
   bakeKeys:
   - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

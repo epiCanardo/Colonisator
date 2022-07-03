@@ -47,7 +47,7 @@ namespace Assets.Scripts.ModsDTO
         public void Initialization()
         {
             // chargement de la configuration globale
-            _mainConfigDto = MainConfigDTO.LoadFromFile($"Mods/Config.json");
+            LoadMainConfig();
 
             // chargement des configurations liées aux mods actifs
             LoadSentences();
@@ -63,6 +63,26 @@ namespace Assets.Scripts.ModsDTO
             // gestion de la minimap
             //GenerateMinimapColors();
         }
+
+        /// <summary>
+        /// donne le scalaire identité en fonction de la configuration de la souris pour le scrolling
+        /// </summary>
+        /// <returns></returns>
+        public int GetMouseAxis()
+        {
+            if (_mainConfigDto.mouseScrollInverted) return -1;
+            return 1;
+        }
+
+        /// <summary>
+        /// retourne la sensibilité de la souris (base 1)
+        /// </summary>
+        /// <returns></returns>
+        public float GetMouseSensibility()
+        {
+            return _mainConfigDto.mouseSensibility;
+        }
+
         public List<string> GetCards()
         {
             StringBuilder sb = new StringBuilder();
@@ -213,6 +233,14 @@ namespace Assets.Scripts.ModsDTO
 
             return miniMap;
             //MinimapManager.Instance.UpdateMiniMap(miniMap);
+        }
+
+        /// <summary>
+        /// chargement de la config principale
+        /// </summary>
+        public void LoadMainConfig()
+        {
+            _mainConfigDto = MainConfigDTO.LoadFromFile($"Mods/Config.json");
         }
 
         /// <summary>

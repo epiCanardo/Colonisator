@@ -74,19 +74,12 @@ namespace Assets.Scripts.Front.QuickActions
         }
 
         public void PopulateWorldTask()
-        {
-            // spawn du joueur
-            Stopwatch timer = Stopwatch.StartNew();            
-            GameManager.Instance.PlayerSpawn();
-            timer.Stop();
-            technicalreport.Add($"Temps de création du joueur humain : {timer.Elapsed.TotalSeconds}");
-            //yield return null;
-
+        { 
             // spawn des navires npc
             Stopwatch timer2 = Stopwatch.StartNew();
-            GameManager.Instance.NpcsSpawn();
+            GameManager.Instance.PlayersSpawn();
             timer2.Stop();
-            technicalreport.Add($"Temps de création des autres factions : {timer2.Elapsed.TotalSeconds}");
+            technicalreport.Add($"Temps de création des factions : {timer2.Elapsed.TotalSeconds}");
             //yield return null;
 
             Stopwatch timer3 = Stopwatch.StartNew();

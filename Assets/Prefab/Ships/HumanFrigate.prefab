@@ -3374,9 +3374,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 23396998719976502, guid: 453b795a99d8e85448d0c9bc874e58b2, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23396998719976502, guid: 453b795a99d8e85448d0c9bc874e58b2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 41680dad0f0243748b4e228f49a2e3c4, type: 2}
+      objectReference: {fileID: 2100000, guid: b51c4e388dc312e458a92eca3673b8b8, type: 2}
+    - target: {fileID: 23396998719976502, guid: 453b795a99d8e85448d0c9bc874e58b2, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 08bb6cf6b309be648b88ab168ef72ac9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 453b795a99d8e85448d0c9bc874e58b2, type: 3}
 --- !u!4 &1561653042789229768 stripped
@@ -3396,6 +3404,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2592990299884036207}
     m_Modifications:
+    - target: {fileID: 4002057142388002848, guid: 5d65a039d9a323440a1a72462b3232aa, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4002057142388002848, guid: 5d65a039d9a323440a1a72462b3232aa, type: 3}
+      propertyPath: m_fontSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4002057142388002848, guid: 5d65a039d9a323440a1a72462b3232aa, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4898489289723609395, guid: 5d65a039d9a323440a1a72462b3232aa, type: 3}
       propertyPath: m_Name
       value: ActionText
@@ -3613,6 +3633,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2592990299884036207}
     m_Modifications:
+    - target: {fileID: 4002057142388002848, guid: 49874145939f9d04dae2249d28ac3e2a, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4002057142388002848, guid: 49874145939f9d04dae2249d28ac3e2a, type: 3}
+      propertyPath: m_fontSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4002057142388002848, guid: 49874145939f9d04dae2249d28ac3e2a, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4898489289723609395, guid: 49874145939f9d04dae2249d28ac3e2a, type: 3}
       propertyPath: m_Name
       value: CardConsequencesText

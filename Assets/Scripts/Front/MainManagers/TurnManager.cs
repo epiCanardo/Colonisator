@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Assets.Scripts.DTO;
 using Assets.Scripts.EventsDTO;
+using Assets.Scripts.Front.Cams;
 using Assets.Scripts.Front.ScriptableObjects.Faction;
 using Assets.Scripts.Model;
 using Assets.Scripts.ModsDTO;
@@ -59,7 +60,7 @@ namespace Assets.Scripts.Front.MainManagers
                 yield return StartCoroutine("NewTurn");
 
                 MainState = TurnState.ActionsStarted;
-                GameManager.Instance.ToggleSquares(false);
+                Camera.main.GetComponent<CamMovement>().SetCamToActionLevel();
                 CurrentTurnText.text = string.Format(ModManager.Instance.GetSentence(SentenceDTO.CURRENT_TURN_START),
                     ServiceGame.GetCurrentTurn.number);
 
@@ -100,11 +101,17 @@ namespace Assets.Scripts.Front.MainManagers
 
                             yield return new WaitUntil(() => MainState == TurnState.CardChoiceDone);
                             MenusManager.Instance.TryDestroyMenu("card");
-
+                            MainState = TurnState.Human;
                         }
                         // si pas de carte piochée, on peut avancer
-                        else
+                        //else
+                        //{
                             MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+
+                            // dès que le mode navigation est démarré, le bouton n'est plus actif
+                            yield return new WaitUntil(() => MainState == TurnState.NavigationMode);
+                            MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
+                        //}
 
                         // TODO : mettre un bouton pour mettre fin ou tour du joueur
                         yield return new WaitUntil(() => MainState == TurnState.AI || MainState == TurnState.CardChoiceDone);
@@ -343,8 +350,8 @@ namespace Assets.Scripts.Front.MainManagers
                                         GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(
                                             physicalSquare.transform.position + (Vector3.down * 10), 1);
                                         // déplacement de la caméra à la même vitesse
-                                        yield return Camera.main.transform
-                                            .DOMove(physicalSquare.transform.position + GameManager.Instance.camOffSet,
+                                        yield return Camera.main.transform.DOMove(
+                                            new Vector3(physicalSquare.transform.position.x, Camera.main.transform.position.y, physicalSquare.transform.position.z - 100)  /*+ GameManager.Instance.camOffSet*/,
                                                 1)
                                             .WaitForCompletion();
                                     }
@@ -472,6 +479,7 @@ namespace Assets.Scripts.Front.MainManagers
     {
         ActionsStarted,
         Human,
+        NavigationMode,
         CardChoiceDone,
         AI,
         WaitForEndTurn,

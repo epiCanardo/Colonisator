@@ -2,7 +2,7 @@
 	"factionsDefinition": [
 	{
       "id": "F1",
-	  "name": "Vaicnre ou mourrir",
+	  "name": "Vaincre ou mourrir",
 	  "playerTypeEnum": "HUMAN",
       "factionPostureEnum": "DEFAULT",
       "allies": [],
@@ -83,7 +83,7 @@
 	},
 	{
 	  "id": "F4",
-	  "name": "Maniques mais sympas",
+	  "name": "Les mal élevés",
 	  "playerTypeEnum": "COMPETITOR",
       "factionPostureEnum": "DEFAULT",
       "allies": [],

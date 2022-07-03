@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Front.Paths;
 using Assets.Scripts.Model;
@@ -34,7 +35,14 @@ namespace Assets.Scripts.Front.Squares
                 var npcToInstanciate = npcsPrefabs[Random.Range(0, npcsPrefabs.Count)];
                 var instance = Instantiate(npcToInstanciate, transform.position, transform.rotation);
 
-                instance.GetComponentInChildren<SkinnedMeshRenderer>(false).material = npcsMaterials[Random.Range(0, npcsMaterials.Count)];
+                // modification de la couleur du material en fonction de la couleur de la faction
+                Material material = new Material(npcsMaterials[Random.Range(0, npcsMaterials.Count)]);
+                
+                //string factionId = ServiceGame.GetNpc(npc).faction;
+                //if (!string.IsNullOrEmpty(factionId))
+                //    material.color = Color.red; //FactionsManager.Instance.Factions.First(x => x.Faction.Equals(ServiceGame.GetFactionFromId(factionId))).Colors[0];
+
+                instance.GetComponentInChildren<SkinnedMeshRenderer>(false).material = material;
 
                 if (defaultPath != null)
                 {

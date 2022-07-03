@@ -4,5 +4,7 @@
 	"activeMods": [
 		"Core"
 	],
+	"mouseScrollInverted": true,
+	"mouseSensibility" : 0.5,
 	"colbackLocation": "C:\\Users\\artem\\source\\repos\\Colback\\Colback.bat"
 }
