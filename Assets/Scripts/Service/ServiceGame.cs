@@ -80,7 +80,7 @@ namespace Assets.Scripts.Service
             if (!isPortOpen)
                 StartBack();
 
-            RestClient client = new RestClient($"http://localhost:8080/games/init?nbNPC={npcCount}&nbCompetitors=3");
+            RestClient client = new RestClient($"http://localhost:8080/games/init?nbNPC={npcCount}");
             RestRequest request = new RestRequest(Method.GET);
             game = client.Execute<Game>(request).Data;
 
@@ -638,8 +638,7 @@ namespace Assets.Scripts.Service
                     id = ship.id,
                     shipBoard = new ShipBoard
                     {
-                        food = Mathf.Clamp(ship.shipBoard.food - consumption, 0, 
-                            ModManager.Instance.GetShipBoardBound(x=>x.food, ship.shipTypeEnum)),
+                        food = Mathf.Clamp(ship.shipBoard.food - consumption, 0, ship.shipType.shipboardBounds.food),
                         dodris = ship.shipBoard.dodris,
                         hull = ship.shipBoard.hull,
                         rigging = ship.shipBoard.rigging,

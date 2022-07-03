@@ -7,7 +7,7 @@ namespace Assets.Scripts.ModsDTO
     public class GeneralDTO : ConfigDTO<GeneralDTO>
     {
         public Values gameplayValues { get; set; }
-        public List<ShipDefinition> shipDefinitions { get; set; }
+        public List<ShipDefinition> shipType { get; set; }
 
         public class CrewBounds
         {

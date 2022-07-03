@@ -158,7 +158,7 @@ namespace Assets.Scripts.ModsDTO
         /// <returns></returns>
         public int GetShipBoardBound(Func<GeneralDTO.ShipboardBounds, int> boardProperty, string shipTypeEnum)
         {
-            return boardProperty(_generalDTO.shipDefinitions.First(x => x.shipTypeEnum.Equals(shipTypeEnum))
+            return boardProperty(_generalDTO.shipType.First(x => x.shipTypeEnum.Equals(shipTypeEnum))
                 .shipboardBounds);
         }
 
@@ -169,7 +169,7 @@ namespace Assets.Scripts.ModsDTO
         /// <returns></returns>
         public GeneralDTO.ShipboardBounds GetShipboardBounds(string shipTypeEnum)
         {
-            return _generalDTO.shipDefinitions.First(x => x.shipTypeEnum.Equals(shipTypeEnum)).shipboardBounds;
+            return _generalDTO.shipType.First(x => x.shipTypeEnum.Equals(shipTypeEnum)).shipboardBounds;
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Assets.Scripts.ModsDTO
         /// <returns></returns>
         public Tuple<int, int> GetShipCrewBounds(string shipTypeEnum)
         {
-            var bounds = _generalDTO.shipDefinitions.First(x => x.shipTypeEnum.Equals(shipTypeEnum)).crewBounds;
+            var bounds = _generalDTO.shipType.First(x => x.shipTypeEnum.Equals(shipTypeEnum)).crewBounds;
             return new Tuple<int, int>(bounds.min, bounds.max);
         }
 

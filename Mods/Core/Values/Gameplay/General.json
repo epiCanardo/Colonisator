@@ -9,7 +9,7 @@
 	"SHIP_FOOD_CONSUMPTION_CREW_STEP": 50,
 	"CARD_DROP_RATE": 25
 	},
-	"shipDefinitions": [
+	"shipType": [
 		{
 			"shipTypeEnum": "PINNACE",
 			"shipboardBounds":

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using static Assets.Scripts.ModsDTO.GeneralDTO;
 
 namespace Assets.Scripts.Model
 {
@@ -10,7 +11,10 @@ namespace Assets.Scripts.Model
     /// </summary>
     public sealed class Ship : ColanderSourceModel, IEquatable<Ship>
     {
-        public string shipTypeEnum { get; set; }
+        //public string shipTypeEnum { get; set; }
+
+        public ShipDefinition shipType { get; set; }
+
         public string name { get; set; }
         public string owner { get; set; }
         public List<string> crew { get; set; }
