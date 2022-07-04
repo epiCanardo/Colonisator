@@ -17,6 +17,7 @@ namespace Assets.Scripts.ModsDTO
 
         public class FactionsDefinition
         {
+            public string id { get; set; }
             public string playerTypeEnum { get; set; }
             public string factionPostureEnum { get; set; }
             public List<string> allies { get; set; }
