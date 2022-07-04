@@ -13,14 +13,5 @@ namespace Assets.Scripts.EventsDTO
         {
             id = Guid.NewGuid().ToString();
         }
-    }
-
-    //[JsonConverter(typeof(StringEnumConverter))]
-    //public enum EventType
-    //{
-    //    COLONISATION,
-    //    MOVE,
-    //    PUNCTURE,
-    //    NPC
-    //}
+    } 
 }

@@ -80,9 +80,21 @@ namespace Assets.Scripts.Service
             if (!isPortOpen)
                 StartBack();
 
-            RestClient client = new RestClient($"http://localhost:8080/games/init?nbNPC={npcCount}");
-            RestRequest request = new RestRequest(Method.GET);
-            game = client.Execute<Game>(request).Data;
+            RestClient client = new RestClient($"http://localhost:8080/games/init");
+
+            NewGameDTO newGame = new NewGameDTO
+            {
+                nbNpc = 100,
+                factions = new List<NewGameDTO.NewGameFaction> { new NewGameDTO.NewGameFaction { name = "Caca", playerTypeEnum = "HUMAN" }
+                }
+            };
+
+            var request = new RestRequest(Method.POST);
+            request.AddJsonBody(newGame.ToJson());
+            game = client.Post<Game>(request).Data;
+
+            //RestRequest request = new RestRequest(Method.GET);
+           // game = client.Execute<Game>(request).Data;
 
             if (!string.IsNullOrEmpty(rndSeed))
                 InitRandomWithSeed(rndSeed);
