@@ -83,6 +83,19 @@ namespace Assets.Scripts.ModsDTO
             return _mainConfigDto.mouseSensibility;
         }
 
+        /// <summary>
+        /// retourne la qualité globale
+        /// </summary>
+        /// <returns></returns>
+        public int GetGlobalQuality()
+        {
+            return Mathf.Clamp(_mainConfigDto.globalQuality, 0, 2);
+        }
+
+        /// <summary>
+        /// Récupération de l'ensemble des cartes
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetCards()
         {
             StringBuilder sb = new StringBuilder();

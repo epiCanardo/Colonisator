@@ -122,6 +122,9 @@ namespace Assets.Scripts.Front.MainManagers
         // Start is called before the first frame update
         void Start()
         {
+            // définition de la qualité globale
+            QualitySettings.SetQualityLevel(ModManager.Instance.GetGlobalQuality());
+
             // définition des vecteurs de position et d'angle pour la camera principale
             //camOffSet = new Vector3(0, 300, -160);
             //camEulerAngles = new Vector3(60, 0, 0);
@@ -203,16 +206,6 @@ namespace Assets.Scripts.Front.MainManagers
             // positionnement sur le navire du joueur humain
             if (Input.GetKeyDown(KeyCode.S))
                 FocusCamOnShip(GetPlayingHumanShipObject);
-
-            // modification de la qualité
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                currentQualityLevel += 1;
-                if (currentQualityLevel == 3)
-                    currentQualityLevel = 0;
-
-                QualitySettings.SetQualityLevel(currentQualityLevel);
-            }
         }
 
         public void CreateSquares()

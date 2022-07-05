@@ -136,7 +136,7 @@ namespace Assets.Scripts.Service
         }
 
         /// <summary>
-        /// récupération en envoi des cartes
+        /// récupération et envoi des cartes
         /// </summary>
         public static void SendCards()
         {
