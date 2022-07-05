@@ -85,7 +85,19 @@ namespace Assets.Scripts.Service
             NewGameDTO newGame = new NewGameDTO
             {
                 nbNpc = 100,
-                factions = new List<NewGameDTO.NewGameFaction> { new NewGameDTO.NewGameFaction { name = "Caca", playerTypeEnum = "HUMAN" }
+                factions = new List<NewGameDTO.NewGameFaction> 
+                { 
+                   // new NewGameDTO.NewGameFaction { name = "Caca", playerTypeEnum = "HUMAN" },
+                    new NewGameDTO.NewGameFaction { name = "Comp1", playerTypeEnum = "COMPETITOR" },
+                    new NewGameDTO.NewGameFaction { name = "Comp2", playerTypeEnum = "COMPETITOR" },
+                    new NewGameDTO.NewGameFaction { name = "Comp3", playerTypeEnum = "COMPETITOR" },
+                    new NewGameDTO.NewGameFaction { name = "Centre de détention de Piofo", playerTypeEnum = "PENITENTIARY" },
+                    new NewGameDTO.NewGameFaction { name = "Colonie pénitencière de Missytown", playerTypeEnum = "PRISON" },
+                    new NewGameDTO.NewGameFaction { name = "Navire Fantôme", playerTypeEnum = "GHOST" },
+                    new NewGameDTO.NewGameFaction { name = "Cité de Sundercity", playerTypeEnum = "TOWN" },
+                    new NewGameDTO.NewGameFaction { name = "Confrérie des Matelots Révoltés", playerTypeEnum = "REBEL_SAILORS" },
+                    new NewGameDTO.NewGameFaction { name = "Communauté des Pirates Libres", playerTypeEnum = "PIRATE" },
+                    new NewGameDTO.NewGameFaction { name = "Comité d'Union des Îles Indépendantes", playerTypeEnum = "NEUTRAL" }
                 }
             };
 

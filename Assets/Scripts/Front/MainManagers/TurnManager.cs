@@ -429,8 +429,8 @@ namespace Assets.Scripts.Front.MainManagers
                 CurrentTurnText.text = $"Nouveau tour dans 1 seconde...";
                 //yield return new WaitForSeconds(1f);
 
-                GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetPlayingHumanShipObject);
-                GameManager.Instance.ToggleCamMovement(true);
+                //GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetPlayingHumanShipObject);
+                //GameManager.Instance.ToggleCamMovement(true);
 
                 // on génère un rapport de fin de tour
                 //GenerateReport();

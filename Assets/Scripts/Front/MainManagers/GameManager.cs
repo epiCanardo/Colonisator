@@ -306,9 +306,12 @@ namespace Assets.Scripts.Front.MainManagers
         public void PlayersSpawn()
         {
             // Joueur
-            Faction human = ServiceGame.Factions.First(x => x.playerTypeEnum == "HUMAN");
-            SetFactionToManager(human, "blue", new List<Color32> { Color.blue, Color.white, Color.red });
-            ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
+            Faction human = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "HUMAN");
+            if (human != null)
+            {
+                SetFactionToManager(human, "blue", new List<Color32> { Color.blue, Color.white, Color.red });
+                ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
+            }
 
             // CUII
             Faction cuii = ServiceGame.Factions.First(x => x.playerTypeEnum == "NEUTRAL");
