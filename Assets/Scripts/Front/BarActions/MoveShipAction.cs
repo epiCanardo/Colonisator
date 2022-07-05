@@ -6,11 +6,11 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Front.BarActions
 {
-    public class MoveShipAction : UnityEngine.MonoBehaviour, IPointerClickHandler
+    public class MoveShipAction : UnityEngine.MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public GameObject dialog;
         public TextMeshProUGUI text;
-
+        public Tooltip tooltip;
         public void OnPointerClick(PointerEventData eventData)
         {
             if (TurnManager.Instance.MainState == TurnState.Human)
@@ -38,6 +38,17 @@ namespace Assets.Scripts.Front.BarActions
                     GameManager.Instance.ToggleNavigationMode(true);
                 }
             }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            tooltip.gameObject.SetActive(true);
+            tooltip.SetText("Vous avancez votre navire");
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            tooltip.gameObject.SetActive(false);
         }
     }
 }

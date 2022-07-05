@@ -89,6 +89,9 @@ namespace Assets.Scripts.ModsDTO
         /// <returns></returns>
         public int GetGlobalQuality()
         {
+            if (_mainConfigDto == null)
+                LoadMainConfig();
+
             return Mathf.Clamp(_mainConfigDto.globalQuality, 0, 2);
         }
 
