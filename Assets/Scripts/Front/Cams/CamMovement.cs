@@ -22,51 +22,34 @@ namespace Assets.Scripts.Front.Cams
         // Start is called before the first frame update
         void Start()
         {
-            LineRenderer line = GetComponent<LineRenderer>();
-            Vector3[] aboveSeaLevelPoints = new Vector3[100000];
-            int nbPoints = 0;
+            //LineRenderer line = GetComponent<LineRenderer>();
+            //Vector3[] aboveSeaLevelPoints = new Vector3[100000];
+            //int nbPoints = 0;
             defaultCullingMask = Camera.main.cullingMask;
-            var test = sampleTerrain.GetComponent<TerrainManager>().GetGroundCoordinates();
-            for (int x = 0; x < sampleTerrain.terrainData.heightmapResolution; x += 3)
-            {
-                for (int y = 0; y < sampleTerrain.terrainData.heightmapResolution; y += 3)
-                {
-                    if (test[x, y] > 0)
-                    {
-                        //aboveSeaLevelPoints[nbPoints] = new Vector3(x, 0, y);
-                        //nbPoints++;
-                        var sphere = GameObject.CreatePrimitive(PrimitiveType.Plane);
-                        sphere.transform.localScale /= 10;
-                        var instance = Instantiate(sphere, new Vector3(x - 2509.5f, 0, y + 5816.6f), Quaternion.identity, mapPointsParent.transform);
-
-                        if (test[x, y] > 0.04)
-                            instance.GetComponent<MeshRenderer>().material.color = Color.black;
-                        else if (test[x, y] > 0.03)
-                            instance.GetComponent<MeshRenderer>().material.color = Color.green;
-                        else if (test[x, y] > 0.02)
-                            instance.GetComponent<MeshRenderer>().material.color = Color.yellow;
-                        else if (test[x, y] > 0.01)
-                            instance.GetComponent<MeshRenderer>().material.color = Color.grey;
-                        else if (test[x, y] > 0)
-                            instance.GetComponent<MeshRenderer>().material.color = Color.white;
-                    }
-                }
-            }
-
-            //Vector3[] finalArray = new Vector3[nbPoints];
-            //int count = 0;
-            //for (int i = 0; i < aboveSeaLevelPoints.Length; i++)
+            //var test = sampleTerrain.GetComponent<TerrainManager>().GetGroundCoordinates();
+            //for (int x = 0; x < sampleTerrain.terrainData.heightmapResolution; x += 3)
             //{
-            //    if (aboveSeaLevelPoints[i].sqrMagnitude > 0)
+            //    for (int y = 0; y < sampleTerrain.terrainData.heightmapResolution; y += 3)
             //    {
-            //        //finalArray[count] = aboveSeaLevelPoints[i];
-            //        //count++;
-            //        Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), aboveSeaLevelPoints[i], Quaternion.identity);
+            //        if (test[x, y] > 0)
+            //        {
+            //            var sphere = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            //            sphere.transform.localScale /= 10;
+            //            var instance = Instantiate(sphere, new Vector3(x - 2509.5f, 0, y + 5816.6f), Quaternion.identity, mapPointsParent.transform);
+
+            //            if (test[x, y] > 0.04)
+            //                instance.GetComponent<MeshRenderer>().material.color = Color.black;
+            //            else if (test[x, y] > 0.03)
+            //                instance.GetComponent<MeshRenderer>().material.color = Color.green;
+            //            else if (test[x, y] > 0.02)
+            //                instance.GetComponent<MeshRenderer>().material.color = Color.yellow;
+            //            else if (test[x, y] > 0.01)
+            //                instance.GetComponent<MeshRenderer>().material.color = Color.grey;
+            //            else if (test[x, y] > 0)
+            //                instance.GetComponent<MeshRenderer>().material.color = Color.white;
+            //        }
             //    }
             //}
-
-            //line.positionCount = nbPoints;
-            //line.SetPositions(aboveSeaLevelPoints);
         }
 
         void Update()
@@ -78,8 +61,8 @@ namespace Assets.Scripts.Front.Cams
 
             if (isMouseButtonPressed)
             {                
-                hMovement = ModManager.Instance.GetMouseAxis() * ModManager.Instance.GetMouseSensibility() * Input.GetAxis("Mouse X");
-                vMovement = ModManager.Instance.GetMouseAxis() * ModManager.Instance.GetMouseSensibility() * Input.GetAxis("Mouse Y");
+                hMovement = ModManager.Instance.GetMouseAxis() * MouseSensitivityFactor * Input.GetAxis("Mouse X");
+                vMovement = ModManager.Instance.GetMouseAxis() * MouseSensitivityFactor * Input.GetAxis("Mouse Y");
             }
 
             if (Input.GetKeyDown(KeyCode.PageDown) || wheel < 0)
@@ -103,9 +86,18 @@ namespace Assets.Scripts.Front.Cams
             if (zoomLevel < 0)
                 SetCamToMapLevel();
             else
-                SetCamToActionLevel();            
-            
+                SetCamToActionLevel();
         }
+
+        /// <summary>
+        /// calcul de l'ajustement de la sensibilité de la souris, selon le zoom
+        /// si en vue map : sensibilité * 2
+        /// </summary>
+        private float MouseSensitivityFactor => (zoomLevel < 0)
+                ? ModManager.Instance.GetMouseSensibility() * 2
+                : ModManager.Instance.GetMouseSensibility();
+        
+
         private void SetCamTransform()
         {
             transform.position = new Vector3(transform.position.x, 300 - zoomLevel * 50, transform.position.z);
