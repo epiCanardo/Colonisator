@@ -87,10 +87,10 @@ namespace Assets.Scripts.Service
                 nbNpc = 100,
                 factions = new List<NewGameDTO.NewGameFaction> 
                 { 
-                   // new NewGameDTO.NewGameFaction { name = "Caca", playerTypeEnum = "HUMAN" },
-                    new NewGameDTO.NewGameFaction { name = "Comp1", playerTypeEnum = "COMPETITOR" },
-                    new NewGameDTO.NewGameFaction { name = "Comp2", playerTypeEnum = "COMPETITOR" },
-                    new NewGameDTO.NewGameFaction { name = "Comp3", playerTypeEnum = "COMPETITOR" },
+                    new NewGameDTO.NewGameFaction { name = "La Compagnie Porcine", playerTypeEnum = "HUMAN" },
+                    new NewGameDTO.NewGameFaction { name = "Ingénierie maritime", playerTypeEnum = "COMPETITOR" },
+                    new NewGameDTO.NewGameFaction { name = "Guilde des investisseurs", playerTypeEnum = "COMPETITOR" },
+                    new NewGameDTO.NewGameFaction { name = "La Table Ovale", playerTypeEnum = "COMPETITOR" },
                     new NewGameDTO.NewGameFaction { name = "Centre de détention de Piofo", playerTypeEnum = "PENITENTIARY" },
                     new NewGameDTO.NewGameFaction { name = "Colonie pénitencière de Missytown", playerTypeEnum = "PRISON" },
                     new NewGameDTO.NewGameFaction { name = "Navire Fantôme", playerTypeEnum = "GHOST" },

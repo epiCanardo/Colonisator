@@ -308,22 +308,22 @@ namespace Assets.Scripts.Front.MainManagers
 
             // CUII
             Faction cuii = ServiceGame.Factions.First(x => x.playerTypeEnum == "NEUTRAL");
-            SetFactionToManager(cuii, "yellow", new List<Color32> { Color.yellow, Color.black, Color.white });
+            SetFactionToManager(cuii, "gray", new List<Color32> { Color.gray, Color.black, Color.white });
             ShipsInstanciation(cuii, cuiiShipPrefabs);
 
             // Sundercity
             Faction sundercity = ServiceGame.Factions.First(x => x.playerTypeEnum == "TOWN");
-            SetFactionToManager(sundercity, "cyan", new List<Color32> { Color.cyan, Color.black, Color.white });
+            SetFactionToManager(sundercity, "teal", new List<Color32> { ColorTools.NameToColor("teal"), Color.black, Color.white });
             ShipsInstanciation(sundercity, new GameObject[1] { sundercityShipPrefab });
 
             // Piofo
             Faction piofo = ServiceGame.Factions.First(x => x.playerTypeEnum == "PENITENTIARY");
-            SetFactionToManager(piofo, "red", new List<Color32> { Color.red, Color.white, Color.black });
+            SetFactionToManager(piofo, "white", new List<Color32> { Color.white, Color.white, Color.black });
             ShipsInstanciation(piofo, new GameObject[1] { piofoShipPrefab });
 
             // Missytown
             Faction missytown = ServiceGame.Factions.First(x => x.playerTypeEnum == "PRISON");
-            SetFactionToManager(missytown, "green", new List<Color32> { Color.green, Color.black, Color.gray });
+            SetFactionToManager(missytown, "purple", new List<Color32> { ColorTools.NameToColor("purple"), Color.black, Color.gray });
             ShipsInstanciation(missytown, new GameObject[1] { missytownShipPrefab });
 
             // CPL
@@ -333,13 +333,13 @@ namespace Assets.Scripts.Front.MainManagers
 
             // CMR
             Faction cmr = ServiceGame.Factions.First(x => x.playerTypeEnum == "REBEL_SAILORS");
-            SetFactionToManager(cmr, "magenta", new List<Color32> { Color.magenta, Color.black, Color.yellow });
+            SetFactionToManager(cmr, "maroon", new List<Color32> { ColorTools.NameToColor("maroon"), Color.black, Color.yellow });
             ShipsInstanciation(cmr, cmrShipPrefabs);
 
             // Competitor
             int count = 0;
             var competitors = ServiceGame.Factions.Where(x => x.playerTypeEnum == "COMPETITOR");
-            List<string> colors = new List<string> { "lime", "navy", "olive" };
+            List<string> colors = new List<string> { "yellow", "green", "red" };
             foreach (Faction competitor in competitors)
             {
                 SetFactionToManager(competitor, colors[count], new List<Color32> { ColorTools.NameToColor(colors[count]), Color.green, Color.gray });
@@ -349,7 +349,7 @@ namespace Assets.Scripts.Front.MainManagers
 
             // Ghost
             Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == "GHOST");
-            SetFactionToManager(ghost, "gray", new List<Color32> { Color.gray, Color.red, Color.white });
+            SetFactionToManager(ghost, "cyan", new List<Color32> { Color.cyan, Color.red, Color.white });
             ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
         }
 
