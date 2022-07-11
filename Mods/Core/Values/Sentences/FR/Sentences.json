@@ -82,7 +82,7 @@
 		},
 		{
 			"key" :"HISTORIC_FIRECREW_DONE",
-			"value" : "[Tour {0}] - [Faction : <b>{1}</b>] - Le navire '{2}' <b>a refourgué {3} matelots</b> ! Il en reste : <b>{GameManager.Instance.CurrentShipToPlay.crew.Count}</b>"
+			"value" : "[Tour {0}] - [Faction : <b>{1}</b>] - Le navire '{2}' <b>a refourgué {3} matelots</b> ! Il en reste : <b>{4}</b>"
 		},
 		{
 			"key" :"HISTORIC_COLONIZATION_DONE",
