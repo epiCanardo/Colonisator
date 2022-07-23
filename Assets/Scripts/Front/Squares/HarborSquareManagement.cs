@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Front.Paths;
 using Assets.Scripts.Model;

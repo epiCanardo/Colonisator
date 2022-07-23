@@ -9,7 +9,7 @@ namespace Assets.Scripts.DTO
         /// l'île à coloniser
         /// </summary>
         public Island island { get; set; }
-        
+
         /// <summary>
         /// le navrie qui colonise
         /// </summary>

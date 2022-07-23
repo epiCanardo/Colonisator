@@ -29,8 +29,7 @@ namespace Assets.Scripts.Front.MainManagers
         public GameObject cardObject;
         public static TurnManager Instance { get; private set; }
 
-        private bool nonHumanAutoTestActive = true;
-
+        private bool nonHumanAutoTestActive = false;
 
         private void Awake()
         {
@@ -54,8 +53,6 @@ namespace Assets.Scripts.Front.MainManagers
         {
             for (int i = 0; i < 1000; i++)
             {
-                //while (ServiceGame.GetCurrentTurn.number < 1000)
-            //{
                 // démarrage du tour
                 yield return StartCoroutine("NewTurn");
 
@@ -106,11 +103,11 @@ namespace Assets.Scripts.Front.MainManagers
                         // si pas de carte piochée, on peut avancer
                         //else
                         //{
-                            MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
 
-                            // dès que le mode navigation est démarré, le bouton n'est plus actif
-                            yield return new WaitUntil(() => MainState == TurnState.NavigationMode);
-                            MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
+                        // dès que le mode navigation est démarré, le bouton n'est plus actif
+                        yield return new WaitUntil(() => MainState == TurnState.NavigationMode);
+                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                         //}
 
                         // TODO : mettre un bouton pour mettre fin ou tour du joueur
@@ -417,14 +414,14 @@ namespace Assets.Scripts.Front.MainManagers
                 {
                     // on se place en attente de fin de tour
                     MainState = TurnState.WaitForEndTurn;
-                   // BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
+                    // BackgroundColor.GetComponent<Image>().DOColor(Color.red, 1).SetEase(Ease.InBounce);
                     yield return new WaitUntil(() => MainState == TurnState.ActionsFinished);
                 }
 
                 EndTurnButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                 CurrentTurnText.text = $"Tour {ServiceGame.GetCurrentTurn.number} : Fin du tour";
-              //  targetColor = new Color(color.r, color.g, color.b, 0.8f);
-              //  BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
+                //  targetColor = new Color(color.r, color.g, color.b, 0.8f);
+                //  BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f);
 
                 CurrentTurnText.text = $"Nouveau tour dans 1 seconde...";
                 //yield return new WaitForSeconds(1f);
@@ -433,14 +430,10 @@ namespace Assets.Scripts.Front.MainManagers
                 //GameManager.Instance.ToggleCamMovement(true);
 
                 // on génère un rapport de fin de tour
-                //GenerateReport();
                 ServiceGame.GetReport();
-                //yield return StartCoroutine("GenerateReport");
 
                 // fin du tour : envoi du rapport au back
                 yield return StartCoroutine("EndTurn");
-
-                //StartTurn();
             }
         }
 

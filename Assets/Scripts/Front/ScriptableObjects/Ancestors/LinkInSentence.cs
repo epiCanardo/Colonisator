@@ -1,8 +1,5 @@
-﻿using Assets.Scripts.Front.MainManagers;
-using TMPro;
-using UnityEngine;
+﻿using TMPro;
 using UnityEngine.EventSystems;
-using DG.Tweening;
 
 namespace Assets.Scripts.Front.ScriptableObjects.Ancestors
 {

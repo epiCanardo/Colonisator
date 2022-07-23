@@ -25,40 +25,6 @@ namespace Assets.Scripts.Model
                     return name;
 
                 return ModManager.Instance.GetFactionLabel(playerTypeEnum, x => x.longLabel);
-
-                //switch (playerTypeEnum)
-                //{
-                //    case FactionsDTO.COMPETITOR:
-                //        return name;
-                //        break;
-                //    case FactionsDTO.NEUTRAL:
-                //        return ModManager.Instance.GetFactionLabel(FactionsDTO.NEUTRAL, x => x.longLabel);
-                //        break;
-                //    case FactionsDTO.PIRATE:
-                //        return "Communauté des Pirates Libres";
-                //        break;
-                //    case FactionsDTO.REBEL_SAILORS:
-                //        return "Confrérie des Matelots Révoltés";
-                //        break;
-                //    case FactionsDTO.TOWN:
-                //        return "Sundercity";
-                //        break;
-                //    case FactionsDTO.PENITENTIARY:
-                //        return "Centre de détention de Piofo";
-                //        break;
-                //    case FactionsDTO.HUMAN:
-                //        return name;
-                //        break;
-                //    case FactionsDTO.PRISON:
-                //        return "Colonie pénitencière de Missytown";
-                //        break;
-                //    case FactionsDTO.GHOST:
-                //        return "Fantôme";
-                //        break;
-                //    default:
-                //        return "Pas de nom";
-                //        break;
-                //}
             }
         }
 
@@ -67,6 +33,32 @@ namespace Assets.Scripts.Model
             return this.id.Equals(faction.id);
         }
 
+        public static string PlayerTypeFromEnum(PlayerTypeEnum playerTypeEnum)
+        {
+            switch (playerTypeEnum)
+            {
+                case PlayerTypeEnum.COMPETITOR:
+                    return "COMPETITOR";
+                case PlayerTypeEnum.NEUTRAL:
+                    return "NEUTRAL";
+                case PlayerTypeEnum.PIRATE:
+                    return "PIRATE";
+                case PlayerTypeEnum.REBEL_SAILORS:
+                    return "REBEL_SAILORS";
+                case PlayerTypeEnum.TOWN:
+                    return "TOWN";
+                case PlayerTypeEnum.PENITENTIARY:
+                    return "PENITENTIARY";
+                case PlayerTypeEnum.HUMAN:
+                    return "HUMAN";
+                case PlayerTypeEnum.PRISON:
+                    return "PRISON";
+                case PlayerTypeEnum.GHOST:
+                    return "GHOST";
+                default:
+                    return "";
+            }
+        }
     }
 
     public enum FacturePosture
@@ -75,5 +67,18 @@ namespace Assets.Scripts.Model
         DEFENSIVE,
         MERCHANT,
         AGGRESSIVE
+    }
+
+    public enum PlayerTypeEnum
+    {
+        COMPETITOR,
+        NEUTRAL,
+        PIRATE,
+        REBEL_SAILORS,
+        TOWN,
+        PENITENTIARY,
+        HUMAN,
+        PRISON,
+        GHOST
     }
 }

@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Assets.Scripts.Model;
-using Assets.Scripts.ModsDTO;
 using Assets.Scripts.Service;
 using DG.Tweening;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Front.MainManagers
@@ -60,7 +57,7 @@ namespace Assets.Scripts.Front.MainManagers
             rend.material.SetFloat("amplitude", Random.Range(3, 8));
 
             // couleurs du navire
-            var colors = FlagsManager.Instance.GetMainColorsFromTexture(factionManager.Flag);
+            var colors = factionManager.Colors;
 
             MeshRenderer hullMesh;
             hullMesh = HullToColor.GetComponent<MeshRenderer>();

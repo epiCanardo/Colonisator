@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Front.MainManagers;
-using DG.Tweening;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Front.HUD.MiniButtons

@@ -3,7 +3,6 @@ using Assets.Scripts.Model;
 using Assets.Store.QuickOutline.Scripts;
 using System.IO;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts.Front.Squares
@@ -13,6 +12,9 @@ namespace Assets.Scripts.Front.Squares
         public Square coordinates { get; set; }
         protected abstract bool navigable { get; }
         public bool IsNavigable => navigable;
+
+        [SerializeField]
+        private SpriteRenderer squareSpriteRenderer;
 
         private NavigationModeManager navMode;
         private Outline outline;
@@ -26,8 +28,8 @@ namespace Assets.Scripts.Front.Squares
             //coordinates = new Square(0, 0);
 
             navMode = NavigationModeManager.Instance;
-            outline = gameObject.GetComponent<Outline>();
-            outline.OutlineColor = outLineColor;
+            //outline = gameObject.GetComponent<Outline>();
+            //outline.OutlineColor = outLineColor;
             scale = gameObject.transform.localScale;
         }
 
@@ -36,12 +38,12 @@ namespace Assets.Scripts.Front.Squares
             outLineColor = color;
         }
 
-        private void OnMouseUpAsButton()
+        protected void SquareSelection()
         {
             var squareManager = gameObject.GetComponent<SquareManagement>();
             GameManager.Instance.coordinatesTextObject.text = $"Coordonnées : {squareManager.coordinates.ToString()}";
 
-            using (StreamWriter sW = new StreamWriter(@"D:\Unity\Colonisator\Mods\Core\Values\Gameplay\draft.json",true))
+            using (StreamWriter sW = new StreamWriter(@"D:\Unity\Colonisator\Mods\Core\Values\Gameplay\draft.json", true))
             {
                 sW.Write($"[{squareManager.coordinates.ToString()}],");
                 sW.Close();
@@ -49,18 +51,24 @@ namespace Assets.Scripts.Front.Squares
 
             // clic gauche : sélection de la case
             if (navMode.squaresRemaning > 0)
-            {                
+            {
                 if (squareManager.IsNavigable)
                 {
                     var square = squareManager.coordinates;
                     if (navMode.NextPossibleSquare().Contains(square))
                     {
                         navMode.SquareActivation(true, square);
-                        outline.OutlineColor = Color.green;
-                        outline.OutlineWidth = 2f;
+                        squareSpriteRenderer.color = Color.green;
+                        //outline.OutlineColor = Color.green;
+                        //outline.OutlineWidth = 10f;
                     }
                 }
             }
+        }
+
+        private void OnMouseUpAsButton()
+        {
+            SquareSelection();
         }
 
         // Update is called once per frame
@@ -153,20 +161,22 @@ namespace Assets.Scripts.Front.Squares
             //var material = gameObject.GetComponent<MeshRenderer>().material;
             //material.color = Color.black;
 
-            var outline = gameObject.GetComponent<Outline>();
-            outline.OutlineColor = Color.yellow;
-            outline.OutlineWidth = 1f;
+            //var outline = gameObject.GetComponent<Outline>();
+            //outline.OutlineColor = Color.yellow;
+            //outline.OutlineWidth = 5f;
+
+            squareSpriteRenderer.color = Color.black;
         }
 
         private void OnMouseExit()
         {
             // si on est en mode navigation
-            if (GameManager.Instance.IsNavigationModeActive())
-            {
+            //if (GameManager.Instance.IsNavigationModeActive())
+            //{
                 // retour à la visibilité normale                
-                if (outline != null && outline.OutlineColor == Color.yellow)
-                    outline.OutlineWidth = 1f;
-            }
+                //if (outline != null && outline.OutlineColor == Color.yellow)
+                //    outline.OutlineWidth = 5f;
+           // }
         }
 
         //void OnMouseOver()

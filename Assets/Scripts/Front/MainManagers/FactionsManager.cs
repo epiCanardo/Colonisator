@@ -9,12 +9,12 @@ namespace Assets.Scripts.Front.MainManagers
         public static FactionsManager Instance { get; private set; }
         private void Awake()
         {
-            if (Instance == null) { Instance = this; Factions = new List<FactionManager>(); };
+            if (Instance == null) { Instance = this; Factions = new List<FactionManager>();};
         }
 
         public List<FactionManager> Factions { get; set; }
 
-        //public Dictionary<Faction, Texture2D> DicoFlags { get; private set; }
+        //public List<FactionScriptableObject> FactionsSO;
     }
 
     public class FactionManager

@@ -1,7 +1,3 @@
-using Assets.Scripts.ModsDTO;
-using System;
-using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Front.MainManagers

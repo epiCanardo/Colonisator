@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace Assets.Scripts.ModsDTO
 {

@@ -43,6 +43,11 @@ namespace Assets.Scripts.Front.MainManagers
             return new Color32((byte)(r / total), (byte)(g / total), (byte)(b / total), 0);
         }
 
+        /// <summary>
+        /// todo : à retirer car plus nécessaire
+        /// </summary>
+        /// <param name="tex"></param>
+        /// <returns></returns>
         public List<Color32> GetMainColorsFromTexture(Texture2D tex)
         {
             Color32[] texColors = tex.GetPixels32();

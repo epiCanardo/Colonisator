@@ -6,7 +6,6 @@ using Assets.Scripts.Service;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Front.ScriptableObjects.Faction
 {

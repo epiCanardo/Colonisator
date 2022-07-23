@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Front.ScriptableObjects.Faction;
-using Assets.Scripts.Model;
-using Assets.Scripts.ModsDTO;
 using UnityEngine;
 
 namespace Assets.Scripts.Front.Gamepedia

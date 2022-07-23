@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Front.Cams;
-using Assets.Scripts.Front.MainManagers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

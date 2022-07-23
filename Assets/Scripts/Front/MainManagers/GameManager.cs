@@ -61,12 +61,8 @@ namespace Assets.Scripts.Front.MainManagers
 
         public TextMeshProUGUI coordinatesTextObject;
 
-        public Vector3 camOffSet { get; set; }
-        public Vector3 camEulerAngles { get; set; }
-
         // l'instance du navire du joueur
         private List<GameObject> instanciedShipObjects = new List<GameObject>();
-        //private GameObject playerShip;
 
         private float zSquaresStart = 817.1f;
         private float xSquaresStart = -2000f;
@@ -125,13 +121,6 @@ namespace Assets.Scripts.Front.MainManagers
             // définition de la qualité globale
             QualitySettings.SetQualityLevel(ModManager.Instance.GetGlobalQuality());
 
-            // définition des vecteurs de position et d'angle pour la camera principale
-            //camOffSet = new Vector3(0, 300, -160);
-            //camEulerAngles = new Vector3(60, 0, 0);
-
-            camOffSet = new Vector3(0, 100, -100);
-            //camEulerAngles = new Vector3(50, 0, 0);
-
             // la map doit être carrée (le plateau de jeu est un carré)
             // le carré est de 0.8 * le bord le plus petit de côté
             float shorterBounds = 0.8f * Mathf.Min(Screen.width, Screen.height);
@@ -145,14 +134,7 @@ namespace Assets.Scripts.Front.MainManagers
             // affichage du tour courant
             StartCoroutine(TurnManager.Instance.StartTurn());
 
-            miniMap.texture = ModManager.Instance.GenerateMinimapColors();
-
-            //// affection du navire courant
-            //CurrentShipToPlay = ServiceGame.GetShipsTurnOrder().First();
-            //currentShipIndex = 0;
-
-            //// positionnement de la cam
-            //FocusCamOnCurrentPlayingShip();
+            //miniMap.texture = ModManager.Instance.GenerateMinimapColors();
         }
 
         public void SetInfoPanelBorderColor(Color color)
@@ -278,7 +260,6 @@ namespace Assets.Scripts.Front.MainManagers
 
         private void CreateIsland(GameObject harborPrefab, Vector3 square, Square basicSquare, string name)
         {
-            //harborPrefab.name = $"{name}_{basicSquare.x}_{basicSquare.y}";
             var objectCreated = Instantiate(harborPrefab, square, harborPrefab.transform.rotation, squaresParent.transform);
             var squareManager = objectCreated.GetComponent<HarborSquareManagement>();
             squareManager.coordinates = basicSquare;
@@ -297,44 +278,15 @@ namespace Assets.Scripts.Front.MainManagers
         }
 
         public void PlayersSpawn()
-        {
+        {            
             // Joueur
             Faction human = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "HUMAN");
             if (human != null)
             {
-                SetFactionToManager(human, "blue", new List<Color32> { Color.blue, Color.white, Color.red });
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/defaultHuman");
+                SetFactionToManager(human, "blue", new List<Color32> { Color.blue, Color.white, Color.red }, flag.texture);
                 ShipsInstanciation(human, new GameObject[1] { mainShipPrefab });
             }
-
-            // CUII
-            Faction cuii = ServiceGame.Factions.First(x => x.playerTypeEnum == "NEUTRAL");
-            SetFactionToManager(cuii, "gray", new List<Color32> { Color.gray, Color.black, Color.white });
-            ShipsInstanciation(cuii, cuiiShipPrefabs);
-
-            // Sundercity
-            Faction sundercity = ServiceGame.Factions.First(x => x.playerTypeEnum == "TOWN");
-            SetFactionToManager(sundercity, "teal", new List<Color32> { ColorTools.NameToColor("teal"), Color.black, Color.white });
-            ShipsInstanciation(sundercity, new GameObject[1] { sundercityShipPrefab });
-
-            // Piofo
-            Faction piofo = ServiceGame.Factions.First(x => x.playerTypeEnum == "PENITENTIARY");
-            SetFactionToManager(piofo, "white", new List<Color32> { Color.white, Color.white, Color.black });
-            ShipsInstanciation(piofo, new GameObject[1] { piofoShipPrefab });
-
-            // Missytown
-            Faction missytown = ServiceGame.Factions.First(x => x.playerTypeEnum == "PRISON");
-            SetFactionToManager(missytown, "purple", new List<Color32> { ColorTools.NameToColor("purple"), Color.black, Color.gray });
-            ShipsInstanciation(missytown, new GameObject[1] { missytownShipPrefab });
-
-            // CPL
-            Faction cpl = ServiceGame.Factions.First(x => x.playerTypeEnum == "PIRATE");
-            SetFactionToManager(cpl, "black", new List<Color32> { Color.black, Color.red, Color.white });
-            ShipsInstanciation(cpl, cplShipPrefabs);
-
-            // CMR
-            Faction cmr = ServiceGame.Factions.First(x => x.playerTypeEnum == "REBEL_SAILORS");
-            SetFactionToManager(cmr, "maroon", new List<Color32> { ColorTools.NameToColor("maroon"), Color.black, Color.yellow });
-            ShipsInstanciation(cmr, cmrShipPrefabs);
 
             // Competitor
             int count = 0;
@@ -342,27 +294,86 @@ namespace Assets.Scripts.Front.MainManagers
             List<string> colors = new List<string> { "yellow", "green", "red" };
             foreach (Faction competitor in competitors)
             {
-                SetFactionToManager(competitor, colors[count], new List<Color32> { ColorTools.NameToColor(colors[count]), Color.green, Color.gray });
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/competitor_{colors[count]}");
+                SetFactionToManager(competitor, colors[count], new List<Color32> { ColorTools.NameToColor(colors[count]), Color.green, Color.gray }, flag.texture);
                 ShipsInstanciation(competitor, competitorShipPrefabs);
                 count++;
             }
 
+            // CUII
+            Faction cuii = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "NEUTRAL");
+            if (cuii != null)
+            {
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/cuii");
+                SetFactionToManager(cuii, "gray", new List<Color32> { Color.gray, Color.black, Color.white }, flag.texture);
+                ShipsInstanciation(cuii, cuiiShipPrefabs);
+            }
+
+            // Sundercity
+            Faction sundercity = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "TOWN");
+            if (sundercity != null)
+            {
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/sundercity");
+                SetFactionToManager(sundercity, "teal", new List<Color32> { ColorTools.NameToColor("teal"), Color.black, Color.white }, flag.texture);
+                ShipsInstanciation(sundercity, new GameObject[1] { sundercityShipPrefab });
+            }
+
+            // Piofo
+            Faction piofo = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "PENITENTIARY");
+            if (piofo != null)
+            {
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/piofo");
+                SetFactionToManager(piofo, "white", new List<Color32> { Color.white, Color.white, Color.black }, flag.texture);
+                ShipsInstanciation(piofo, new GameObject[1] { piofoShipPrefab });
+            }
+
+            // Missytown
+            Faction missytown = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "PRISON");
+            if (missytown != null)
+            {
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/missytown");
+                SetFactionToManager(missytown, "purple", new List<Color32> { ColorTools.NameToColor("purple"), Color.black, Color.gray }, flag.texture);
+                ShipsInstanciation(missytown, new GameObject[1] { missytownShipPrefab });
+            }
+
+            // CPL
+            Faction cpl = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "PIRATE");
+            if (cpl != null)
+            {
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/cpl");
+                SetFactionToManager(cpl, "black", new List<Color32> { Color.black, Color.red, Color.white }, flag.texture);
+                ShipsInstanciation(cpl, cplShipPrefabs);
+            }
+
+            // CMR
+            Faction cmr = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "REBEL_SAILORS");
+            if (cmr != null)
+            {
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/cmr");
+                SetFactionToManager(cmr, "maroon", new List<Color32> { ColorTools.NameToColor("maroon"), Color.black, Color.yellow }, flag.texture);
+                ShipsInstanciation(cmr, cmrShipPrefabs);
+            }
+
             // Ghost
             Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == "GHOST");
-            SetFactionToManager(ghost, "cyan", new List<Color32> { Color.cyan, Color.red, Color.white });
-            ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
+            if (ghost != null)
+            {
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/ghost");
+                SetFactionToManager(ghost, "cyan", new List<Color32> { Color.cyan, Color.red, Color.white }, flag.texture);
+                ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
+            }
         }
 
-        private void SetFactionToManager(Faction faction, string colorName, List<Color32> colors, bool isPlaying = true)
+        private void SetFactionToManager(Faction faction, string colorName, List<Color32> colors, Texture2D flag, bool isPlaying = true)
         {
             var fM = new FactionManager
             {
                 Faction = faction,
                 Colors = colors,
                 MainColor = colorName,
-                IsPlaying = isPlaying
+                IsPlaying = isPlaying,
+                Flag = flag
             };
-            fM.SetFactionFlag(fM.Colors);
             FactionsManager.Instance.Factions.Add(fM);
         }
 

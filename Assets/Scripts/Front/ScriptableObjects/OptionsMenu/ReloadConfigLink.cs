@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Front.ScriptableObjects.Ancestors;
 using Assets.Scripts.ModsDTO;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Front.ScriptableObjects.OptionsMenu

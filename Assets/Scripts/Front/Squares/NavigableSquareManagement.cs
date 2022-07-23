@@ -1,7 +1,4 @@
-using System.Linq;
-using Assets.Scripts.Front.MainManagers;
-using Assets.Store.QuickOutline.Scripts;
-using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Front.Squares
 {
@@ -17,6 +14,7 @@ namespace Assets.Scripts.Front.Squares
             //    gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
             //    navMode.SquareActivation(true);
             //}
+            SquareSelection();
         }
 
         void OnMouseOver()

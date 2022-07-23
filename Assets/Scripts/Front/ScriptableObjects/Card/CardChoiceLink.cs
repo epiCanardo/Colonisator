@@ -1,7 +1,4 @@
-﻿using Assets.Scripts.Front.MainManagers;
-using Assets.Scripts.Model;
-using DG.Tweening;
-using TMPro;
+﻿using Assets.Scripts.Model;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
