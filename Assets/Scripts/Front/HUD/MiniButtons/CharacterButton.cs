@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Front.HUD.MiniButtons
 {
-    public class CharacterButton : UnityEngine.MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler 
+    public class CharacterButton : UnityEngine.MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         public Transform target;
 
@@ -28,13 +28,10 @@ namespace Assets.Scripts.Front.HUD.MiniButtons
         public virtual void OnPointerClick(PointerEventData eventData)
         {
             var targetInstance = MenusManager.Instance.TryOpenMenu("npcDetailBoard", target.gameObject);
-            //var targetInstance = Instantiate(target, GameManager.Instance.canvas.transform);
-            //targetInstance.SetAsLastSibling();
-            //GameManager.Instance.CurrentOpenedBoard += 1;
-            //targetInstance.GetComponent<RectTransform>().anchoredPosition += GameManager.Instance.CurrentOpenedBoard * new Vector2(50, -50);
-
             if (targetInstance != null)
-                targetInstance.GetComponent<NpcDetailBoard>().npc = ServiceGame.Npcs.First(); // todo à remplacer par le personnage du joueur
+            {
+                targetInstance.GetComponent<NpcDetailBoard>().npc = GameManager.Instance.GetPlayerCharacter;
+            }
         }
     }
 }

@@ -16,14 +16,12 @@ namespace Assets.Scripts.Front.BarActions
             if (TurnManager.Instance.MainState == TurnState.Human)
             {
                 // si le mode navigation n'est pas actif, on le lance
-                if (!GameManager.Instance.IsNavigationModeActive())
-                {              
+                if (!GameManager.Instance.IsNavigationModeActive)
+                {
                     // positionnement spécifique pour ce mode de déplacement
-                   // GameManager.Instance.camOffSet = new Vector3(0, 1000, 0);
-                    //GameManager.Instance.camEulerAngles = new Vector3(90, 0, 0); ;
-                    GameManager.Instance.FocusCamOnShip(GameManager.Instance.GetActualPlayinghipObject);
-
-                    Ship ship = GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().ship;     
+                    GameObject actualPlayingObject = GameManager.Instance.GetActualPlayinghipObject;
+                    GameManager.Instance.FocusCamOnShip(actualPlayingObject);
+                    Ship ship = actualPlayingObject.GetComponent<ShipManager>().ship;     
 
                     NavigationModeManager navMode = NavigationModeManager.Instance;
                     navMode.StartNavigationMode(ship);
@@ -36,6 +34,9 @@ namespace Assets.Scripts.Front.BarActions
 
                     // activation des cases dans la scene principale
                     GameManager.Instance.ToggleNavigationMode(true);
+
+                    // affichage des cases naigables pour le joueur
+                    GameManager.Instance.ShowSquareWhereMovementIsPossible(ship.coordinates);
                 }
             }
         }

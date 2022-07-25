@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Model;
 using UnityEngine;
 
@@ -14,7 +15,15 @@ namespace Assets.Scripts.Front.MainManagers
 
         public List<FactionManager> Factions { get; set; }
 
-        //public List<FactionScriptableObject> FactionsSO;
+        public FactionManager GetFactionManager(Faction faction)
+        {
+            return Factions.First(x => x.Faction.Equals(faction));
+        }
+
+        public FactionManager GetFactionManager(string playerTypeEnumKey)
+        {
+            return Factions.First(x => x.Faction.playerTypeEnum.Equals(playerTypeEnumKey));
+        }
     }
 
     public class FactionManager

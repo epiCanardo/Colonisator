@@ -29,7 +29,7 @@ namespace Assets.Scripts.Front.QuickActions
         public void LaunchNavMode()
         {
             // si le mode navigation n'est pas actif, on le lance
-            if (!gm.IsNavigationModeActive())
+            if (!gm.IsNavigationModeActive)
             {
                 var ship = GameManager.Instance.GetActualPlayinghipObject.GetComponent<ShipManager>().ship;
                 navMode.StartNavigationMode(ship);

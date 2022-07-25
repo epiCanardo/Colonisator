@@ -106,7 +106,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.Faction
             var factionCell = factionLine.Find("FactionCell");
             factionCell.Find("Text").GetComponent<TextMeshProUGUI>().text = faction.longName;
             factionCell.Find("Flag").GetComponent<RawImage>().texture =
-                FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction)).Flag;
+                FactionsManager.Instance.GetFactionManager(faction).Flag;
 
             factionCell.Find("Text").GetComponent<FactionLink>().faction = faction;
 

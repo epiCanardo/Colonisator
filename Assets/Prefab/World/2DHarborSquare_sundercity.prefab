@@ -73,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e4ac6749ad207a44e96091d750d849e7, type: 3}
-  m_Color: {r: 0.75294125, g: 0.75294125, b: 0.75294125, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 301671d60d196ee4fa11f53481a5fb0c, type: 3}
+  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5803922, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -93,10 +93,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1414188373475926141}
-  - component: {fileID: 2365855477124203250}
   - component: {fileID: 7424120634677686441}
+  - component: {fileID: 6033249212258419791}
   m_Layer: 7
-  m_Name: 2DSquare
+  m_Name: 2DHarborSquare_sundercity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,19 +118,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2365855477124203250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1414188373475926140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dd944d419709094e89dcac59cf11c71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  squareSpriteRenderer: {fileID: 1414188373188052702}
 --- !u!65 &7424120634677686441
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -144,3 +131,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.081703, y: 1, z: 5.0391846}
   m_Center: {x: -0.028344473, y: 0, z: 0.0070871776}
+--- !u!114 &6033249212258419791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414188373475926140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb75ecaeda0ef024fb1be2dee1b7fed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  squareSpriteRenderer: {fileID: 1414188373188052702}
+  npcsPrefabs:
+  - {fileID: 128380, guid: 5587957d61c949542b2e52dcca8a3bdb, type: 3}
+  - {fileID: 178864, guid: 298b6af3224b899419309b7d9e05ace7, type: 3}
+  - {fileID: 132726, guid: a0285b189c83e4240874d46f667867e2, type: 3}
+  - {fileID: 110404, guid: cd3b4bf6d7e36af41b2bc986a4ab13c7, type: 3}
+  npcsMaterials:
+  - {fileID: 2100000, guid: 5e1235b2e417983469723d36f05de88d, type: 2}
+  - {fileID: 2100000, guid: 82b5a382815781648bf1d875e4002dc3, type: 2}
+  - {fileID: 2100000, guid: 79bfdd834a23bf04d8ea380700c97ad9, type: 2}
+  - {fileID: 2100000, guid: ce19f20337e1d6545bddd9bc3ba7de65, type: 2}
+  - {fileID: 2100000, guid: 5bcd3942a0f042c4daca7e738a6606f6, type: 2}
+  - {fileID: 2100000, guid: 0b4aaac00d4747e409de6522be78c34f, type: 2}
+  - {fileID: 2100000, guid: 78edba5dc4cc2684c8e99f363873ff77, type: 2}
+  - {fileID: 2100000, guid: 3746bc9b9120ede488eee9408465a651, type: 2}
+  - {fileID: 2100000, guid: 1540fc37fe4429b4589aeed0285fd0ba, type: 2}
+  - {fileID: 2100000, guid: 89a8c4d05aebfbd40ad71b8f56d3f20f, type: 2}
+  - {fileID: 2100000, guid: 40aec02aea86ce244b18314c814bb5ac, type: 2}
+  - {fileID: 2100000, guid: 68cc9bc1692dabf4596c958ffe06eae6, type: 2}
+  defaultPath: {fileID: 1756218583351080413, guid: 5562a1e6deb6fb843b1219edded1362d, type: 3}

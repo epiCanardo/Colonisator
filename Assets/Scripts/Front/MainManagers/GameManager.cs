@@ -17,7 +17,7 @@ namespace Assets.Scripts.Front.MainManagers
     public class GameManager : UnityEngine.MonoBehaviour
     {
         public Canvas canvas;
-        
+
         [Header("Gestion des cases")]
         public GameObject squarePrefab;
         public GameObject harborSquarePrefab;
@@ -72,15 +72,23 @@ namespace Assets.Scripts.Front.MainManagers
         private float xSquares = 100f;
         private bool squaresShowed;
         private List<SquareManagement> squares = new List<SquareManagement>();
-        private SquareManagement squareM;
-        private SquareManagement harborSquareM;
 
         // mode navigation
         private bool navigationMode;
-        private int currentQualityLevel = 0;
 
-        public Ship CurrentShipToPlay { get; set; }        
+        public Ship CurrentShipToPlay { get; set; }
 
+        public Npc GetPlayerCharacter
+        {
+            get
+            {
+                Ship humanShip = ServiceGame.GetHumanShip;
+                if (humanShip != null)
+                    return ServiceGame.ShipCaptain(humanShip);
+                return null;
+            }
+        }
+       
         // récupère l'objet instancié correspondant au navire en cours
         public GameObject GetActualPlayinghipObject => instanciedShipObjects.First(x => x.GetComponent<ShipManager>().ship.Equals(CurrentShipToPlay));
 
@@ -92,8 +100,6 @@ namespace Assets.Scripts.Front.MainManagers
             ToggleCamMovement(false);
             Camera.main.transform.position = ship.transform.position + Vector3.back * 100;
             Camera.main.GetComponent<CamMovement>().SetCamToActionLevel();
-
-            //Camera.main.transform.eulerAngles = camEulerAngles;
 
             // on rend la camera libre si ce n'est pas le tour du joueur humain
             if (TurnManager.Instance.MainState != TurnState.AI)
@@ -182,8 +188,8 @@ namespace Assets.Scripts.Front.MainManagers
                 TurnManager.Instance.MainState = TurnState.ActionsFinished;
 
             // faire apparaitre / disparaitre les cases
-            if (Input.GetKeyDown(KeyCode.C))            
-                ToggleSquares(squaresShowed);            
+            if (Input.GetKeyDown(KeyCode.C))
+                ToggleSquares(squaresShowed);
 
             // positionnement sur le navire du joueur humain
             if (Input.GetKeyDown(KeyCode.S))
@@ -203,8 +209,6 @@ namespace Assets.Scripts.Front.MainManagers
 
             Square basicSquare;
             Vector3 physicalSquare;
-            squareM = squarePrefab.GetComponent<SquareManagement>();
-            harborSquareM = harborSquarePrefab.GetComponent<SquareManagement>();
 
             var zstep = (zSize / zSquares);
             var xstep = (xSize / xSquares);
@@ -245,7 +249,7 @@ namespace Assets.Scripts.Front.MainManagers
 
                         // si la case est non navigable
                         if (ModManager.Instance.IsSquareNonNavigable(squareManager.coordinates))
-                            squareManager.SetOutlineColor(Color.red);
+                            squareManager.SetSquareColor(Color.red);
                     }
 
                     //objectCreated.GetComponent<SquareManagement>().coordinates = new Square(x + 1, z + 1);
@@ -254,8 +258,6 @@ namespace Assets.Scripts.Front.MainManagers
                 }
                 //yield return null;
             }
-
-            squaresShowed = true;
         }
 
         private void CreateIsland(GameObject harborPrefab, Vector3 square, Square basicSquare, string name)
@@ -278,7 +280,7 @@ namespace Assets.Scripts.Front.MainManagers
         }
 
         public void PlayersSpawn()
-        {            
+        {
             // Joueur
             Faction human = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "HUMAN");
             if (human != null)
@@ -305,7 +307,7 @@ namespace Assets.Scripts.Front.MainManagers
             if (cuii != null)
             {
                 Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/cuii");
-                SetFactionToManager(cuii, "gray", new List<Color32> { Color.gray, Color.black, Color.white }, flag.texture);
+                SetFactionToManager(cuii, "gold", new List<Color32> { ColorTools.NameToColor("gold"), Color.black, Color.white }, flag.texture);
                 ShipsInstanciation(cuii, cuiiShipPrefabs);
             }
 
@@ -362,6 +364,11 @@ namespace Assets.Scripts.Front.MainManagers
                 SetFactionToManager(ghost, "cyan", new List<Color32> { Color.cyan, Color.red, Color.white }, flag.texture);
                 ShipsInstanciation(ghost, new GameObject[1] { ghostShipPrefab });
             }
+
+            foreach (HarborSquareManagement harborSquare in squares.OfType<HarborSquareManagement>())
+            {
+                harborSquare.SetHarborSquareColor();
+            }
         }
 
         private void SetFactionToManager(Faction faction, string colorName, List<Color32> colors, Texture2D flag, bool isPlaying = true)
@@ -379,11 +386,11 @@ namespace Assets.Scripts.Front.MainManagers
 
         private void ShipsInstanciation(Faction faction, GameObject[] shipPrefabs)
         {
-            var ships = ServiceGame.GetShipsFromFaction(faction);                  
+            var ships = ServiceGame.GetShipsFromFaction(faction);
 
             foreach (var ship in ships)
             {
-                ShipInstanciation(shipPrefabs[0], ship);   
+                ShipInstanciation(shipPrefabs[0], ship);
             }
         }
 
@@ -427,6 +434,16 @@ namespace Assets.Scripts.Front.MainManagers
             squaresParent.SetActive(squaresShowed);
         }
 
+        public void ShowSquareWhereMovementIsPossible(Square shipPosition)
+        {
+            ToggleSquares(false);
+            squaresParent.SetActive(true);
+
+            // recherche de la case phyisque correpondant à la case du navire
+            SquareManagement startSquare = GetPhysicalSquareFromSquare(shipPosition);
+            startSquare.SetSquareColor(Color.blue);
+        }
+
         /// <summary>
         /// Commutateur d'�cran de navire
         /// </summary>
@@ -464,10 +481,7 @@ namespace Assets.Scripts.Front.MainManagers
             navigationMode = active;
         }
 
-        public bool IsNavigationModeActive()
-        {
-            return navigationMode;
-        }
+        public bool IsNavigationModeActive => navigationMode;
 
         #endregion
     }

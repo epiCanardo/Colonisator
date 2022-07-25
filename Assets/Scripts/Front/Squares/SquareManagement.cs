@@ -1,6 +1,5 @@
 using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Model;
-using Assets.Store.QuickOutline.Scripts;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -17,25 +16,16 @@ namespace Assets.Scripts.Front.Squares
         private SpriteRenderer squareSpriteRenderer;
 
         private NavigationModeManager navMode;
-        private Outline outline;
-        private Vector3 scale;
-        private Color outLineColor = Color.yellow;
 
         // Start is called before the first frame update
         void Start()
         {
-            //gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            //coordinates = new Square(0, 0);
-
             navMode = NavigationModeManager.Instance;
-            //outline = gameObject.GetComponent<Outline>();
-            //outline.OutlineColor = outLineColor;
-            scale = gameObject.transform.localScale;
         }
 
-        public void SetOutlineColor(Color color)
+        public void SetSquareColor(Color color)
         {
-            outLineColor = color;
+            squareSpriteRenderer.color = color;
         }
 
         protected void SquareSelection()
@@ -58,9 +48,7 @@ namespace Assets.Scripts.Front.Squares
                     if (navMode.NextPossibleSquare().Contains(square))
                     {
                         navMode.SquareActivation(true, square);
-                        squareSpriteRenderer.color = Color.green;
-                        //outline.OutlineColor = Color.green;
-                        //outline.OutlineWidth = 10f;
+                        SetSquareColor(Color.green);
                     }
                 }
             }
@@ -158,14 +146,7 @@ namespace Assets.Scripts.Front.Squares
         //}
         public void RAZNavigationMode()
         {
-            //var material = gameObject.GetComponent<MeshRenderer>().material;
-            //material.color = Color.black;
-
-            //var outline = gameObject.GetComponent<Outline>();
-            //outline.OutlineColor = Color.yellow;
-            //outline.OutlineWidth = 5f;
-
-            squareSpriteRenderer.color = Color.black;
+            squareSpriteRenderer.color = ColorTools.NameToColor("silver");
         }
 
         private void OnMouseExit()
@@ -178,11 +159,5 @@ namespace Assets.Scripts.Front.Squares
                 //    outline.OutlineWidth = 5f;
            // }
         }
-
-        //void OnMouseOver()
-        //{
-        //    var squareManager = gameObject.GetComponent<SquareManagement>();
-        //    GameManager.Instance.coordinatesTextObject.text = $"Coordonnées : {squareManager.coordinates.ToString()}";
-        //}
     }
 }

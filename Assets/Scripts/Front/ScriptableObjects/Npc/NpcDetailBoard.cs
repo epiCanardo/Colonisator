@@ -60,7 +60,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.Npc
         void Start()
         {
             Model.Faction faction = ServiceGame.GetFactionFromId(npc.faction);
-            FactionManager factionManager = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction));
+            FactionManager factionManager = FactionsManager.Instance.GetFactionManager(faction);
 
             // rendu des bordures aux couleurs de la faction
             foreach (var border in borders)
@@ -71,7 +71,7 @@ namespace Assets.Scripts.Front.ScriptableObjects.Npc
             title.text = $"Détail de {npc.fullName}, {npc.description}";
 
             MeshRenderer rend = GameManager.Instance.PortraitFlagTextile.GetComponent<MeshRenderer>();
-            rend.material.SetTexture("flagTexture", FactionsManager.Instance.Factions.First(x => x.Faction.id.Equals(npc.faction)).Flag);
+            rend.material.SetTexture("flagTexture", FactionsManager.Instance.GetFactionManager(faction).Flag);
             rend.material.SetFloat("amplitude", UnityEngine.Random.Range(3, 8));
 
             factionText.GetComponent<FactionLink>().faction = faction;

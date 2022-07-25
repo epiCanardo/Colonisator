@@ -17,7 +17,6 @@ namespace Assets.Scripts.Front.Squares
         [Header("Prefab pnj")]
         public List<GameObject> npcsPrefabs;
         public List<Material> npcsMaterials;
-        //public AnimatorController defaultController;
         public GameObject defaultPath;
 
         private bool toolTipActive = false;
@@ -35,21 +34,27 @@ namespace Assets.Scripts.Front.Squares
                 var instance = Instantiate(npcToInstanciate, transform.position, transform.rotation);
 
                 // modification de la couleur du material en fonction de la couleur de la faction
-                Material material = new Material(npcsMaterials[Random.Range(0, npcsMaterials.Count)]);
-                
-                //string factionId = ServiceGame.GetNpc(npc).faction;
-                //if (!string.IsNullOrEmpty(factionId))
-                //    material.color = Color.red; //FactionsManager.Instance.Factions.First(x => x.Faction.Equals(ServiceGame.GetFactionFromId(factionId))).Colors[0];
-
+                // todo : faire !!
+                Material material = new Material(npcsMaterials[Random.Range(0, npcsMaterials.Count)]);           
                 instance.GetComponentInChildren<SkinnedMeshRenderer>(false).material = material;
 
+                // ajout du path pour le mouvement par défaut des npc
                 if (defaultPath != null)
                 {
                     var path = instance.AddComponent<PathManager>();
                     path.GlobalPath = defaultPath;
-                    //instance.GetComponent<Animator>().runtimeAnimatorController = defaultController;
                 }                
             }
+        }
+
+        public void SetHarborSquareColor()
+        {
+            // affectation de la couleur du spriterenderer en fonction de la faction
+            Faction faction = ServiceGame.GetFactionFromId(island.owner);
+            if (faction != null)
+                SetSquareColor(FactionsManager.Instance.GetFactionManager(faction).Colors[0]);
+            else
+                SetSquareColor(ColorTools.NameToColor("silver"));
         }
 
         // Update is called once per frame
@@ -72,14 +77,7 @@ namespace Assets.Scripts.Front.Squares
             }
         }
 
-        //private void OnMouseDown()
-        //{
-        //    if (!toolTipActive)
-        //    {
-        //        GameManager.Instance.ToggleHarborTooltip(true, island);
-        //        toolTipActive = true;
-        //    }
-        //}
+       
 
         void OnMouseOver()
         {

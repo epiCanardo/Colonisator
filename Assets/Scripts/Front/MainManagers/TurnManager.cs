@@ -67,7 +67,7 @@ namespace Assets.Scripts.Front.MainManagers
                     Faction faction = ServiceGame.GetFactionFromId(factionTurn.Key);
 
                     // si la faction ne joue pas, ça dégage
-                    var play = FactionsManager.Instance.Factions.First(x => x.Faction.Equals(faction)).IsPlaying;
+                    var play = FactionsManager.Instance.GetFactionManager(faction).IsPlaying;
                     if (!play)
                         continue;
 

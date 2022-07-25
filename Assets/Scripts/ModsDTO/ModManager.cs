@@ -137,8 +137,7 @@ namespace Assets.Scripts.ModsDTO
         public string GetFactionLabel(string sourceKey, Func<FactionDTOObject, string> label)
         {
             if (!_factionsDTO.factions.Any(x => x.key.Equals(sourceKey)))
-                return FactionsManager.Instance.Factions.First(x => x.Faction.playerTypeEnum.Equals(sourceKey)).Faction
-                    .longName;
+                return FactionsManager.Instance.GetFactionManager(sourceKey).Faction.longName;
 
             return label(_factionsDTO.factions.First(x => x.key.Equals(sourceKey)));
         }

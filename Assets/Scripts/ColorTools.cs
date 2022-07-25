@@ -31,6 +31,9 @@ namespace Assets.Scripts
                 case "purple":
                     ColorUtility.TryParseHtmlString("#800080", out color);
                     break;
+                case "gold":
+                    ColorUtility.TryParseHtmlString("#FFD700", out color);
+                    break;
                 case "yellow":
                     return Color.yellow;
                 case "green":
