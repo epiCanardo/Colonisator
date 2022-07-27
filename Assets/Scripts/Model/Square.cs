@@ -25,9 +25,16 @@ namespace Assets.Scripts.Model
 
         public static Square operator +(Square a, Square b) => new Square(a.x + b.x, a.y + b.y);
 
+        public static Square operator *(Square a, int coef) => new Square(a.x * coef, a.y * coef);
+
+        public static Square East => new Square(1, 0);
+        public static Square West => new Square(-1, 0);
+        public static Square North => new Square(0, 1);
+        public static Square South => new Square(0, -1);
+
         public override string ToString()
         {
-            return $"{x}, {y}";
+            return $"{x},{y}";
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Assets.Scripts.ModsDTO
         {
             public string islandName { get; set; }
             public List<int> coordinates { get; set; }
+            public List<List<int>> costalSquares { get; set; }
         }
 
         public bool IsNonNavigable(int[] square)

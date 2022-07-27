@@ -20,11 +20,15 @@ namespace Assets.Scripts.Front.MainManagers
 
         [Header("Gestion des cases")]
         public GameObject squarePrefab;
+        public GameObject nonNavigableSquarePrefab;
         public GameObject harborSquarePrefab;
         public GameObject ile3HarborSqurePrefab;
         public GameObject sundercityHarborSqurePrefab;
         public GameObject ileNeutre1HarborSqurePrefab;
         public GameObject squaresParent;
+
+        [SerializeField]
+        private List<GameObject> islands;
 
         [Header("Gestion du panneau d'affichage du navire")]
         public RectTransform shipScreen;
@@ -58,6 +62,8 @@ namespace Assets.Scripts.Front.MainManagers
         [Header("Map")]
         public GameObject PortraitFlagTextile;
         public RawImage miniMap;
+        [SerializeField] private GameObject mapViewPlane;
+        [SerializeField] private Material islandBordersMaterial;
 
         public TextMeshProUGUI coordinatesTextObject;
 
@@ -219,7 +225,8 @@ namespace Assets.Scripts.Front.MainManagers
                 {
                     physicalSquare = new Vector3(xSquaresStart + (xstep / 2) + x * xstep, 10, zSquaresStart + (zstep / 2) + z * zstep);
                     basicSquare = new Square(x + 1, z + 1);
-                    GameObject objectCreated;
+                    GameObject objectCreated = null;
+                    SquareManagement squareManager = null;
 
                     if (harbours.Contains(basicSquare))
                     {
@@ -229,44 +236,114 @@ namespace Assets.Scripts.Front.MainManagers
                         else if (x + 1 == 27 && z + 1 == 69) CreateIsland(ileNeutre1HarborSqurePrefab, physicalSquare, basicSquare, "ileNeutre1");
                         else
                         {
-                            objectCreated = Instantiate(harborSquarePrefab, physicalSquare, harborSquarePrefab.transform.rotation, squaresParent.transform);
-                            objectCreated.name = $"HarborSquare{basicSquare.x}_{basicSquare.y}";
-                            var squareManager = objectCreated.GetComponent<HarborSquareManagement>();
-                            squareManager.coordinates = basicSquare;
-                            squareManager.SetIsland();
-                            squares.Add(squareManager);
+                            CreateIsland(harborSquarePrefab, physicalSquare, basicSquare, "balek");
+                            //objectCreated = Instantiate(harborSquarePrefab, physicalSquare, harborSquarePrefab.transform.rotation, squaresParent.transform);
+                            //objectCreated.name = $"HarborSquare{basicSquare.x}_{basicSquare.y}";
+                            //squareManager = objectCreated.GetComponent<HarborSquareManagement>();
+                            //squareManager.coordinates = basicSquare;
+                            //(squareManager as HarborSquareManagement).SetIsland();
+                            //squares.Add(squareManager);
                         }
                     }
                     else
                     {
-                        objectCreated = Instantiate(squarePrefab, physicalSquare, squarePrefab.transform.rotation, squaresParent.transform);
+                        if (ModManager.Instance.IsSquareNonNavigable(basicSquare))
+                        {
+                            objectCreated = Instantiate(nonNavigableSquarePrefab, physicalSquare, nonNavigableSquarePrefab.transform.rotation, squaresParent.transform);
+                            squareManager = objectCreated.GetComponent<NonNavigableSquareManagement>();
+                        }
+                        else
+                        {
+                            objectCreated = Instantiate(squarePrefab, physicalSquare, squarePrefab.transform.rotation, squaresParent.transform);
+                            squareManager = objectCreated.GetComponent<NavigableSquareManagement>();
+                        }
+
                         objectCreated.name = $"Square{basicSquare.x}_{basicSquare.y}";
-                        //objectCreated.GetComponent<SquareManagement>().coordinates = new Square(x + 1, z + 1);
-                        //objectCreated.SetActive(false);
-                        var squareManager = objectCreated.GetComponent<NavigableSquareManagement>();
                         squareManager.coordinates = basicSquare;
+                        squareManager.SetDebugText(""/*basicSquare.ToString()*/);
                         squares.Add(squareManager);
-
-                        // si la case est non navigable
-                        if (ModManager.Instance.IsSquareNonNavigable(squareManager.coordinates))
-                            squareManager.SetSquareColor(Color.red);
-                    }
-
-                    //objectCreated.GetComponent<SquareManagement>().coordinates = new Square(x + 1, z + 1);
-                    //if (z < 80)
-                    //    objectCreated.SetActive(false);
+                        objectCreated.SetActive(false);
+                    }                    
                 }
-                //yield return null;
+            }
+
+            foreach (var harbor in squares.OfType<HarborSquareManagement>())
+            {
+                List<SquareManagement> costalSquares = GetIslandCostalSquares(harbor);
+                if (costalSquares.Any())
+                {
+                    // dessin des contours des îles (pour la minimap)
+                    var gameObjectDummy = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                    var instanceDummy = GameObject.Instantiate(gameObjectDummy, mapViewPlane.transform);
+                    instanceDummy.layer = mapViewPlane.layer;
+                    LineRenderer line = instanceDummy.AddComponent<LineRenderer>();
+                    line.material = islandBordersMaterial;
+                    line.name = "islandBorders";
+
+                    var segments = 360;
+                    //line.useWorldSpace = false;
+                    line.widthMultiplier = 2f;
+                    //line.startWidth = 5f;
+                    //line.endWidth = 5f;
+                    line.positionCount = costalSquares.Count;
+                    var points = new Vector3[costalSquares.Count];
+
+                    for (int i = 0; i < costalSquares.Count; i++)
+                    {
+                        points[i] = costalSquares[i].transform.position;
+                    }
+                    line.SetPositions(points);
+                }
             }
         }
 
         private void CreateIsland(GameObject harborPrefab, Vector3 square, Square basicSquare, string name)
         {
             var objectCreated = Instantiate(harborPrefab, square, harborPrefab.transform.rotation, squaresParent.transform);
-            var squareManager = objectCreated.GetComponent<HarborSquareManagement>();
-            squareManager.coordinates = basicSquare;
-            squareManager.SetIsland();
-            squares.Add(squareManager);
+            var harbor = objectCreated.GetComponent<HarborSquareManagement>();
+            harbor.coordinates = basicSquare;
+            harbor.SetDebugText(""/*basicSquare.ToString()*/);
+            harbor.SetIsland();
+            squares.Add(harbor);
+
+            objectCreated.SetActive(true);
+        }
+
+        private List<SquareManagement> GetIslandCostalSquares(HarborSquareManagement harbor)
+        {
+            List<SquareManagement> costalSquares = new List<SquareManagement>();
+
+            var nonNavagableSquaresCoordinates = ModManager.Instance.GetIslandCostalSquares(harbor.Island.harbourCoordinates);
+            foreach (var square in nonNavagableSquaresCoordinates)
+            {
+                SquareManagement squareM = GetPhysicalSquareFromSquare(square);
+                costalSquares.Add(squareM);
+            }
+
+            return costalSquares;
+        }
+
+        private List<Square> GetFourNextNonNavigableSquares(Square square)
+        {
+            List<Square> squares = new List<Square>();
+
+            NonNavigableSquareDetection(squares, square + Square.East);
+            NonNavigableSquareDetection(squares, square + Square.West);
+            NonNavigableSquareDetection(squares, square + Square.North);
+            NonNavigableSquareDetection(squares, square + Square.South);
+
+            return squares;
+
+            static void NonNavigableSquareDetection(List<Square> squares, Square candidateSquare)
+            {
+                if (ModManager.Instance.IsSquareNonNavigable(candidateSquare))
+                    squares.Add(candidateSquare);
+            }
+        }
+
+        private bool IsCostalSquare(Square square)
+        {
+            return GetFourNextNonNavigableSquares(square).Count < 4;
         }
 
         /// <summary>
@@ -276,7 +353,7 @@ namespace Assets.Scripts.Front.MainManagers
         /// <returns></returns>
         public SquareManagement GetPhysicalSquareFromSquare(Square square)
         {
-            return squares.First(x => x.coordinates.Equals(square));
+            return squares.FirstOrDefault(x => x.coordinates.Equals(square));
         }
 
         public void PlayersSpawn()
@@ -357,7 +434,7 @@ namespace Assets.Scripts.Front.MainManagers
             }
 
             // Ghost
-            Faction ghost = ServiceGame.Factions.First(x => x.playerTypeEnum == "GHOST");
+            Faction ghost = ServiceGame.Factions.FirstOrDefault(x => x.playerTypeEnum == "GHOST");
             if (ghost != null)
             {
                 Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/ghost");
@@ -431,18 +508,28 @@ namespace Assets.Scripts.Front.MainManagers
         public void ToggleSquares(bool active)
         {
             squaresShowed = active;
-            squaresParent.SetActive(squaresShowed);
+            //squaresParent.SetActive(squaresShowed);
+
+            foreach (var square in squaresParent.GetComponentsInChildren<NavigableSquareManagement>())
+            {
+                square.gameObject.SetActive(active);
+            }
         }
 
-        public void ShowSquareWhereMovementIsPossible(Square shipPosition)
+        public void ShowSquaresWhereMovementIsPossible(Square shipPosition)
         {
-            ToggleSquares(false);
-            squaresParent.SetActive(true);
-
             // recherche de la case phyisque correpondant à la case du navire
             SquareManagement startSquare = GetPhysicalSquareFromSquare(shipPosition);
-            startSquare.SetSquareColor(Color.blue);
-        }
+            //startSquare.SetSquareColor(Color.blue);
+
+            for (int i = 1; i <= 12; i++)
+            {
+                GetPhysicalSquareFromSquare(shipPosition + Square.East * i)?.gameObject.SetActive(true);
+                GetPhysicalSquareFromSquare(shipPosition + Square.West * i)?.gameObject.SetActive(true);
+                GetPhysicalSquareFromSquare(shipPosition + Square.North * i)?.gameObject.SetActive(true);
+                GetPhysicalSquareFromSquare(shipPosition + Square.South * i)?.gameObject.SetActive(true);
+            }
+        }        
 
         /// <summary>
         /// Commutateur d'�cran de navire

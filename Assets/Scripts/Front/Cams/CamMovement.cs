@@ -89,8 +89,11 @@ namespace Assets.Scripts.Front.Cams
         {
             if (zoomLevel < 0) zoomLevel = 0;
             SetCamTransform(300 - zoomLevel * 50, 70 - 10 * zoomLevel);
+
+            Camera.main.orthographic = false;
+
             Camera.main.cullingMask = defaultCullingMask;
-            GameManager.Instance.ToggleSquares(false);
+            //GameManager.Instance.ToggleSquares(false);
             hasZoomChanged = false;
         }
 
@@ -98,8 +101,12 @@ namespace Assets.Scripts.Front.Cams
         {
             if (zoomLevel > -1) zoomLevel = -1;
             SetCamTransform(700 - zoomLevel * 400, 90);
+
+            Camera.main.orthographic = true;
+            Camera.main.orthographicSize = - 250 * zoomLevel;
+
             Camera.main.cullingMask = LayerMask.GetMask("Minimap");
-            GameManager.Instance.ToggleSquares(true);
+            //GameManager.Instance.ToggleSquares(true);
             hasZoomChanged = false;
         }
     }

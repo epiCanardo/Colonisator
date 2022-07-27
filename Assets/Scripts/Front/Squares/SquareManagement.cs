@@ -2,6 +2,7 @@ using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Model;
 using System.IO;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts.Front.Squares
@@ -12,8 +13,8 @@ namespace Assets.Scripts.Front.Squares
         protected abstract bool navigable { get; }
         public bool IsNavigable => navigable;
 
-        [SerializeField]
-        private SpriteRenderer squareSpriteRenderer;
+        [SerializeField] private SpriteRenderer squareSpriteRenderer;
+        [SerializeField] private TextMeshPro debugCoordinates;
 
         private NavigationModeManager navMode;
 
@@ -26,6 +27,11 @@ namespace Assets.Scripts.Front.Squares
         public void SetSquareColor(Color color)
         {
             squareSpriteRenderer.color = color;
+        }
+
+        public void SetDebugText(string text)
+        {
+            debugCoordinates.text = text;
         }
 
         protected void SquareSelection()

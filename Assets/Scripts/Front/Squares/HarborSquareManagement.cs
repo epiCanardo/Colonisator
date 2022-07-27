@@ -4,6 +4,7 @@ using Assets.Scripts.Front.MainManagers;
 using Assets.Scripts.Front.Paths;
 using Assets.Scripts.Model;
 using Assets.Scripts.Service;
+using TMPro;
 using UnityEngine;
 
 //using UnityEditor.Animations;
@@ -12,7 +13,11 @@ namespace Assets.Scripts.Front.Squares
 {
     public class HarborSquareManagement : SquareManagement
     {
+        [SerializeField]
+        private TextMeshPro islandNameTextMesh;
+
         protected override bool navigable => true;
+        public Island Island => island;
 
         [Header("Prefab pnj")]
         public List<GameObject> npcsPrefabs;
@@ -25,6 +30,7 @@ namespace Assets.Scripts.Front.Squares
         public void SetIsland()
         {
             island = ServiceGame.GetIsland(coordinates);
+            islandNameTextMesh.text = island.name;
 
             // parcours des pnj pour l'île et instanciation
             // en évitant de bousiller les prefab hein !!
@@ -75,23 +81,8 @@ namespace Assets.Scripts.Front.Squares
                     }
                 }
             }
-        }
+        }      
 
-       
-
-        void OnMouseOver()
-        {
-            //Debug.Log($"({coordinates.x}, {coordinates.y})");
-
-            //if (!toolTipActive)
-            //{
-            //    // récup de l'island en fonction des coordonnées
-            //    var island = gameManager.game.GetIsland(coordinates);
-
-            //    gameManager.ToggleHarborTooltip(true, island);
-            //    toolTipActive = true;                              
-            //}
-        }
 
         private void OnMouseExit()
         {

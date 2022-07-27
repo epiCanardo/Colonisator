@@ -35,8 +35,8 @@ namespace Assets.Scripts.Front.BarActions
                     // activation des cases dans la scene principale
                     GameManager.Instance.ToggleNavigationMode(true);
 
-                    // affichage des cases naigables pour le joueur
-                    GameManager.Instance.ShowSquareWhereMovementIsPossible(ship.coordinates);
+                    // affichage des cases navigables pour le joueur
+                    GameManager.Instance.ShowSquaresWhereMovementIsPossible(ship.coordinates);
                 }
             }
         }

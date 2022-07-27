@@ -219,6 +219,21 @@ namespace Assets.Scripts.ModsDTO
         }
 
         /// <summary>
+        /// retourne la liste des cases côtières pour une île (n'inlus pas le port qui est une case navigable !)
+        /// </summary>
+        /// <param name="islandName"></param>
+        /// <returns></returns>
+        public List<Square> GetIslandCostalSquares(Square coordinates)
+        {
+            List<Square> result = new List<Square>();
+            foreach (var square in _mapDTO.harbors.First(map => map.coordinates[0] == coordinates.x && map.coordinates[1] == coordinates.y).costalSquares)
+            {
+                result.Add(new Square(square[0], square[1]));
+            }
+            return result;
+        }
+
+        /// <summary>
         /// génération de la miniMap en fonction de la liste des case du jeu
         /// </summary>
         public Texture2D GenerateMinimapColors()

@@ -39,8 +39,8 @@ namespace Assets.Scripts.Front.CombatScene
             mainSails1.transform.localScale = new Vector3(1, 0, 1);
             mainSails2.transform.localScale = new Vector3(1, 0, 1);
 
-            line = GetComponent<LineRenderer>();
-            line.positionCount = 2;
+            //line = GetComponent<LineRenderer>();
+            //line.positionCount = 2;
 
             mesh = new Mesh();
             //GetComponent<MeshFilter>().mesh = mesh;
