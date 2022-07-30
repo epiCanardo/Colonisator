@@ -487,7 +487,7 @@ namespace Assets.Scripts.Front.MainManagers
             startSquare = square.gameObject;
             currentShipObject = Instantiate(shipPrefab, startSquare.transform.position + new Vector3(0, -10f, 0), startSquare.transform.rotation);
 
-            sM = currentShipObject.GetComponent<ShipManager>();
+            sM = currentShipObject.transform.GetComponent<ShipManager>();
             // création du navire
             sM.ship = ship;
             // positionnement des coordonn�es du navire
@@ -516,20 +516,43 @@ namespace Assets.Scripts.Front.MainManagers
             }
         }
 
-        public void ShowSquaresWhereMovementIsPossible(Square shipPosition)
+        private List<SquareManagement> previousSquares = new List<SquareManagement>();
+
+        public void ShowSquaresWhereMovementIsPossible(Square shipPosition, int squaresRemaning, int windDirection)
         {
             // recherche de la case phyisque correpondant à la case du navire
             SquareManagement startSquare = GetPhysicalSquareFromSquare(shipPosition);
-            //startSquare.SetSquareColor(Color.blue);
 
-            for (int i = 1; i <= 12; i++)
+            for (int i = 1; i <= squaresRemaning; i++)
             {
-                GetPhysicalSquareFromSquare(shipPosition + Square.East * i)?.gameObject.SetActive(true);
-                GetPhysicalSquareFromSquare(shipPosition + Square.West * i)?.gameObject.SetActive(true);
-                GetPhysicalSquareFromSquare(shipPosition + Square.North * i)?.gameObject.SetActive(true);
-                GetPhysicalSquareFromSquare(shipPosition + Square.South * i)?.gameObject.SetActive(true);
+                var square = GetPhysicalSquareFromSquare(shipPosition + Square.East * i);
+                ActivateSquare(square);
+                square = GetPhysicalSquareFromSquare(shipPosition + Square.West * i);
+                ActivateSquare(square);
+                square = GetPhysicalSquareFromSquare(shipPosition + Square.North * i);
+                ActivateSquare(square);
+                square = GetPhysicalSquareFromSquare(shipPosition + Square.South * i);
+                ActivateSquare(square);
             }
-        }        
+
+            void ActivateSquare(SquareManagement square)
+            {
+                if (square != null)
+                {
+                    square.gameObject.SetActive(true);
+                    previousSquares.Add(square);
+                }
+            }
+        }  
+        
+        public void HidePreviousNavMode()
+        {
+            foreach (SquareManagement squareM in previousSquares)
+            {
+                squareM.gameObject.SetActive(false);
+            }
+            previousSquares.Clear();
+        }
 
         /// <summary>
         /// Commutateur d'�cran de navire

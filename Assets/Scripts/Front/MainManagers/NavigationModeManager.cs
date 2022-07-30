@@ -62,7 +62,7 @@ namespace Assets.Scripts.Front.MainManagers
                     break;
                 // le navire s'oriente pour faire face à la case suivante
                 case MovementStep.HasToFaceNextSquare:
-                    GameManager.Instance.GetActualPlayinghipObject.transform.Rotate(0, AngleToNextSquare(), 0);
+                    GameManager.Instance.GetActualPlayinghipObject.transform.Rotate(0, AngleToNextSquare(), 0);                    
                     //gm.GetPlayerShip().transform.LookAt(nextSquare.gameObject.transform);
                     activeMoveStep = MovementStep.HasToMove;
                     // TODO : réaliser une animation
@@ -96,6 +96,7 @@ namespace Assets.Scripts.Front.MainManagers
                     activeMoveStep = MovementStep.Nope;
                     shipM.ship.shipBoard.rigging -= pendingRiggingSpent;
                     pendingRiggingSpent = 0;
+                    GameManager.Instance.HidePreviousNavMode();
                     TurnManager.Instance.MainState = TurnState.AI;
                     break;
                 default:

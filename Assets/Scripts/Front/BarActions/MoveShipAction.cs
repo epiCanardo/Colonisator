@@ -36,7 +36,7 @@ namespace Assets.Scripts.Front.BarActions
                     GameManager.Instance.ToggleNavigationMode(true);
 
                     // affichage des cases navigables pour le joueur
-                    GameManager.Instance.ShowSquaresWhereMovementIsPossible(ship.coordinates);
+                    GameManager.Instance.ShowSquaresWhereMovementIsPossible(ship.coordinates, navMode.squaresRemaning, navMode.windDirection);
                 }
             }
         }

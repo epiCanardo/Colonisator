@@ -98,11 +98,6 @@ namespace Assets.Scripts.Front.MainManagers
                 selectionCircle.transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetRelative(true).SetEase(Ease.Linear);
         }
 
-        private void Update()
-        {
-            //MiniMapRenderer.transform.eulerAngles = new Vector3(90, 0, 0);
-        }
-
         public void SelectShip()
         {           
             Faction faction = ServiceGame.GetFactionFromId(ship.owner);

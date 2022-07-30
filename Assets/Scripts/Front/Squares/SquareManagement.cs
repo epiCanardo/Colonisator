@@ -29,6 +29,8 @@ namespace Assets.Scripts.Front.Squares
             squareSpriteRenderer.color = color;
         }
 
+        public Color SquareColor => squareSpriteRenderer.color;
+
         public void SetDebugText(string text)
         {
             debugCoordinates.text = text;
@@ -45,7 +47,7 @@ namespace Assets.Scripts.Front.Squares
                 sW.Close();
             }
 
-            // clic gauche : sélection de la case
+            // dans le cas du mode navigation (action de mouvement)
             if (navMode.squaresRemaning > 0)
             {
                 if (squareManager.IsNavigable)
@@ -55,14 +57,32 @@ namespace Assets.Scripts.Front.Squares
                     {
                         navMode.SquareActivation(true, square);
                         SetSquareColor(Color.green);
+                        GameManager.Instance.ShowSquaresWhereMovementIsPossible(square, navMode.squaresRemaning, navMode.windDirection);
                     }
                 }
             }
         }
 
+        protected void SquareDeselection()
+        {
+            var squareManager = gameObject.GetComponent<SquareManagement>();
+            GameManager.Instance.coordinatesTextObject.text = $"Coordonnées : {squareManager.coordinates.ToString()}";
+
+            if (squareManager.SquareColor == Color.green)
+            {
+                var square = squareManager.coordinates;
+                navMode.SquareActivation(false, square);
+                SetSquareColor(ColorTools.NameToColor("silver"));
+                GameManager.Instance.ShowSquaresWhereMovementIsPossible(square, navMode.squaresRemaning, navMode.windDirection);
+            }
+        }
+
         private void OnMouseUpAsButton()
         {
-            SquareSelection();
+            if (Input.GetKey(KeyCode.LeftControl))
+                SquareDeselection();
+            else
+                SquareSelection();
         }
 
         // Update is called once per frame
