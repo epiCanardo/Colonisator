@@ -1,0 +1,33 @@
+{
+  "id": "200",
+    "conditions": [
+    "CURRENT_SHIP_HAS_XO",
+    "CURRENT_SHIP_HAS_SAILOR_WITH_NOCRAP"
+  ],
+  "title": "A la recherche de la cuillère en or",
+  "description": "Malheur ! [CURRENT_SHIP_RANDOM_NPC_SAILOR_NOCRAP] a perdu sa cuillère en or ! C'est en tout cas ce que [CURRENT_SHIP_XO] a cru bon de vous faire part alors que vous vous reposiez. [CURRENT_SHIP_RANDOM_NPC_SAILOR_NOCRAP] accuse carrément [CURRENT_SHIP_XO] de l'avoir volé ! Il faut rapidement statuer sur cette disparition avant que cela ne prenne des proportions dramatiques.",
+  "priority": 1,
+  "choices": [
+    {
+      "label": "[CURRENT_SHIP_XO] est totalement digne de confiance, vous mettez aux fers [CURRENT_SHIP_RANDOM_NPC_SAILOR_NOCRAP] pour accusation calomnieuse. ",
+      "shipCarac": {
+        "ship": "CURRENT_SHIP"
+      },
+      "shipBoardDelta": {
+        "order": -10
+      },
+      "shipCrewDelta": 0
+    },
+    {
+      "label": "Allezzzzz fais péter la salle des fêtes avec ton cheveu sur la langue ! Y'aura même des filets o fish !",
+      "shipCarac": {
+        "ship": "CURRENT_SHIP"
+      },
+      "shipBoardDelta": {
+        "order": 10,
+		"food": -10,
+		"dodris": -1000
+      }
+    }
+  ]
+}

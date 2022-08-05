@@ -1,0 +1,9 @@
+CURRENT_SHIP_HAS_XO => le navire du joueur possède un commandant en second
+CURRENT_SHIP_HAS_SAILOR_WITH_NOCRAP => le navire du joueur contient au moins un npc du rang matelot, ne possédant pas d'équipement
+CURRENT_PLAYER_HAS_ISLAND => le joueur possède une île
+
+CURRENT_SHIP => le navire du joueur
+CURRENT_PLAYER => le joueur
+
+CURRENT_SHIP_RANDOM_NPC_SAILOR_NOCRAP => un npc aléatoire de rang matelot ne possédant pas d'équipement
+CURRENT_SHIP_XO => le commandant en second du navire
