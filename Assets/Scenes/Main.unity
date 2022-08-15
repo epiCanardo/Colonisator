@@ -5334,7 +5334,7 @@ GameObject:
   - component: {fileID: 176171397}
   - component: {fileID: 176171396}
   m_Layer: 5
-  m_Name: FactionToken (2)
+  m_Name: FactionTokenCMR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7355,6 +7355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 1204128664}
+  CUIITokenBorder: {fileID: 2116101821}
   squarePrefab: {fileID: 1414188373475926140, guid: 65e6d300a08c21a42a203ab5473529b3, type: 3}
   nonNavigableSquarePrefab: {fileID: 1414188373475926140, guid: dcd97cebc31e5ac4e9021eff76c49d38, type: 3}
   harborSquarePrefab: {fileID: 1414188373475926140, guid: 5148ba6bc5f420844bd5332a3ed54afa, type: 3}
@@ -7371,19 +7372,19 @@ MonoBehaviour:
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
   - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
-  sundercityShipPrefab: {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
-  piofoShipPrefab: {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
+  sundercityShipPrefab: {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
+  piofoShipPrefab: {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
   cplShipPrefabs:
-  - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
-  - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
-  - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
-  missytownShipPrefab: {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
-  ghostShipPrefab: {fileID: 453516830579255561, guid: f0b3b570a6abceb479a96e1213b09766, type: 3}
+  - {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
+  - {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
+  - {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
+  missytownShipPrefab: {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
+  ghostShipPrefab: {fileID: 6304923398420867780, guid: e846e46ae0f6dd349a280876a91f949c, type: 3}
   cmrShipPrefabs:
-  - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
+  - {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
   competitorShipPrefabs:
-  - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
-  - {fileID: 2592990299883816599, guid: b2cbb6761df0cce44aacf858c3783af0, type: 3}
+  - {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
+  - {fileID: 6304923398420867780, guid: afa7296a6275e784cb4c513dc98dfdee, type: 3}
   PanelActionSelectionShipName: {fileID: 738362931}
   PanelActionSelectionFactionName: {fileID: 872458138}
   PanelActionSelectionCaptainName: {fileID: 2004797503}
@@ -9670,7 +9671,7 @@ GameObject:
   - component: {fileID: 329782162}
   - component: {fileID: 329782161}
   m_Layer: 5
-  m_Name: FactionToken (4)
+  m_Name: FactionTokenMissytown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15226,7 +15227,7 @@ GameObject:
   - component: {fileID: 565430096}
   - component: {fileID: 565430095}
   m_Layer: 5
-  m_Name: FactionToken (6)
+  m_Name: FactionTokenGhost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20555,7 +20556,7 @@ GameObject:
   - component: {fileID: 704227280}
   - component: {fileID: 704227279}
   m_Layer: 5
-  m_Name: FactionToken (3)
+  m_Name: FactionTokenPiofo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28054,7 +28055,7 @@ GameObject:
   - component: {fileID: 941479584}
   - component: {fileID: 941479583}
   m_Layer: 5
-  m_Name: FactionToken (5)
+  m_Name: FactionTokenSundercity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31868,7 +31869,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291134868}
   m_HandleRect: {fileID: 1291134867}
   m_Direction: 2
-  m_Value: 1.0000002
+  m_Value: 1.0000001
   m_Size: 0.34352458
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -32308,7 +32309,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148302600}
   m_LocalRotation: {x: 0.06254261, y: -0, z: -0.05072952, w: 0.9967522}
-  m_LocalPosition: {x: -1781.74, y: 1.3953264, z: 5605}
+  m_LocalPosition: {x: -1781.74, y: 1.8851097, z: 5605}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -35797,7 +35798,7 @@ GameObject:
   - component: {fileID: 1297139725}
   - component: {fileID: 1297139724}
   m_Layer: 5
-  m_Name: FactionToken (1)
+  m_Name: FactionTokenCPL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61353,7 +61354,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115856550}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20.278442, y: -3.1252391, z: 37.27881}
+  m_LocalPosition: {x: -20.278442, y: -3.498309, z: 37.27881}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -61398,7 +61399,7 @@ GameObject:
   - component: {fileID: 2116101822}
   - component: {fileID: 2116101821}
   m_Layer: 5
-  m_Name: FactionToken
+  m_Name: FactionTokenCUII
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61438,7 +61439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9960785, g: 0.8431373, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.8464567, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -63209,7 +63210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4465289591269875759, guid: 7a46ef81c5cf35f4cb786347dd4eb0c0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.9240184
+      value: -6.261346
       objectReference: {fileID: 0}
     - target: {fileID: 4465289591269875759, guid: 7a46ef81c5cf35f4cb786347dd4eb0c0, type: 3}
       propertyPath: m_LocalPosition.z

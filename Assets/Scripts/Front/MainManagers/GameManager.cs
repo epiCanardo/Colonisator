@@ -11,12 +11,16 @@ using Assets.Scripts.Service;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Assets.Scripts.Front.MainManagers
 {
     public class GameManager : UnityEngine.MonoBehaviour
     {
         public Canvas canvas;
+
+        [Header("Token Borders")]
+        public Image CUIITokenBorder;
 
         [Header("Gestion des cases")]
         public GameObject squarePrefab;
@@ -494,13 +498,13 @@ namespace Assets.Scripts.Front.MainManagers
             sM.ship.coordinates = square.coordinates;
 
             // TODO : fix sur le navire fantôme à mettre en place
-            if (ServiceGame.GetFactionFromId(ship.owner).playerTypeEnum != "GHOST")
-            {
+            //if (ServiceGame.GetFactionFromId(ship.owner).playerTypeEnum != "GHOST")
+            //{
                 // apparition de l'équipage
                 sM.AssignCrew();
                 // apparition des drapeaux
                 sM.AssignColors();
-            }
+            //}
 
             instanciedShipObjects.Add(currentShipObject);
         }
@@ -582,6 +586,17 @@ namespace Assets.Scripts.Front.MainManagers
 
             //harborToolTip.transform.position = Input.mousePosition;
             harborToolTip.gameObject.SetActive(active);
+        }
+
+        public void BlinkTokenBorder()
+        {
+            CUIITokenBorder.DOFade(0, 1).SetLoops(-1, LoopType.Yoyo);
+        }
+
+        public void StopBlinkTokenBorder()
+        {
+            CUIITokenBorder.DOKill(true);
+            CUIITokenBorder.color = new Color(CUIITokenBorder.color.r, CUIITokenBorder.color.g, CUIITokenBorder.color.b, 1f);
         }
 
         #region Mode Navigation

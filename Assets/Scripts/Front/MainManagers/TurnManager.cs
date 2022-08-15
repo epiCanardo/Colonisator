@@ -56,6 +56,8 @@ namespace Assets.Scripts.Front.MainManagers
                 // démarrage du tour
                 yield return StartCoroutine("NewTurn");
 
+                GameManager.Instance.BlinkTokenBorder();
+
                 MainState = TurnState.ActionsStarted;
                 Camera.main.GetComponent<CamMovement>().SetCamToActionLevel();
                 CurrentTurnText.text = string.Format(ModManager.Instance.GetSentence(SentenceDTO.CURRENT_TURN_START),
@@ -406,6 +408,8 @@ namespace Assets.Scripts.Front.MainManagers
                 // yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
 
                 EndTurnButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+
+                GameManager.Instance.StopBlinkTokenBorder();
 
                 // gestion de la fin du tour
                 if (nonHumanAutoTestActive)

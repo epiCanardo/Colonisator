@@ -11,7 +11,7 @@ namespace Assets.Scripts.Front.MainManagers
 {
     public class ShipManager : UnityEngine.MonoBehaviour
     {
-        public Ship ship;
+        public Ship ship { get; set; }
         public GameObject CaptainSpot;
         public GameObject FlagLeftSpot;
         public GameObject FlagRightSpot;
