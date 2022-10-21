@@ -208,8 +208,7 @@ namespace Assets.Scripts.Front.MainManagers
 
         public void CreateSquares()
         {
-            //StartCoroutine("CreateSquaresTask");
-            CreateSquaresTask();
+            CreateSquaresTask();           
         }
 
         void CreateSquaresTask()
@@ -238,16 +237,9 @@ namespace Assets.Scripts.Front.MainManagers
                         if (x + 1 == 47 && z + 1 == 90) CreateIsland(ile3HarborSqurePrefab, physicalSquare, basicSquare, "ile3");
                         else if (x + 1 == 5 && z + 1 == 96) CreateIsland(sundercityHarborSqurePrefab, physicalSquare, basicSquare, "sundercity");
                         else if (x + 1 == 27 && z + 1 == 69) CreateIsland(ileNeutre1HarborSqurePrefab, physicalSquare, basicSquare, "ileNeutre1");
-                        else
-                        {
+                        else                        
                             CreateIsland(harborSquarePrefab, physicalSquare, basicSquare, "balek");
-                            //objectCreated = Instantiate(harborSquarePrefab, physicalSquare, harborSquarePrefab.transform.rotation, squaresParent.transform);
-                            //objectCreated.name = $"HarborSquare{basicSquare.x}_{basicSquare.y}";
-                            //squareManager = objectCreated.GetComponent<HarborSquareManagement>();
-                            //squareManager.coordinates = basicSquare;
-                            //(squareManager as HarborSquareManagement).SetIsland();
-                            //squares.Add(squareManager);
-                        }
+                        
                     }
                     else
                     {
@@ -269,8 +261,11 @@ namespace Assets.Scripts.Front.MainManagers
                         objectCreated.SetActive(false);
                     }                    
                 }
-            }
+            }            
+        }
 
+        private void DrawIslandsBorders()
+        {
             foreach (var harbor in squares.OfType<HarborSquareManagement>())
             {
                 List<SquareManagement> costalSquares = GetIslandCostalSquares(harbor);
@@ -278,20 +273,18 @@ namespace Assets.Scripts.Front.MainManagers
                 {
                     // dessin des contours des îles (pour la minimap)
                     var gameObjectDummy = GameObject.CreatePrimitive(PrimitiveType.Plane);
-                    var instanceDummy = GameObject.Instantiate(gameObjectDummy, mapViewPlane.transform);
+                    var instanceDummy = Instantiate(gameObjectDummy, mapViewPlane.transform);
                     instanceDummy.layer = mapViewPlane.layer;
+
                     LineRenderer line = instanceDummy.AddComponent<LineRenderer>();
-                    line.material = islandBordersMaterial;
+                    line.material = new Material(islandBordersMaterial);                    
+                    line.material.color = harbor.GetOwnerColor();
+                    line.material.SetColor("_EmissionColor", harbor.GetOwnerColor());
                     line.name = "islandBorders";
-
-                    var segments = 360;
-                    //line.useWorldSpace = false;
                     line.widthMultiplier = 2f;
-                    //line.startWidth = 5f;
-                    //line.endWidth = 5f;
                     line.positionCount = costalSquares.Count;
-                    var points = new Vector3[costalSquares.Count];
 
+                    var points = new Vector3[costalSquares.Count];
                     for (int i = 0; i < costalSquares.Count; i++)
                     {
                         points[i] = costalSquares[i].transform.position;
@@ -448,8 +441,10 @@ namespace Assets.Scripts.Front.MainManagers
 
             foreach (HarborSquareManagement harborSquare in squares.OfType<HarborSquareManagement>())
             {
-                harborSquare.SetHarborSquareColor();
+                harborSquare.SetHarborVisualColors();
             }
+
+            DrawIslandsBorders();
         }
 
         private void SetFactionToManager(Faction faction, string colorName, List<Color32> colors, Texture2D flag, bool isPlaying = true)
@@ -553,7 +548,8 @@ namespace Assets.Scripts.Front.MainManagers
         {
             foreach (SquareManagement squareM in previousSquares)
             {
-                squareM.gameObject.SetActive(false);
+                if (squareM is NavigableSquareManagement)
+                    squareM.gameObject.SetActive(false);
             }
             previousSquares.Clear();
         }

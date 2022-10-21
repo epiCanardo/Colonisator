@@ -1945,6 +1945,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6304923398420867835}
   - component: {fileID: 1866768167159584123}
+  - component: {fileID: 9056040874430706656}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -1999,6 +2000,20 @@ MonoBehaviour:
   HullToColor: {fileID: 7318521463300573237}
   MiniMapRenderer: {fileID: 6304923399743204097}
   selectionCircle: {fileID: 6303699660686498003}
+  iconForward: {x: 0, y: 0, z: 0}
+--- !u!65 &9056040874430706656
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6304923398420867780}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.572328, y: 26.010672, z: 30.364372}
+  m_Center: {x: -0.111126184, y: 12.505336, z: -0.10583162}
 --- !u!1 &6304923399743204108
 GameObject:
   m_ObjectHideFlags: 0
@@ -2309,8 +2324,6 @@ GameObject:
   - component: {fileID: 8681025055764088465}
   - component: {fileID: 5895284422299110834}
   - component: {fileID: 2329168816670569767}
-  - component: {fileID: 1197081700193687818}
-  - component: {fileID: 8447530876203848414}
   m_Layer: 0
   m_Name: Content
   m_TagString: Untagged
@@ -2400,59 +2413,11 @@ MeshCollider:
   m_GameObject: {fileID: 7318521463300573237}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 34f1a28e97fa40b48845cac26b338e8c, type: 3}
---- !u!114 &1197081700193687818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7318521463300573237}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a8e116d10f40b74e86a95ba3560c268, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CaptainSpot: {fileID: 5773219571148000633}
-  FlagLeftSpot: {fileID: 254235421728198372}
-  FlagRightSpot: {fileID: 6351018175489384897}
-  FlagLeftTextile: {fileID: 6018867467231935829}
-  FlagRightTextile: {fileID: 4145596668010166898}
-  FlagShader: {fileID: -6465566751694194690, guid: da16eee0c1071e144adc2e7c3022787a, type: 3}
-  ActionText: {fileID: 0}
-  CardConsequencesText: {fileID: 0}
-  SailsToColor:
-  - {fileID: 9184892373088903379}
-  - {fileID: 1074514586645671083}
-  - {fileID: 7375843862499212198}
-  HullToColor: {fileID: 7318521463300573237}
-  MiniMapRenderer: {fileID: 0}
-  selectionCircle: {fileID: 0}
---- !u!114 &8447530876203848414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7318521463300573237}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75215afeb99f1fc48aacad291a415f32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waterObject: {fileID: 0}
-  autoFind: 1
-  dynamicMaterial: 0
-  waterLevelSource: 0
-  waterLevel: 0
-  childTransform: {fileID: 0}
-  heightOffset: 0
-  rollAmount: 0.02
-  samples: []
 --- !u!1 &7375843862499212198
 GameObject:
   m_ObjectHideFlags: 0

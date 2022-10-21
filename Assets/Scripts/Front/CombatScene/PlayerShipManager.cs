@@ -88,7 +88,7 @@ namespace Assets.Scripts.Front.CombatScene
         private void DrawText()
         {
             var pos = Camera.main.WorldToScreenPoint((transform.position + CombatManager.Instance.ennemyShip.transform.position) / 2);
-            string text = $"Dictance : { Vector3.Distance(CombatManager.Instance.ennemyShip.transform.position, transform.position).ToString()} m";
+            string text = $"Dictance : {Vector3.Distance(CombatManager.Instance.ennemyShip.transform.position, transform.position).ToString()} m";
             var textSize = GUI.skin.label.CalcSize(new GUIContent(text));
             GUI.contentColor = Color.red;
             GUI.Label(new Rect(pos.x, Screen.height - pos.y, textSize.x, textSize.y), text);
@@ -138,8 +138,8 @@ namespace Assets.Scripts.Front.CombatScene
 
             // On envoie une bordée sur le bord actif !
             if (Input.GetKeyDown(KeyCode.Space))
-            {                
-                StartCoroutine(FireBattery(0f));                
+            {
+                StartCoroutine(FireBattery(0f));
 
                 //// une deuxième allez ^^
                 //foreach (var cannon in cannons)
@@ -166,7 +166,7 @@ namespace Assets.Scripts.Front.CombatScene
                         actualShipSpeed = ShipSails.Half;
                         actualShipMotion = ShipMotion.Accelerate;
                         break;
-                    case ShipSails.Half:                        
+                    case ShipSails.Half:
                         break;
                     case ShipSails.Full:
                         break;
@@ -183,7 +183,7 @@ namespace Assets.Scripts.Front.CombatScene
                     case ShipSails.Stop:
                         break;
                     case ShipSails.Half:
-                        audioSource.PlayOneShot(sailsHostingSounds[CombatManager.Instance.NextInt(0,2)]);
+                        audioSource.PlayOneShot(sailsHostingSounds[CombatManager.Instance.NextInt(0, 2)]);
                         actualShipSpeed = ShipSails.Stop;
                         actualShipMotion = ShipMotion.Slow;
                         break;

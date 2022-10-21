@@ -425,6 +425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6304923398420867835}
   - component: {fileID: 1866768167159584123}
+  - component: {fileID: 5724031558702377317}
   m_Layer: 0
   m_Name: Frigate
   m_TagString: Untagged
@@ -464,6 +465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a8e116d10f40b74e86a95ba3560c268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trail: {fileID: 0}
   CaptainSpot: {fileID: 6304923399224963033}
   FlagLeftSpot: {fileID: 9145977999860501369}
   FlagRightSpot: {fileID: 2675496365948481279}
@@ -479,6 +481,20 @@ MonoBehaviour:
   HullToColor: {fileID: 6304923400185564296}
   MiniMapRenderer: {fileID: 6304923399743204097}
   selectionCircle: {fileID: 6303699660686498003}
+  iconForward: {x: 0, y: 0, z: 0}
+--- !u!65 &5724031558702377317
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6304923398420867780}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 8.790639, y: 25.425797, z: 27.05925}
+  m_Center: {x: 0.3158369, y: 12.212898, z: 1.4309998}
 --- !u!1 &6304923398451956540
 GameObject:
   m_ObjectHideFlags: 0
@@ -2918,8 +2934,6 @@ GameObject:
   - component: {fileID: 6304923400185564290}
   - component: {fileID: 6304923400185564291}
   - component: {fileID: 6304923400185564300}
-  - component: {fileID: 6304923400185564301}
-  - component: {fileID: 6304923400185564302}
   m_Layer: 0
   m_Name: Content
   m_TagString: Untagged
@@ -3009,59 +3023,11 @@ MeshCollider:
   m_GameObject: {fileID: 6304923400185564296}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 34f1a28e97fa40b48845cac26b338e8c, type: 3}
---- !u!114 &6304923400185564301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6304923400185564296}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a8e116d10f40b74e86a95ba3560c268, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CaptainSpot: {fileID: 6304923399224963033}
-  FlagLeftSpot: {fileID: 9145977999860501369}
-  FlagRightSpot: {fileID: 2675496365948481279}
-  FlagLeftTextile: {fileID: 3381468151053351112}
-  FlagRightTextile: {fileID: 4938762766797567308}
-  FlagShader: {fileID: -6465566751694194690, guid: da16eee0c1071e144adc2e7c3022787a, type: 3}
-  ActionText: {fileID: 6986701130908618994}
-  CardConsequencesText: {fileID: 6986701131197015242}
-  SailsToColor:
-  - {fileID: 6304923400348894045}
-  - {fileID: 6304923400332039648}
-  - {fileID: 6304923398474115538}
-  HullToColor: {fileID: 6304923400185564296}
-  MiniMapRenderer: {fileID: 6304923399743204097}
-  selectionCircle: {fileID: 6303699660686498003}
---- !u!114 &6304923400185564302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6304923400185564296}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75215afeb99f1fc48aacad291a415f32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waterObject: {fileID: 0}
-  autoFind: 1
-  dynamicMaterial: 0
-  waterLevelSource: 0
-  waterLevel: 0
-  childTransform: {fileID: 0}
-  heightOffset: 0
-  rollAmount: 0.02
-  samples: []
 --- !u!1 &6304923400191031817
 GameObject:
   m_ObjectHideFlags: 0

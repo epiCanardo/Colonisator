@@ -53,14 +53,19 @@ namespace Assets.Scripts.Front.Squares
             }
         }
 
-        public void SetHarborSquareColor()
+        public void SetHarborVisualColors()
         {
-            // affectation de la couleur du spriterenderer en fonction de la faction
+            SetSquareColor(GetOwnerColor());
+            islandNameTextMesh.color = GetOwnerColor();
+        }
+
+        public Color GetOwnerColor()
+        {
             Faction faction = ServiceGame.GetFactionFromId(island.owner);
             if (faction != null)
-                SetSquareColor(FactionsManager.Instance.GetFactionManager(faction).Colors[0]);
+                return FactionsManager.Instance.GetFactionManager(faction).Colors[0];
             else
-                SetSquareColor(ColorTools.NameToColor("silver"));
+                return ColorTools.NameToColor("silver");
         }
 
         // Update is called once per frame

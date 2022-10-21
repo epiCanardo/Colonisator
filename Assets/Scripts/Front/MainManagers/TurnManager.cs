@@ -115,6 +115,8 @@ namespace Assets.Scripts.Front.MainManagers
                         // TODO : mettre un bouton pour mettre fin ou tour du joueur
                         yield return new WaitUntil(() => MainState == TurnState.AI || MainState == TurnState.CardChoiceDone);
                         MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
+                        // consommation de nourriture
+                        ServiceGame.ConsumeFood(GameManager.Instance.CurrentShipToPlay);
                     }
                     else
                     {
@@ -337,23 +339,30 @@ namespace Assets.Scripts.Front.MainManagers
                                     // gestion du déplacement
                                     Move actualMovement = action.realisationRuleResult?.move;
 
-                                    List<Square> movement = ServiceGame.PrepareShipMovement(action);
+                                    List<Square> movement = ServiceGame.PrepareShipMovement(action);                                  
+
                                     foreach (Square square in movement)
                                     {
                                         // case physique d'arrivée et mouvement
                                         var physicalSquare = GameManager.Instance.GetPhysicalSquareFromSquare(square);
+
                                         // orientation par rapport à la cible
                                         yield return GameManager.Instance.GetActualPlayinghipObject.transform
                                             .DOLookAt(physicalSquare.transform.position, 1f).WaitForCompletion();
-                                        // déplacement
+
+                                        // déplacement                                       
                                         GameManager.Instance.GetActualPlayinghipObject.transform.DOMove(
-                                            physicalSquare.transform.position + (Vector3.down * 10), 1);
+                                            physicalSquare.transform.position + (Vector3.down * 10), 1);                                        
+
                                         // déplacement de la caméra à la même vitesse
                                         yield return Camera.main.transform.DOMove(
                                             new Vector3(physicalSquare.transform.position.x, Camera.main.transform.position.y, physicalSquare.transform.position.z - 100)  /*+ GameManager.Instance.camOffSet*/,
                                                 1)
                                             .WaitForCompletion();
                                     }
+
+                                    // on remet l'icône du navire à sa place
+                                    shipManager.RotateShipIcon();                                    
 
                                     // application des effets sur le gréément
                                     GameManager.Instance.CurrentShipToPlay.shipBoard.rigging -= actualMovement.cost;

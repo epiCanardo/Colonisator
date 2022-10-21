@@ -6,6 +6,7 @@ using Assets.Scripts.Service;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using static Assets.Scripts.ModsDTO.MapDefinitionDTO;
 
 namespace Assets.Scripts.Front.MainManagers
 {
@@ -32,6 +33,9 @@ namespace Assets.Scripts.Front.MainManagers
         //public GameObject MinimapSprite;
 
         public GameObject selectionCircle;
+
+        [SerializeField]
+        private Vector3 iconForward;
 
         private bool isSwinging = true;
         private Vector3 cardConsequencesPosition;
@@ -79,13 +83,21 @@ namespace Assets.Scripts.Front.MainManagers
             // couleur de l'anneau de sélection
             MeshRenderer ringMesh = selectionCircle.GetComponent<MeshRenderer>();
             ringMesh.material = new Material(ringMesh.material);
-            ringMesh.material.color = colors[0]; // la teinte des l'anneau est donné par la couleur du joueur       
+            ringMesh.material.color = colors[0]; // la teinte des l'anneau est donné par la couleur du joueur
+            ringMesh.material.SetColor("_EmissionColor", colors[0]);
         }
 
         public void Move(Vector3 direction)
         {
             transform.Translate(direction);
+            RotateShipIcon();
         }
+
+        public void RotateShipIcon()
+        {
+            MiniMapRenderer.transform.forward = iconForward;
+        }
+       
 
         private void OnMouseDown()
         {
@@ -94,8 +106,10 @@ namespace Assets.Scripts.Front.MainManagers
 
         private void Start()
         {
-            if (selectionCircle != null)
-                selectionCircle.transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetRelative(true).SetEase(Ease.Linear);
+            iconForward = MiniMapRenderer.transform.forward;
+            
+            // if (selectionCircle != null)
+            //    selectionCircle.transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetRelative(true).SetEase(Ease.Linear);
         }
 
         public void SelectShip()
