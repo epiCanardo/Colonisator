@@ -54,9 +54,7 @@ namespace Assets.Scripts.Front.MainManagers
             for (int i = 0; i < 1000; i++)
             {
                 // démarrage du tour
-                yield return StartCoroutine("NewTurn");
-
-                GameManager.Instance.BlinkTokenBorder();
+                yield return StartCoroutine("NewTurn");               
 
                 MainState = TurnState.ActionsStarted;
                 Camera.main.GetComponent<CamMovement>().SetCamToActionLevel();
@@ -68,9 +66,12 @@ namespace Assets.Scripts.Front.MainManagers
                 {
                     Faction faction = ServiceGame.GetFactionFromId(factionTurn.Key);
 
+                    // gestion du clignotement du token de faction
+                    GameManager.Instance.SetActiveTokenBorder(faction.playerTypeEnum);
+                    GameManager.Instance.BlinkTokenBorder();
+
                     // si la faction ne joue pas, ça dégage
-                    var play = FactionsManager.Instance.GetFactionManager(faction).IsPlaying;
-                    if (!play)
+                    if (!FactionsManager.Instance.GetFactionManager(faction).IsPlaying)
                         continue;
 
                     // si c'est au joueur humain de jouer, on laisse la main. La fonction reprendra lorsque MainState sera AI
@@ -102,14 +103,14 @@ namespace Assets.Scripts.Front.MainManagers
                             MenusManager.Instance.TryDestroyMenu("card");
                             MainState = TurnState.Human;
                         }
-                        // si pas de carte piochée, on peut avancer
+                        // si pas de carte piochée, on peut avancer !!
                         //else
                         //{
-                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+                            MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
 
-                        // dès que le mode navigation est démarré, le bouton n'est plus actif
-                        yield return new WaitUntil(() => MainState == TurnState.NavigationMode);
-                        MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
+                            // dès que le mode navigation est démarré, le bouton n'est plus actif
+                            yield return new WaitUntil(() => MainState == TurnState.NavigationMode);
+                            MoveShipButton.GetComponent<Image>().color = new Color(0, 0, 0, 0.196f);
                         //}
 
                         // TODO : mettre un bouton pour mettre fin ou tour du joueur
@@ -173,6 +174,9 @@ namespace Assets.Scripts.Front.MainManagers
                                 case ObjectiveRuleResult.GET_CREW:
                                     sb.AppendLine(ModManager.Instance.GetSentence(SentenceDTO.OBJECTIVE_WANNA_BUY_CREW));
                                     break;
+                                case ObjectiveRuleResult.CHOOSE_PIRATE_PATROL_AREA:
+                                    sb.AppendLine(ModManager.Instance.GetSentence(SentenceDTO.OBJECTIVE_WANNA_CHOOSE_PIRATE_PATROL_AREA));
+                                    break;
                                 default:
                                     sb.AppendLine(ModManager.Instance.GetSentence(SentenceDTO.OBJECTIVE_NOTHING));
                                     break;
@@ -221,7 +225,8 @@ namespace Assets.Scripts.Front.MainManagers
                                                     new TradeLine
                                                         {
                                                             ressource = "rigging",
-                                                            quantity = 100 - shipManager.ship.shipBoard.rigging, cost = 1000
+                                                            quantity = 100 - shipManager.ship.shipBoard.rigging, 
+                                                            cost = 1000
                                                         }
                                                 },
                                                 deltaStuff = new ShipBoard
@@ -401,14 +406,15 @@ namespace Assets.Scripts.Front.MainManagers
                                     break;
                             }
 
-                            // consommation de nourriture à bord pour tous les navires sauf le ghost
-                            if (faction.playerTypeEnum != FactionsDTO.GHOST)
-                                ServiceGame.ConsumeFood(GameManager.Instance.CurrentShipToPlay);
+                            // consommation de nourriture à bord pour tous les navires sauf le ghost                            
+                            ServiceGame.ConsumeFood(GameManager.Instance.CurrentShipToPlay);
 
                             // affichage des actions
                             shipManager.PrintActionText(sb.ToString());
                         }
                     }
+
+                    GameManager.Instance.StopBlinkTokenBorder();
                 }
 
                 // à la fin du tour, on revient par défaut sur le navire du joueur
@@ -417,8 +423,6 @@ namespace Assets.Scripts.Front.MainManagers
                 // yield return BackgroundColor.GetComponent<Image>().DOColor(targetColor, 0.5f).WaitForCompletion();
 
                 EndTurnButton.GetComponent<Image>().color = new Color(0, 0, 0, 1);
-
-                GameManager.Instance.StopBlinkTokenBorder();
 
                 // gestion de la fin du tour
                 if (nonHumanAutoTestActive)

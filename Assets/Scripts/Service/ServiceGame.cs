@@ -648,6 +648,10 @@ namespace Assets.Scripts.Service
         /// <param name="ship"></param>
         public static void ConsumeFood(Ship ship)
         {
+            // pas de consommation de nourriture pour le navire fantôme
+            if (GetFaction(ship).playerTypeEnum == FactionsDTO.GHOST)
+                return;
+            
             int baseRate = ModManager.Instance.GetGameplayValue(x => x.gameplayValues.SHIP_FOOD_CONSUMPTION_BASE_RATE);
             float crewStep = ModManager.Instance.GetGameplayValue(x => x.gameplayValues.SHIP_FOOD_CONSUMPTION_CREW_STEP);
 

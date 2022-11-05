@@ -78,5 +78,6 @@ namespace Assets.Scripts.Model
         public const string GET_RIGGING = "GET_RIGGING";
         public const string GET_FOOD = "GET_FOOD";
         public const string GET_CREW = "GET_CREW";
+        public const string CHOOSE_PIRATE_PATROL_AREA = "CHOOSE_PIRATE_PATROL_AREA";
     }
 }

@@ -10,6 +10,7 @@ namespace Assets.Scripts.ModsDTO
         public static string OBJECTIVE_WANNA_BUY_RIGGING = "OBJECTIVE_WANNA_BUY_RIGGING";
         public static string OBJECTIVE_WANNA_BUY_FOOD = "OBJECTIVE_WANNA_BUY_FOOD";
         public static string OBJECTIVE_WANNA_BUY_CREW = "OBJECTIVE_WANNA_BUY_CREW";
+        public static string OBJECTIVE_WANNA_CHOOSE_PIRATE_PATROL_AREA = "OBJECTIVE_WANNA_CHOOSE_PIRATE_PATROL_AREA";
         public static string OBJECTIVE_NOTHING = "OBJECTIVE_NOTHING";
 
         public static string SOLUTION_FIRECREW_DONE = "SOLUTION_FIRECREW_DONE";

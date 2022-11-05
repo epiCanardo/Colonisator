@@ -21,6 +21,19 @@ namespace Assets.Scripts.Front.MainManagers
 
         [Header("Token Borders")]
         public Image CUIITokenBorder;
+        public Image CPLTokenBorder;
+        public Image CMRTokenBorder;
+        public Image PiofoTokenBorder;
+        public Image MissytownTokenBorder;
+        public Image SundercityTokenBorder;
+        public Image GhostTokenBorder;
+
+        public Image HumanTokenBorder;
+        public Image Competitor1TokenBorder;
+        public Image Competitor2TokenBorder;
+        public Image Competitor3TokenBorder;
+
+        private Image activeFactionTokenBorder;
 
         [Header("Gestion des cases")]
         public GameObject squarePrefab;
@@ -584,15 +597,45 @@ namespace Assets.Scripts.Front.MainManagers
             harborToolTip.gameObject.SetActive(active);
         }
 
+        public void SetActiveTokenBorder(string playerTypeEnum)
+        {
+            switch (playerTypeEnum)
+            {
+                case "COMPETITOR":
+                    activeFactionTokenBorder = Competitor1TokenBorder; return;
+                case "NEUTRAL":
+                    activeFactionTokenBorder = CUIITokenBorder; return;
+                case "PIRATE":
+                    activeFactionTokenBorder = CPLTokenBorder; return;
+                case "REBEL_SAILORS":
+                    activeFactionTokenBorder = CMRTokenBorder; return;
+                case "TOWN":
+                    activeFactionTokenBorder = SundercityTokenBorder; return;
+                case "PENITENTIARY":
+                    activeFactionTokenBorder = PiofoTokenBorder; return;
+                case "HUMAN":
+                    activeFactionTokenBorder = HumanTokenBorder; return;
+                case "PRISON":
+                    activeFactionTokenBorder = MissytownTokenBorder; return;
+                case "GHOST":
+                    activeFactionTokenBorder = GhostTokenBorder; return;
+                default:
+                    return;
+            }
+        }
+
+        /// <summary>
+        /// Une animation indiquant à qui est le tour
+        /// </summary>
         public void BlinkTokenBorder()
         {
-            CUIITokenBorder.DOFade(0, 1).SetLoops(-1, LoopType.Yoyo);
+            activeFactionTokenBorder.DOFade(0, 1).SetLoops(-1, LoopType.Yoyo);
         }
 
         public void StopBlinkTokenBorder()
         {
-            CUIITokenBorder.DOKill(true);
-            CUIITokenBorder.color = new Color(CUIITokenBorder.color.r, CUIITokenBorder.color.g, CUIITokenBorder.color.b, 1f);
+            activeFactionTokenBorder.DOKill(true);
+            activeFactionTokenBorder.color = new Color(activeFactionTokenBorder.color.r, activeFactionTokenBorder.color.g, activeFactionTokenBorder.color.b, 1f);
         }
 
         #region Mode Navigation

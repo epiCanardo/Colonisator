@@ -37,6 +37,10 @@
 			"value" :"Je manque de matelots"
 		},
 		{
+			"key" :"OBJECTIVE_WANNA_CHOOSE_PIRATE_PATROL_AREA",
+			"value" :"Je vais me diriger vers mon secteur de patrouille"
+		},		
+		{
 			"key" :"OBJECTIVE_NOTHING",
 			"value" :"<b>Je ne sais plus quoi faire !</b>"
 		},
