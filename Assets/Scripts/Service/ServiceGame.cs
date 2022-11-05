@@ -85,7 +85,7 @@ namespace Assets.Scripts.Service
                 nbNpc = 100,
                 factions = new List<NewGameDTO.NewGameFaction> 
                 { 
-                    new NewGameDTO.NewGameFaction { name = "La Compagnie Porcine", playerTypeEnum = "HUMAN" },
+                    //new NewGameDTO.NewGameFaction { name = "La Compagnie Porcine", playerTypeEnum = "HUMAN" },
                     new NewGameDTO.NewGameFaction { name = "Ingénierie maritime", playerTypeEnum = "COMPETITOR" },
                     new NewGameDTO.NewGameFaction { name = "Guilde des investisseurs", playerTypeEnum = "COMPETITOR" },
                     new NewGameDTO.NewGameFaction { name = "La Table Ovale", playerTypeEnum = "COMPETITOR" },
@@ -488,9 +488,9 @@ namespace Assets.Scripts.Service
             Square currentSquare = ship.coordinates;
 
             // on incrémente le mouvement avec la case de destination sur chaque direction
-            foreach (KeyValuePair<string, int> move in shipAction.realisationRuleResult.move.moveDetails)
+            foreach (MoveDetails moveDetails in shipAction.realisationRuleResult.move.moveDetails)
             {
-                currentSquare = SingleDirectionShipMoving(currentSquare, move);
+                currentSquare = SingleDirectionShipMoving(currentSquare, moveDetails);
                 result.Add(currentSquare);
             }
 
@@ -531,18 +531,18 @@ namespace Assets.Scripts.Service
         /// <param name="startSquare">la case de départ</param>
         /// <param name="move">le nombre de cases de mouvement</param>
         /// <returns></returns>
-        private static Square SingleDirectionShipMoving(Square startSquare, KeyValuePair<string, int> move)
-        {
-            switch (move.Key)
+        private static Square SingleDirectionShipMoving(Square startSquare, MoveDetails moveDetails)
+        {            
+            switch (moveDetails.direction)
             {
                 case "NORTH":
-                    return new Square(startSquare.x, startSquare.y + move.Value);
+                    return new Square(startSquare.x, startSquare.y + moveDetails.number);
                 case "SOUTH":
-                    return new Square(startSquare.x, startSquare.y - move.Value);
+                    return new Square(startSquare.x, startSquare.y - moveDetails.number);
                 case "WEST":
-                    return new Square(startSquare.x - move.Value, startSquare.y);
+                    return new Square(startSquare.x - moveDetails.number, startSquare.y);
                 case "EAST":
-                    return new Square(startSquare.x + move.Value, startSquare.y);
+                    return new Square(startSquare.x + moveDetails.number, startSquare.y);
             }
 
             return startSquare;

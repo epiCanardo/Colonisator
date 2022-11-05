@@ -390,12 +390,12 @@ namespace Assets.Scripts.Front.MainManagers
                                                 ServiceGame.GetCurrentTurn.number,
                                                 ServiceGame.GetFaction(GameManager.Instance.CurrentShipToPlay).longName,
                                                 GameManager.Instance.CurrentShipToPlay.name,
-                                                actualMovement.moveDetails.Sum(x => x.Value), actualMovement.cost,
+                                                actualMovement.moveDetails.Sum(x => x.number), actualMovement.cost,
                                                 GameManager.Instance.CurrentShipToPlay.shipBoard.rigging));
 
                                         sb.AppendLine(string.Format(
                                             ModManager.Instance.GetSentence(SentenceDTO.REALISATION_MOVE_DONE),
-                                            actualMovement.moveDetails.Sum(x => x.Value), actualMovement.cost));
+                                            actualMovement.moveDetails.Sum(x => x.number), actualMovement.cost));
                                     }
 
                                     break;

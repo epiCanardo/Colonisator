@@ -56,7 +56,9 @@
 	  "id": "F3", 
 	  "playerTypeEnum": "PENITENTIARY",
       "factionPostureEnum": "DEFENSIVE",
-      "allies": [],
+      "allies": [
+	"PRISON",
+	],
       "neutral": [
         "NEUTRAL",
         "HUMAN",
@@ -65,8 +67,6 @@
         "TOWN"
       ],
       "enemies": [
-        "PENITENTIARY",
-        "PRISON",
         "PIRATE"
       ],
 	  "ships" :
@@ -81,7 +81,9 @@
 	  "id": "F4",	
 	  "playerTypeEnum": "PRISON",
       "factionPostureEnum": "DEFENSIVE",
-      "allies": [],
+     "allies": [
+	"PENITENTIARY",
+	],
       "neutral": [
         "NEUTRAL",
         "HUMAN",
@@ -90,8 +92,6 @@
         "TOWN"
       ],
       "enemies": [
-        "PENITENTIARY",
-        "PRISON",
         "PIRATE"
       ],
 	  "ships" :
