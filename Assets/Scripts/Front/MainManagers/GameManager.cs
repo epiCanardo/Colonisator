@@ -381,11 +381,26 @@ namespace Assets.Scripts.Front.MainManagers
             // Competitor
             int count = 0;
             var competitors = ServiceGame.Factions.Where(x => x.playerTypeEnum == "COMPETITOR");
-            List<string> colors = new List<string> { "yellow", "green", "red" };
+            string color = "";
             foreach (Faction competitor in competitors)
             {
-                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/competitor_{colors[count]}");
-                SetFactionToManager(competitor, colors[count], new List<Color32> { ColorTools.NameToColor(colors[count]), Color.green, Color.gray }, flag.texture);
+                char factionDeterminent = competitor.id.Last();
+                switch (factionDeterminent)
+                {
+                    case '1':
+                        color = "red";
+                        break;
+                    case '2':
+                        color = "green";
+                        break;
+                    case '3':
+                        color = "yellow";
+                        break;
+                    default:
+                        break;
+                }
+                Sprite flag = Resources.Load<Sprite>($"Textures/Icons/Flags/competitor_{color}");
+                SetFactionToManager(competitor, color, new List<Color32> { ColorTools.NameToColor(color), Color.green, Color.gray }, flag.texture);
                 ShipsInstanciation(competitor, competitorShipPrefabs);
                 count++;
             }
@@ -523,7 +538,7 @@ namespace Assets.Scripts.Front.MainManagers
             squaresShowed = !squaresShowed;
             //squaresParent.SetActive(squaresShowed);
 
-            foreach (var square in squaresParent.GetComponentsInChildren<NavigableSquareManagement>())
+            foreach (var square in squaresParent.GetComponentsInChildren<SquareManagement>(true))
             {
                 square.gameObject.SetActive(squaresShowed);
             }
