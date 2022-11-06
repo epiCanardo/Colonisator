@@ -67,8 +67,8 @@ namespace Assets.Scripts.Front.MainManagers
                     Faction faction = ServiceGame.GetFactionFromId(factionTurn.Key);
 
                     // gestion du clignotement du token de faction
-                    GameManager.Instance.SetActiveTokenBorder(faction.playerTypeEnum);
-                    GameManager.Instance.BlinkTokenBorder();
+                    GameManager.Instance.SetActiveTokenBorder(faction);
+                    GameManager.Instance.AnimateTokenBorder();
 
                     // si la faction ne joue pas, ça dégage
                     if (!FactionsManager.Instance.GetFactionManager(faction).IsPlaying)

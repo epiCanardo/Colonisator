@@ -5360,7 +5360,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &176171396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7364,8 +7364,8 @@ MonoBehaviour:
   GhostTokenBorder: {fileID: 565430095}
   HumanTokenBorder: {fileID: 1173616130}
   Competitor1TokenBorder: {fileID: 602061870}
-  Competitor2TokenBorder: {fileID: 0}
-  Competitor3TokenBorder: {fileID: 0}
+  Competitor2TokenBorder: {fileID: 862405402}
+  Competitor3TokenBorder: {fileID: 408837999}
   squarePrefab: {fileID: 1414188373475926140, guid: 65e6d300a08c21a42a203ab5473529b3, type: 3}
   nonNavigableSquarePrefab: {fileID: 1414188373475926140, guid: dcd97cebc31e5ac4e9021eff76c49d38, type: 3}
   harborSquarePrefab: {fileID: 1414188373475926140, guid: 5148ba6bc5f420844bd5332a3ed54afa, type: 3}
@@ -9707,7 +9707,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &329782161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11578,7 +11578,7 @@ GameObject:
   - component: {fileID: 408838000}
   - component: {fileID: 408837999}
   m_Layer: 5
-  m_Name: FactionToken (3)
+  m_Name: Competitor3Token
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11604,7 +11604,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &408837999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15263,7 +15263,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &565430095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16638,7 +16638,7 @@ GameObject:
   - component: {fileID: 602061871}
   - component: {fileID: 602061870}
   m_Layer: 5
-  m_Name: FactionToken (1)
+  m_Name: Competitor1Token
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16664,7 +16664,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &602061870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20592,7 +20592,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &704227279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24787,7 +24787,7 @@ GameObject:
   - component: {fileID: 862405403}
   - component: {fileID: 862405402}
   m_Layer: 5
-  m_Name: FactionToken (2)
+  m_Name: Competitor2Token
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24813,7 +24813,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &862405402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28091,7 +28091,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &941479583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32319,7 +32319,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148302600}
   m_LocalRotation: {x: 0.06254261, y: -0, z: -0.05072952, w: 0.9967522}
-  m_LocalPosition: {x: -1781.74, y: 1.4908173, z: 5605}
+  m_LocalPosition: {x: -1781.74, y: 1.2359172, z: 5605}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32606,7 +32606,7 @@ GameObject:
   - component: {fileID: 1173616131}
   - component: {fileID: 1173616130}
   m_Layer: 5
-  m_Name: FactionToken
+  m_Name: HumanToken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32632,7 +32632,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1173616130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35834,7 +35834,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1297139724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61364,7 +61364,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115856550}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20.278442, y: -3.1043606, z: 37.27881}
+  m_LocalPosition: {x: -20.278442, y: -3.3100362, z: 37.27881}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -61435,7 +61435,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2116101821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63220,7 +63220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4465289591269875759, guid: 7a46ef81c5cf35f4cb786347dd4eb0c0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.233347
+      value: -5.559781
       objectReference: {fileID: 0}
     - target: {fileID: 4465289591269875759, guid: 7a46ef81c5cf35f4cb786347dd4eb0c0, type: 3}
       propertyPath: m_LocalPosition.z

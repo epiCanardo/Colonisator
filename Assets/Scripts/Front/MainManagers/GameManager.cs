@@ -12,6 +12,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Net.Http.Headers;
 
 namespace Assets.Scripts.Front.MainManagers
 {
@@ -212,7 +213,7 @@ namespace Assets.Scripts.Front.MainManagers
 
             // faire apparaitre / disparaitre les cases
             if (Input.GetKeyDown(KeyCode.C))
-                ToggleSquares(squaresShowed);
+                ToggleSquares();
 
             // positionnement sur le navire du joueur humain
             if (Input.GetKeyDown(KeyCode.S))
@@ -269,7 +270,7 @@ namespace Assets.Scripts.Front.MainManagers
 
                         objectCreated.name = $"Square{basicSquare.x}_{basicSquare.y}";
                         squareManager.coordinates = basicSquare;
-                        squareManager.SetDebugText(""/*basicSquare.ToString()*/);
+                        squareManager.SetDebugText(basicSquare.ToString());
                         squares.Add(squareManager);
                         objectCreated.SetActive(false);
                     }                    
@@ -312,7 +313,7 @@ namespace Assets.Scripts.Front.MainManagers
             var objectCreated = Instantiate(harborPrefab, square, harborPrefab.transform.rotation, squaresParent.transform);
             var harbor = objectCreated.GetComponent<HarborSquareManagement>();
             harbor.coordinates = basicSquare;
-            harbor.SetDebugText(""/*basicSquare.ToString()*/);
+            harbor.SetDebugText(basicSquare.ToString());
             harbor.SetIsland();
             squares.Add(harbor);
 
@@ -517,14 +518,14 @@ namespace Assets.Scripts.Front.MainManagers
             instanciedShipObjects.Add(currentShipObject);
         }
 
-        public void ToggleSquares(bool active)
+        public void ToggleSquares()
         {
-            squaresShowed = active;
+            squaresShowed = !squaresShowed;
             //squaresParent.SetActive(squaresShowed);
 
             foreach (var square in squaresParent.GetComponentsInChildren<NavigableSquareManagement>())
             {
-                square.gameObject.SetActive(active);
+                square.gameObject.SetActive(squaresShowed);
             }
         }
 
@@ -597,12 +598,24 @@ namespace Assets.Scripts.Front.MainManagers
             harborToolTip.gameObject.SetActive(active);
         }
 
-        public void SetActiveTokenBorder(string playerTypeEnum)
+        public void SetActiveTokenBorder(Faction faction)
         {
+            string playerTypeEnum = faction.playerTypeEnum;
             switch (playerTypeEnum)
             {
                 case "COMPETITOR":
-                    activeFactionTokenBorder = Competitor1TokenBorder; return;
+                    char factionDeterminent = faction.id.Last();
+                    switch (factionDeterminent)
+                    {
+                        case '1':
+                            activeFactionTokenBorder = Competitor1TokenBorder; return;
+                        case '2':
+                            activeFactionTokenBorder = Competitor2TokenBorder; return;
+                        case '3':
+                            activeFactionTokenBorder = Competitor3TokenBorder; return;
+                        default:
+                            return;
+                    }
                 case "NEUTRAL":
                     activeFactionTokenBorder = CUIITokenBorder; return;
                 case "PIRATE":
@@ -627,15 +640,18 @@ namespace Assets.Scripts.Front.MainManagers
         /// <summary>
         /// Une animation indiquant à qui est le tour
         /// </summary>
-        public void BlinkTokenBorder()
+        public void AnimateTokenBorder()
         {
-            activeFactionTokenBorder.DOFade(0, 1).SetLoops(-1, LoopType.Yoyo);
+            //activeFactionTokenBorder.DOFade(0, 0.5f).SetLoops(-1, LoopType.Yoyo);
+            activeFactionTokenBorder.transform.DORotate(new Vector3(0,360,0), 1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetRelative(true).SetEase(Ease.Linear);
         }
 
         public void StopBlinkTokenBorder()
         {
-            activeFactionTokenBorder.DOKill(true);
-            activeFactionTokenBorder.color = new Color(activeFactionTokenBorder.color.r, activeFactionTokenBorder.color.g, activeFactionTokenBorder.color.b, 1f);
+            //activeFactionTokenBorder.DOKill(true);
+            activeFactionTokenBorder.transform.DOKill(true);
+            activeFactionTokenBorder.transform.localEulerAngles = new Vector3(0, 0, 0);
+            //activeFactionTokenBorder.color = new Color(activeFactionTokenBorder.color.r, activeFactionTokenBorder.color.g, activeFactionTokenBorder.color.b, 1f);
         }
 
         #region Mode Navigation
